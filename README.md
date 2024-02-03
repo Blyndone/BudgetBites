@@ -1,4 +1,4 @@
-# FoodSaver
+# BudgetBites
 A mobile aplication to list and search for food that is about to expire.
 
 # Project Members
