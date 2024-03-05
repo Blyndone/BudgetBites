@@ -18,6 +18,10 @@ import {
 } from 'react-native';
 // import Logo from './testimage.js';
 import Login  from './src/components/Login.js';
+import List from './src/components/List.js';
+import { NavigationContainer, StackRouter } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import {
   Colors,
   DebugInstructions,
@@ -29,6 +33,11 @@ import {
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
+
+
+
+
+
 
 function Section({children, title}: SectionProps): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -56,6 +65,8 @@ function Section({children, title}: SectionProps): React.JSX.Element {
   );
 }
 
+const Stack = createNativeStackNavigator();
+
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -64,7 +75,23 @@ function App(): React.JSX.Element {
   };
 
   return (
-        <Login />
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName='Login'>
+            <Stack.Screen name="Login" component={Login}
+                  options={{
+                    headerStyle:{
+                      backgroundColor: '#eb6b34',
+                    }
+                  }} />
+            <Stack.Screen name="List" component={List} 
+            options={{
+              headerStyle:{
+                backgroundColor: '#eb6b34',
+              }
+            }}/>
+      
+          </Stack.Navigator>
+        </NavigationContainer>
    
    
    

@@ -1,41 +1,44 @@
-import React from "react";
+import * as React from "react";
 import { View, Text, StyleSheet, SafeAreaView, Image, Button } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Separator = () => <View style={styles.separator} />;
-const Login = () => {
+const Login = ({navigation}) => {
 
 
     return (
         <SafeAreaView style={ styles.container}>
             <Image  
-        source={require('../../assets/OIG1.png')}
-        style={{
-            width: 300, 
-            height: 300,
-        }}         
-        />
-        <Text style={styles.titleText}>
-            Welcome to Budget Bites!
-        </Text>
-        <View>
+                source={require('../../assets/OIG1.png')}
+                style={{
+                width: 300, 
+                height: 300,
+                }}         
+            />
+            <Text style={styles.titleText}>
+                Welcome to Budget Bites!
+            </Text>
+            <View>
 
-        <Separator />
-        <Button
-        title="Login"
-        color="#eb6b34"
-      />
-        <Separator />
-        <Button
-        title="Create Account"
-        color="#eb6b34"
-      />
-      <Separator />
-        <Button
-        title="Guest Login"
-        color="#eb6b34"
-      />
-        <Separator />
-        </View>
+                    <Separator />
+                    <Button
+                    title="List"
+                    color="#eb6b34"
+                    onPress={() => navigation.navigate('List')}
+                />
+                    <Separator />
+                    <Button
+                    title="Create Account"
+                    color="#eb6b34"
+                />
+                <Separator />
+                    <Button
+                    title="Guest Login"
+                    color="#eb6b34"
+                />
+                    <Separator />
+            </View>
         
 
         </SafeAreaView>
