@@ -1,6 +1,7 @@
-import React from "react";
+import * as  React from "react";
 import { View, Text, StyleSheet, SafeAreaView, Image, Button, FlatList, StatusBar } from 'react-native'
 
+import { Searchbar } from 'react-native-paper';
 const DATA = [
 
 
@@ -94,14 +95,23 @@ const List = () => {
             desc = {item.desc}
             price = {item.price}
             />
-    )
-
-
-    return (
+            )
+        const [searchQuery, setSearchQuery] = React.useState('');
+            
+            
+            return (
         <SafeAreaView style={ styles.container}>
             <Text style = {{
                 fontWeight: 'bold'
             }} > List of Items</Text>
+
+
+          
+            <Searchbar
+                placeholder="Search"
+                onChangeText={setSearchQuery}
+                value={searchQuery}
+            />
             <FlatList
             data = {DATA}
             renderItem={renderItem}

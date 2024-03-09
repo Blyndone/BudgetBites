@@ -7,7 +7,11 @@ import { Button, Text, TextInput, RadioButton
 
 
 const Separator = () => <View style={styles.separator} />;
-const Login = ({navigation}) => {
+const CreateAccount = ({navigation}) => {
+    const [name_text, setTextName] = React.useState("");
+    const [email_text, setTextEmail] = React.useState("");
+    const [phone_text, setTextPhone] = React.useState("");
+    const [zip_text, setTextZip] = React.useState("");
     const [user_text, setTextUser] = React.useState("");
     const [pass_text, setTextPass] = React.useState("");
 
@@ -19,13 +23,15 @@ const Login = ({navigation}) => {
             
             <View style = { styles.textinput}>
             <Text style={styles.titleText}>
-                Login
+                Account Creation
             </Text>
             <Separator />
             <Text style = { styles.bodytext}>
-                Enter details to login. 
+                Get started with an account. 
                 {"\n"}
-           
+                {"\n"}
+                * indicates a required field. 
+                {"\n"}
             </Text>
 
 
@@ -35,27 +41,83 @@ const Login = ({navigation}) => {
         style= {{  
             padding: 10
         }}>
-
-            <TextInput
+        
+        
+        <TextInput
       label="User Name"
       value={user_text}
-      onChangeText={user_text => setTextUser(user_text)}
+      onChangeText={user_text => setTextUser(namuser_texte_text)}
       style={styles.textinput}
       />
+
+
       
-      <TextInput
+        <TextInput
       label="Password"
       value={pass_text}
       onChangeText={pass_text => setTextPass(pass_text)}
       style={styles.textinput}
+      textContentType = 'password'
+      secureTextEntry={true}
+      />
+
+
+
+
+
+
+            <TextInput
+      label="Name"
+      value={name_text}
+      onChangeText={name_text => setTextName(name_text)}
+      style={styles.textinput}
       />
       
+      <TextInput
+      label="Email"
+      value={email_text}
+      onChangeText={email_text => setTextEmail(email_text)}
+      style={styles.textinput}
+      />
+      
+      <TextInput
+      label="Phone Number"
+      value={phone_text}
+      onChangeText={phone_text => setTextPhone(phone_text)}
+      style={styles.textinput}
+      textContentType="telephoneNumber"
+      keyboardType = 'number-pad'
+      maxLength={10}
+      />
 
+<TextInput
+      label="Zip Code"
+      value={zip_text}
+      onChangeText={zip_text => setTextZip(zip_text)}
+      style={styles.textinput}
+      textContentType="telephoneNumber"
+      keyboardType = 'number-pad'
+      maxLength={5}
+      />
 
       </View>
 
 
-    
+      <View>
+      <RadioButton.Group onValueChange={newValue => setValue(newValue)} value={value}>
+      <View style={{flexDirection: 'row', alignItems: 'center' }}>
+        <RadioButton value="first" />
+        <Text style = { styles.bodytext}>Customer</Text>
+      </View>
+      <View style={{flexDirection: 'row', alignItems: 'center' }}>
+        <RadioButton value="second" />
+        <Text style = { styles.bodytext}>Seller</Text>
+      </View>
+    </RadioButton.Group>
+    </View>
+
+
+
 
 
       </View>
@@ -121,4 +183,4 @@ const styles = StyleSheet.create({
 
 
 
-export default Login
+export default CreateAccount

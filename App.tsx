@@ -17,8 +17,11 @@ import {
   View,
 } from 'react-native';
 // import Logo from './testimage.js';
-import Login  from './src/components/Login.js';
+import Splash  from './src/components/Splash.js';
 import List from './src/components/List.js';
+import CreateAccount from './src/components/CreateAccount.js';
+import Login from './src/components/Login.js';
+
 import { NavigationContainer, StackRouter } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -29,6 +32,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { PaperProvider } from 'react-native-paper';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -75,23 +79,47 @@ function App(): React.JSX.Element {
   };
 
   return (
+      <PaperProvider>
+
         <NavigationContainer>
-          <Stack.Navigator initialRouteName='Login'>
-            <Stack.Screen name="Login" component={Login}
+          <Stack.Navigator initialRouteName='Splash'>
+            
+            
+            <Stack.Screen name="Budget Bytes" component={Splash}
                   options={{
                     headerStyle:{
                       backgroundColor: '#eb6b34',
                     }
                   }} />
             <Stack.Screen name="List" component={List} 
+            
+            options={{
+              headerStyle:{
+                backgroundColor: '#eb6b34',
+              }
+            }}/>
+
+            <Stack.Screen name="Account Creation" component={CreateAccount} 
+            
             options={{
               headerStyle:{
                 backgroundColor: '#eb6b34',
               }
             }}/>
       
+      <Stack.Screen name="Login" component={Login} 
+            
+            options={{
+              headerStyle:{
+                backgroundColor: '#eb6b34',
+              }
+            }}/>
+
+
+
           </Stack.Navigator>
         </NavigationContainer>
+      </PaperProvider>
    
    
    
