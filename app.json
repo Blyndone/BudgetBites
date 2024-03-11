@@ -1,4 +1,8 @@
 {
   "name": "BudgetBites",
-  "displayName": "BudgetBites"
+  "displayName": "BudgetBites",
+  "android": {
+    "usesCleartextTraffic": true
+  }
+   
 }

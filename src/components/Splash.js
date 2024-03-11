@@ -3,6 +3,7 @@ import { View,  StyleSheet, SafeAreaView, Image } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text } from 'react-native-paper';
+import ServerPing from "./ServerPing";
 
 
 const Separator = () => <View style={styles.separator} />;
@@ -14,14 +15,15 @@ const Splash = ({navigation}) => {
             <Image  
                 source={require('../../assets/OIG1.png')}
                 style={{
-                width: 300, 
-                height: 300,
+                    width: 300, 
+                    height: 300,
                 }}         
             />
             <Text style={styles.titleText}>
                 Welcome to Budget Bites!
             </Text>
             <View>
+                {/* <ServerPing /> */}
 
                     <Separator />
                     <Button mode = "contained"
