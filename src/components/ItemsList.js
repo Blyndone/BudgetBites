@@ -2,15 +2,15 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, FlatList, Text, View} from 'react-native';
 
-const ServerPing = () => {
+const ItemsList = () => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  const getMovies = async () => {
+  const GetItems = async () => {
     try {
-      const response = await fetch('http://10.0.2.2:5000/testtable');
+      const response = await fetch('http://10.0.2.2:5000/items');
       const json = await response.json();
-      setData(json.testtable);
+      setData(json.items);
     } catch (error) {
       console.error(error);
     } finally {
@@ -19,12 +19,12 @@ const ServerPing = () => {
   };
 
   useEffect(() => {
-    getMovies();
+    GetItems();
   }, []);
 
   return (
     <View>
-        <Text>Users</Text>
+        <Text>Items</Text>
 
 
     <View style={{flex: 1, padding: 24}}>
@@ -33,10 +33,10 @@ const ServerPing = () => {
           ) : (
               <FlatList
               data={data}
-              keyExtractor={({id}) => id}
+              keyExtractor={({itemID}) => itemID}
               renderItem={({item}) => (
                   <Text>
-              {item.Name}, {item.Age}
+              {item.name}:  {item.description}
             </Text>
           )}
           />
@@ -46,4 +46,4 @@ const ServerPing = () => {
   );
 };
 
-export default ServerPing;
+export default ItemsList;

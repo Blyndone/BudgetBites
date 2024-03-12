@@ -7,19 +7,18 @@ import { Button, Text, TextInput, RadioButton
 
 
 const Separator = () => <View style={styles.separator} />;
-const CreateAccount = ({navigation}) => {
-    const [name_text, setTextName] = React.useState("");
-    const [email_text, setTextEmail] = React.useState("");
-    const [phone_text, setTextPhone] = React.useState("");
-    const [zip_text, setTextZip] = React.useState("");
-    const [user_text, setTextUser] = React.useState("");
-    const [pass_text, setTextPass] = React.useState("");
+const CreateListing = ({navigation}) => {
+  const [name_text, setName] = React.useState("");
+  const [desc_text, setDescription] = React.useState("");
+  const [price_text, setPrice] = React.useState("");
+  
 
-    const [value, setValue] = React.useState('first');
+  
 
 
     return (
         <SafeAreaView style={ styles.form}>
+          <Text>CREATE LISTING</Text>
             
             <View style = { styles.textinput}>
             <Text style={styles.titleText}>
@@ -44,78 +43,34 @@ const CreateAccount = ({navigation}) => {
         
         
         <TextInput
-      label="User Name"
-      value={user_text}
-      onChangeText={user_text => setTextUser(namuser_texte_text)}
+      label="Item Name"
+      value={name_text}
+      onChangeText={name_text => setName(name_text)}
       style={styles.textinput}
       />
 
 
       
         <TextInput
-      label="Password"
-      value={pass_text}
-      onChangeText={pass_text => setTextPass(pass_text)}
+      label="Description"
+      value={desc_text}
+      onChangeText={desc_text => setDescription(desc_text)}
       style={styles.textinput}
-      textContentType = 'password'
-      secureTextEntry={true}
+
       />
 
 
-
-
-
-
-            <TextInput
-      label="Name"
-      value={name_text}
-      onChangeText={name_text => setTextName(name_text)}
-      style={styles.textinput}
-      />
-      
       <TextInput
-      label="Email"
-      value={email_text}
-      onChangeText={email_text => setTextEmail(email_text)}
-      style={styles.textinput}
-      />
-      
-      <TextInput
-      label="Phone Number"
-      value={phone_text}
-      onChangeText={phone_text => setTextPhone(phone_text)}
+      label="Price"
+      value={price_text}
+      onChangeText={price_text => setPrice(price_text)}
       style={styles.textinput}
       textContentType="telephoneNumber"
       keyboardType = 'number-pad'
       maxLength={10}
       />
 
-<TextInput
-      label="Zip Code"
-      value={zip_text}
-      onChangeText={zip_text => setTextZip(zip_text)}
-      style={styles.textinput}
-      keyboardType = 'number-pad'
-      maxLength={5}
-      />
-
       </View>
-
-
-      <View>
-      <RadioButton.Group onValueChange={newValue => setValue(newValue)} value={value}>
-      <View style={{flexDirection: 'row', alignItems: 'center' }}>
-        <RadioButton value="first" />
-        <Text style = { styles.bodytext}>Customer</Text>
-      </View>
-      <View style={{flexDirection: 'row', alignItems: 'center' }}>
-        <RadioButton value="second" />
-        <Text style = { styles.bodytext}>Seller</Text>
-      </View>
-    </RadioButton.Group>
-    </View>
-
-
 
 
 
@@ -127,7 +82,26 @@ const CreateAccount = ({navigation}) => {
                     <Button mode = "contained"
                     title="List"
                     buttonColor="#eb6b34"
-                    onPress={() => navigation.navigate('List')}> Submit </Button>
+                    onPress={() => {
+
+                      fetch('http://10.0.2.2:5000/additem', {
+                        method: 'POST',
+                        headers: {
+                          "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                          name_text: name_text,
+                          desc_text: desc_text,
+                          price_text: price_text
+                        })
+                      });
+                      
+                      navigation.navigate('List')
+                      
+                      
+                    }
+                    
+                    }> Submit </Button>
 
                     <Separator />
                   
@@ -182,4 +156,7 @@ const styles = StyleSheet.create({
 
 
 
-export default CreateAccount
+export default CreateListing
+
+
+

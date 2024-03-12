@@ -3,7 +3,7 @@ import { View,  StyleSheet, SafeAreaView, Image } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text } from 'react-native-paper';
-import ServerPing from "./ServerPing";
+import ItemsList from "./ItemsList";
 
 
 const Separator = () => <View style={styles.separator} />;
@@ -23,7 +23,7 @@ const Splash = ({navigation}) => {
                 Welcome to Budget Bites!
             </Text>
             <View>
-                {/* <ServerPing /> */}
+                {/* <ItemsList /> */}
 
                     <Separator />
                     <Button mode = "contained"
@@ -46,6 +46,14 @@ const Splash = ({navigation}) => {
                     buttonColor="#eb6b34"
                     onPress={() => navigation.navigate('List')}>
                     Guest Login 
+                </Button>
+                    <Separator />
+                    <Button
+                    mode = "contained"
+                    title="Create Listing"
+                    buttonColor="#eb6b34"
+                    onPress={() => navigation.navigate('Create Listing')}>
+                    Create Listing
                 </Button>
                     <Separator />
 
