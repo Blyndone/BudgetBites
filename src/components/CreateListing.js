@@ -8,9 +8,10 @@ import { Button, Text, TextInput, RadioButton
 
 const Separator = () => <View style={styles.separator} />;
 const CreateListing = ({navigation}) => {
-  const [name_text, setName] = React.useState("");
-  const [desc_text, setDescription] = React.useState("");
-  const [price_text, setPrice] = React.useState("");
+
+  var [name_text, setName] = React.useState("");
+  var [desc_text, setDescription] = React.useState("");
+  var [price_text, setPrice] = React.useState("");
   
 
   
@@ -18,18 +19,18 @@ const CreateListing = ({navigation}) => {
 
     return (
         <SafeAreaView style={ styles.form}>
-          <Text>CREATE LISTING</Text>
+        
             
             <View style = { styles.textinput}>
             <Text style={styles.titleText}>
-                Account Creation
+                Food Listing
             </Text>
             <Separator />
             <Text style = { styles.bodytext}>
-                Get started with an account. 
+                Create a new food listing. 
                 {"\n"}
                 {"\n"}
-                * indicates a required field. 
+                 Input the item name, a short description, and the price below!
                 {"\n"}
             </Text>
 
@@ -65,7 +66,6 @@ const CreateListing = ({navigation}) => {
       value={price_text}
       onChangeText={price_text => setPrice(price_text)}
       style={styles.textinput}
-      textContentType="telephoneNumber"
       keyboardType = 'number-pad'
       maxLength={10}
       />
@@ -83,6 +83,19 @@ const CreateListing = ({navigation}) => {
                     title="List"
                     buttonColor="#eb6b34"
                     onPress={() => {
+                      if( name_text.length ==0 || desc_text.length==0 || price_text.length ==0 ){
+                        navigation.navigate('List')
+                        return
+                      }else{
+                        try{
+                          price_text = parseFloat(price_text).toFixed(2)
+                        }catch (e){
+                          price_text = "00.00"
+                        }
+
+                      }
+
+
 
                       fetch('http://10.0.2.2:5000/additem', {
                         method: 'POST',
