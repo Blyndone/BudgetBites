@@ -28,6 +28,9 @@ Run from console in project directory
 ```
 npm install
 npm start
+
+In a separate terminal
+node ./server.mjs
 ```
 
 Possible Issues:
