@@ -29,6 +29,8 @@ Run from console in project directory
 npm install
 npm start
 
+press a for android
+
 In a separate terminal
 node ./server.mjs
 ```
