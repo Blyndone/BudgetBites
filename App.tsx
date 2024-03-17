@@ -88,7 +88,7 @@ function App(): React.JSX.Element {
           <Stack.Navigator initialRouteName='Splash'>
             
             
-            <Stack.Screen name="Budget Bytes" component={Splash}
+            <Stack.Screen name="Budget Bites" component={Splash}
                   options={{
                     headerStyle:{
                       backgroundColor: '#eb6b34',
