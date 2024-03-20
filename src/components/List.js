@@ -79,8 +79,8 @@ const List = () => {
             <Image
               source={images[itemID]}
               style={{
-                width: 50,
-                height: 50,
+                width: 150,
+                height: 150,
               }}
             />
             <View style={{ padding: 10 }}></View>
