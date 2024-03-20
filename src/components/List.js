@@ -16,29 +16,6 @@ import React, { useEffect, useState } from 'react';
 import { Searchbar, Icon } from 'react-native-paper';
 import images from '../../assets/testimages/ImageIndex.js';
 
-console.log(images[5], 'test');
-// const Item = (props) => {
-//     // const { img, name, desc, price } = props
-
-//     return (
-
-//         <View style={styles.item}>
-//         <Image
-//                 source={require('../../assets/OIG1.png')}
-//                 style={{
-//                     width: 50,
-//                     height: 50,
-//                 }} />
-
-//         <Text style={styles.instance}>{name}</Text>
-//         <Text style={styles.instance}>{desc}</Text>
-//         <Text style={styles.instance}>{price}</Text>
-
-//     </View>
-
-//     )
-// }
-
 const List = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [itemName, setItemName] = useState(0);
@@ -84,15 +61,6 @@ const List = () => {
     GetItems();
   }, []);
 
-  // const renderItem = ({item}) => (
-  //     <Item
-  //     img = 'xxx'
-  //     name = {item.name}
-  //     desc = {item.desc}
-  //     price = {item.price}
-  //     />
-  //     )
-
   return (
     <SafeAreaView style={styles.container}>
       <Modal
@@ -135,12 +103,6 @@ const List = () => {
                 onPress={() => setModalVisible(!modalVisible)}
               ></Button>
             </View>
-            {/* <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Close</Text>
-            </Pressable> */}
           </View>
         </View>
       </Modal>
@@ -186,8 +148,6 @@ const List = () => {
                   height: 50,
                 }}
               />
-
-              {/* <ImageView index={item.itemID} /> */}
 
               <Text style={styles.instance}>{item.name}</Text>
               <Text style={styles.instance}>{item.description}</Text>
@@ -291,60 +251,3 @@ const styles = StyleSheet.create({
 });
 
 export default List;
-
-// const DATA = [
-// {
-//     img: "img location",
-//     name: "Name",
-//     desc: "Description",
-//     price: "Price"
-// },
-// {
-//     "img": "img/burger.jpg",
-//     "name": "Classic Burger",
-//     "desc": "Juicy beef patty with lettuce, tomato, and special sauce in a sesame seed bun.",
-//     "price": "$8.99"
-// },
-// {
-//     "img": "img/pizza.jpg",
-//     "name": "Margherita Pizza",
-//     "desc": "Thin crust pizza topped with fresh mozzarella, tomatoes, and basil.",
-//     "price": "$12.99"
-// },
-// {
-//     "img": "img/sushi.jpg",
-//     "name": "Sushi Platter",
-//     "desc": "Assorted sushi rolls with fresh fish, avocado, and soy sauce.",
-//     "price": "$16.99"
-// },
-// {
-//     "img": "img/pasta.jpg",
-//     "name": "Spaghetti Bolognese",
-//     "desc": "Al dente spaghetti with hearty meat sauce and grated Parmesan cheese.",
-//     "price": "$10.99"
-// },
-// {
-//     "img": "img/salad.jpg",
-//     "name": "Greek Salad",
-//     "desc": "Crisp lettuce, tomatoes, cucumbers, olives, and feta cheese with Greek dressing.",
-//     "price": "$7.99"
-// },
-// {
-//     "img": "img/tacos.jpg",
-//     "name": "Street Tacos",
-//     "desc": "Soft corn tortillas filled with seasoned grilled meat, onions, and cilantro.",
-//     "price": "$9.99"
-// },
-// {
-//     "img": "img/pancakes.jpg",
-//     "name": "Blueberry Pancakes",
-//     "desc": "Fluffy pancakes filled with blueberries and drizzled with maple syrup.",
-//     "price": "$6.99"
-// },
-// {
-//     "img": "img/ramen.jpg",
-//     "name": "Shoyu Ramen",
-//     "desc": "Japanese noodle soup with soy-flavored broth, ramen noodles, and toppings.",
-//     "price": "$11.99"
-// }
-// ]
