@@ -1,6 +1,5 @@
-
-import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, Text, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 
 const ItemsList = () => {
   const [isLoading, setLoading] = useState(true);
@@ -24,25 +23,24 @@ const ItemsList = () => {
 
   return (
     <View>
-        <Text>Items</Text>
+      <Text>Items</Text>
 
-
-    <View style={{flex: 1, padding: 24}}>
-      {isLoading ? (
+      <View style={{ flex: 1, padding: 24 }}>
+        {isLoading ? (
           <ActivityIndicator />
-          ) : (
-              <FlatList
-              data={data}
-              keyExtractor={({itemID}) => itemID}
-              renderItem={({item}) => (
-                  <Text>
-              {item.name}:  {item.description}
-            </Text>
-          )}
+        ) : (
+          <FlatList
+            data={data}
+            keyExtractor={({ itemID }) => itemID}
+            renderItem={({ item }) => (
+              <Text>
+                {item.name}: {item.description}
+              </Text>
+            )}
           />
-          )}
+        )}
+      </View>
     </View>
-          </View>
   );
 };
 

@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
+import type { PropsWithChildren } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -17,7 +17,7 @@ import {
   View,
 } from 'react-native';
 // import Logo from './testimage.js';
-import Splash  from './src/components/Splash.js';
+import Splash from './src/components/Splash.js';
 import List from './src/components/List.js';
 import CreateAccount from './src/components/CreateAccount.js';
 import Login from './src/components/Login.js';
@@ -39,14 +39,7 @@ type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-
-
-
-
-
-
-
-function Section({children, title}: SectionProps): React.JSX.Element {
+function Section({ children, title }: SectionProps): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -56,7 +49,8 @@ function Section({children, title}: SectionProps): React.JSX.Element {
           {
             color: isDarkMode ? Colors.white : Colors.black,
           },
-        ]}>
+        ]}
+      >
         {title}
       </Text>
       <Text
@@ -65,7 +59,8 @@ function Section({children, title}: SectionProps): React.JSX.Element {
           {
             color: isDarkMode ? Colors.light : Colors.dark,
           },
-        ]}>
+        ]}
+      >
         {children}
       </Text>
     </View>
@@ -82,58 +77,61 @@ function App(): React.JSX.Element {
   };
 
   return (
-      <PaperProvider>
-
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName='Splash'>
-            
-            
-            <Stack.Screen name="Budget Bites" component={Splash}
-                  options={{
-                    headerStyle:{
-                      backgroundColor: '#eb6b34',
-                    }
-                  }} />
-            <Stack.Screen name="List" component={List} 
-            
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Splash">
+          <Stack.Screen
+            name="Budget Bites"
+            component={Splash}
             options={{
-              headerStyle:{
+              headerStyle: {
                 backgroundColor: '#eb6b34',
-              }
-            }}/>
-
-            <Stack.Screen name="Account Creation" component={CreateAccount} 
-            
+              },
+            }}
+          />
+          <Stack.Screen
+            name="List"
+            component={List}
             options={{
-              headerStyle:{
+              headerStyle: {
                 backgroundColor: '#eb6b34',
-              }
-            }}/>
-      
-      <Stack.Screen name="Login" component={Login} 
-            
+              },
+            }}
+          />
+
+          <Stack.Screen
+            name="Account Creation"
+            component={CreateAccount}
             options={{
-              headerStyle:{
+              headerStyle: {
                 backgroundColor: '#eb6b34',
-              }
-            }}/>
+              },
+            }}
+          />
 
-      <Stack.Screen name="Create Listing" component={CreateListing} 
-            
+          <Stack.Screen
+            name="Login"
+            component={Login}
             options={{
-              headerStyle:{
+              headerStyle: {
                 backgroundColor: '#eb6b34',
-              }
-            }}/>
+              },
+            }}
+          />
 
+          <Stack.Screen
+            name="Create Listing"
+            component={CreateListing}
+            options={{
+              headerStyle: {
+                backgroundColor: '#eb6b34',
+              },
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
 
-
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
-   
-   
-   
     // <SafeAreaView style={backgroundStyle}>
     //   <StatusBar
     //     barStyle={isDarkMode ? 'light-content' : 'dark-content'}

@@ -1,181 +1,251 @@
+import {
+  Alert,
+  Modal,
+  View,
+  Pressable,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  Button,
+  FlatList,
+  StatusBar,
+} from 'react-native';
 
-import { View, Text, StyleSheet, SafeAreaView, Image, Button, FlatList, StatusBar } from 'react-native'
-
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Searchbar } from 'react-native-paper';
-
-
-
-
-
-
-
-
 
 // const Item = (props) => {
 //     // const { img, name, desc, price } = props
 
 //     return (
-        
+
 //         <View style={styles.item}>
-//         <Image  
+//         <Image
 //                 source={require('../../assets/OIG1.png')}
 //                 style={{
-//                     width: 50, 
+//                     width: 50,
 //                     height: 50,
 //                 }} />
-        
+
 //         <Text style={styles.instance}>{name}</Text>
 //         <Text style={styles.instance}>{desc}</Text>
 //         <Text style={styles.instance}>{price}</Text>
-        
+
 //     </View>
 
 //     )
 // }
 
-
-
 const List = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [itemName, setItemName] = useState(0);
+  const [itemDescripton, setItemDescription] = useState(0);
+  const [itemImage, setItemImage] = useState(0);
+  const [itemPrice, setItemPrice] = useState(0);
 
-    const [isLoading, setLoading] = useState(true);
-    const [data, setData] = useState([]);
-  
-    const GetItems = async () => {
-      try {
-        const response = await fetch('http://10.0.2.2:5000/items');
-        const json = await response.json();
-        setData(json.items);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    useEffect(() => {
-      GetItems();
-    }, []);
-  
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
 
-    // const renderItem = ({item}) => (
-    //     <Item
-    //     img = 'xxx'
-    //     name = {item.name}
-    //     desc = {item.desc}
-    //     price = {item.price}
-    //     />
-    //     )
-        const [searchQuery, setSearchQuery] = React.useState('');
-        
-        
-        return (
-            <SafeAreaView style={ styles.container}>
-            <Text style = {{
-                fontWeight: 'bold'
-            }} > List of Items</Text>
+  const GetItems = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5000/items');
+      const json = await response.json();
+      setData(json.items);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            <Searchbar
-                placeholder="Search"
-                onChangeText={setSearchQuery}
-                value={searchQuery}
-                />
-            <FlatList
-              data={data}
-              keyExtractor={({itemID}) => itemID}
-              renderItem={({item}) => (
+  useEffect(() => {
+    GetItems();
+  }, []);
 
-                <View style={styles.item}>
-                        <Image  
-                                source={require('../../assets/OIG1.png')}
-                                style={{
-                                    width: 50, 
-                                    height: 50,
-                                }} />
-                        
-                        <Text style={styles.instance}>{item.name}</Text>
-                        <Text style={styles.instance}>{item.description}</Text>
-                        <Text style={styles.instance}>{item.price}</Text>
-                        
-                    </View>
+  // const renderItem = ({item}) => (
+  //     <Item
+  //     img = 'xxx'
+  //     name = {item.name}
+  //     desc = {item.desc}
+  //     price = {item.price}
+  //     />
+  //     )
+  const [searchQuery, setSearchQuery] = React.useState('');
 
-          )}
-          />
+  return (
+    <SafeAreaView style={styles.container}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalTitle}>{itemName}</Text>
+            <Text style={styles.modalText}>{itemDescripton}</Text>
+            <Text style={styles.modalPrice}>${itemPrice}</Text>
+            <Button
+              mode="contained"
+              title="Close"
+              buttonColor="#eb6b34"
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              Create Account
+            </Button>
 
-        
+            {/* <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Close</Text>
+            </Pressable> */}
+          </View>
+        </View>
+      </Modal>
 
-        </SafeAreaView>
+      <Text
+        style={{
+          fontWeight: 'bold',
+        }}
+      >
+        {' '}
+        List of Items
+      </Text>
 
+      <Searchbar
+        placeholder="Search"
+        onChangeText={setSearchQuery}
+        value={searchQuery}
+      />
+      <FlatList
+        data={data}
+        keyExtractor={({ itemID }) => itemID}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Pressable
+              style={[styles.button, styles.buttonOpen]}
+              onPress={() => {
+                setItemName(item.name);
+                setItemDescription(item.description);
+                setItemPrice(item.price);
+                setModalVisible(true);
+              }}
+            >
+              <Image
+                source={require('../../assets/OIG1.png')}
+                style={{
+                  width: 50,
+                  height: 50,
+                }}
+              />
+            </Pressable>
 
-)
-
-}
-
+            <Text style={styles.instance}>{item.name}</Text>
+            <Text style={styles.instance}>{item.description}</Text>
+            <Text style={styles.instance}>{item.price}</Text>
+          </View>
+        )}
+      />
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'teal',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: StatusBar.currentHeight || 0
+  container: {
+    flex: 1,
+    backgroundColor: 'teal',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: StatusBar.currentHeight || 0,
+  },
+  item: {
+    flex: 1,
+    padding: 5,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    height: 100,
+    width: 360,
+    flexDirection: 'row',
+    // justifyContent: 'flex-end',
+    alignItems: 'center',
+    borderWidth: 5,
+    backgroundColor: '#fca503',
+  },
+  titleText: {
+    fontSize: 50,
+    textAlign: 'center',
+    color: 'black',
+    fontWeight: 'bold',
+    fontFamily: 'Helvetica',
+  },
+  button: {
+    color: '#f194ff',
+    backgroundColor: '#f194ff',
+  },
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: '#737373',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  instance: {
+    textAlign: 'auto',
+    flexBasis: 120,
+    flexGrow: 1,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'mediumturquoise',
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-    item:{
-        flex: 1,
-        padding: 5,
-        marginVertical: 8,
-        marginHorizontal: 16,
-        height: 100,
-        width: 360,
-        flexDirection: 'row',
-        // justifyContent: 'flex-end',
-        alignItems: 'center',
-        borderWidth: 5,
-        backgroundColor: '#fca503',
-        
-        
-        
-        
-        
-    },
-    titleText:{
-        fontSize: 50,
-        textAlign: 'center',
-        color: 'black',
-        fontWeight: 'bold',
-        fontFamily: 'Helvetica'
-    },
-    button:{
-        color:'#f194ff',
-        backgroundColor: '#f194ff'
-    },
-    separator: {
-        marginVertical: 8,
-        borderBottomColor: '#737373',
-        borderBottomWidth: StyleSheet.hairlineWidth,
-    },
-    instance:{
-        textAlign:'auto',
-        flexBasis:120,
-        flexGrow: 1
-    }
-    
-    
-    
-    
-})
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: 'black',
+    fontWeight: 'bold',
+    fontFamily: 'Helvetica',
+  },
+  modalText: {
+    fontSize: 15,
+    textAlign: 'center',
+    color: 'black',
+    fontWeight: 'normal',
+    fontFamily: 'Helvetica',
+  },
+  modalPrice: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: 'black',
+    fontWeight: 'bold',
+    fontFamily: 'Helvetica',
+  },
+  button: {
+    color: '#f194ff',
+    backgroundColor: '#f194ff',
+  },
+});
 
-export default List
-
-
-
-
-
-
-
-
-
-
+export default List;
 
 // const DATA = [
 // {
@@ -233,5 +303,3 @@ export default List
 //     "price": "$11.99"
 // }
 // ]
-
-
