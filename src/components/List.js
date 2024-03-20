@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
-import { Searchbar } from 'react-native-paper';
+import { Searchbar, Icon } from 'react-native-paper';
 
 // const Item = (props) => {
 //     // const { img, name, desc, price } = props
@@ -47,11 +47,29 @@ const List = () => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
+  const [searchQuery, setSearchQuery] = React.useState('');
+
   const GetItems = async () => {
     try {
       const response = await fetch('http://10.0.2.2:5000/items');
       const json = await response.json();
-      setData(json.items);
+      console.log(searchQuery);
+      console.log(searchQuery.length);
+
+      if (!(searchQuery.length === 0)) {
+        let results = Object.values(json.items).filter(
+          (item) =>
+            String(item.name)
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) ||
+            String(item.description)
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()),
+        );
+        setData(results);
+      } else {
+        setData(json.items);
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -71,7 +89,6 @@ const List = () => {
   //     price = {item.price}
   //     />
   //     )
-  const [searchQuery, setSearchQuery] = React.useState('');
 
   return (
     <SafeAreaView style={styles.container}>
@@ -89,15 +106,21 @@ const List = () => {
             <Text style={styles.modalTitle}>{itemName}</Text>
             <Text style={styles.modalText}>{itemDescripton}</Text>
             <Text style={styles.modalPrice}>${itemPrice}</Text>
-            <Button
-              mode="contained"
-              title="Close"
-              buttonColor="#eb6b34"
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              Create Account
-            </Button>
-
+            <View style={{ flexDirection: 'row' }}>
+              <Button
+                mode="contained"
+                title="Close"
+                color="#eb6b34"
+                onPress={() => setModalVisible(!modalVisible)}
+              ></Button>
+              <View style={{ padding: 10 }}></View>
+              <Button
+                mode="contained"
+                title="Reserve"
+                color="#eb6b34"
+                onPress={() => setModalVisible(!modalVisible)}
+              ></Button>
+            </View>
             {/* <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
@@ -111,6 +134,8 @@ const List = () => {
       <Text
         style={{
           fontWeight: 'bold',
+          fontSize: 20,
+          color: 'black',
         }}
       >
         {' '}
@@ -121,6 +146,9 @@ const List = () => {
         placeholder="Search"
         onChangeText={setSearchQuery}
         value={searchQuery}
+        onIconPress={GetItems}
+        onSubmitEditing={GetItems}
+        icon="camera"
       />
       <FlatList
         data={data}
