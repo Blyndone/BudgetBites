@@ -14,7 +14,9 @@ import {
 
 import React, { useEffect, useState } from 'react';
 import { Searchbar, Icon } from 'react-native-paper';
+import images from '../../assets/testimages/ImageIndex.js';
 
+console.log(images[5], 'test');
 // const Item = (props) => {
 //     // const { img, name, desc, price } = props
 
@@ -43,6 +45,7 @@ const List = () => {
   const [itemDescripton, setItemDescription] = useState(0);
   const [itemImage, setItemImage] = useState(0);
   const [itemPrice, setItemPrice] = useState(0);
+  const [itemID, setItemID] = useState(0);
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -104,8 +107,19 @@ const List = () => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>{itemName}</Text>
+            <View style={{ padding: 10 }}></View>
+            <Image
+              source={images[itemID]}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+            />
+            <View style={{ padding: 10 }}></View>
             <Text style={styles.modalText}>{itemDescripton}</Text>
+            <View style={{ padding: 10 }}></View>
             <Text style={styles.modalPrice}>${itemPrice}</Text>
+            <View style={{ padding: 10 }}></View>
             <View style={{ flexDirection: 'row' }}>
               <Button
                 mode="contained"
@@ -154,29 +168,32 @@ const List = () => {
         data={data}
         keyExtractor={({ itemID }) => itemID}
         renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Pressable
-              style={[styles.button, styles.buttonOpen]}
-              onPress={() => {
-                setItemName(item.name);
-                setItemDescription(item.description);
-                setItemPrice(item.price);
-                setModalVisible(true);
-              }}
-            >
+          <Pressable
+            onPress={() => {
+              setItemName(item.name);
+              setItemImage(item.img);
+              setItemID(item.itemID);
+              setItemDescription(item.description);
+              setItemPrice(item.price);
+              setModalVisible(true);
+            }}
+          >
+            <View style={styles.item}>
               <Image
-                source={require('../../assets/OIG1.png')}
+                source={images[item.itemID]}
                 style={{
                   width: 50,
                   height: 50,
                 }}
               />
-            </Pressable>
 
-            <Text style={styles.instance}>{item.name}</Text>
-            <Text style={styles.instance}>{item.description}</Text>
-            <Text style={styles.instance}>{item.price}</Text>
-          </View>
+              {/* <ImageView index={item.itemID} /> */}
+
+              <Text style={styles.instance}>{item.name}</Text>
+              <Text style={styles.instance}>{item.description}</Text>
+              <Text style={styles.instance}>{item.price}</Text>
+            </View>
+          </Pressable>
         )}
       />
     </SafeAreaView>
