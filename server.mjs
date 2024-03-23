@@ -1,6 +1,10 @@
 import express from 'express';
 import * as fs from 'fs';
 
+// const bcrypt = require('bcrypt');
+// var cors = require('cors');
+// const jwt = require('jsonwebtoken');
+
 const app = express();
 
 app.use(express.json());
@@ -137,6 +141,65 @@ app.post('/adduser', async (req, res) => {
       message: err,
     });
   }
+});
+
+//==================
+// Authentication
+// Input Form:
+// username:
+// password:
+
+//==================
+app.post('/auth', async (req, res) => {
+  const { username, password } = req.body;
+  console.log('Auth');
+  console.log(req.body);
+  console.log(username, password);
+
+  // Look up the user entry in the database
+  // const user = db
+  //   .get('users')
+  //   .value()
+  //   .filter((user) => email === user.email);
+  const data = await connection
+    .promise()
+    .query(`SELECT *  from users where username = ?;`, [username]);
+  console.log(data);
+  console.log(data.length);
+
+  // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
+
+  // // If found, compare the hashed passwords and generate the JWT token for the user
+  // if (data.length === 1) {
+  //   bcrypt.compare(password, user[0].password, function (_err, result) {
+  //     if (!result) {
+  //       return res.status(401).json({ message: 'Invalid password' });
+  //     } else {
+  //       let loginData = {
+  //         email,
+  //         signInTime: Date.now(),
+  //       };
+
+  //       const token = jwt.sign(loginData, jwtSecretKey);
+  //       res.status(200).json({ message: 'success', token });
+  //     }
+  //   });
+  //   // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
+  // } else if (user.length === 0) {
+  //   bcrypt.hash(password, 10, function (_err, hash) {
+  //     console.log({ email, password: hash });
+  //     db.get('users').push({ email, password: hash }).write();
+
+  //     let loginData = {
+  //       email,
+  //       signInTime: Date.now(),
+  //     };
+
+  //     const token = jwt.sign(loginData, jwtSecretKey);
+  //     res.status(200).json({ message: 'success', token });
+  //   });
+  // }
+  res.status(200).json({ message: 'success', data });
 });
 
 //==================

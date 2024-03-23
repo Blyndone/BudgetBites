@@ -37,7 +37,6 @@ const CreateAccount = ({ navigation }) => {
           <Text style={styles.titleText}>Account Creation</Text>
           <Separator />
           <Text style={styles.bodytext}>
-            <Button title={'2-Button Alert'} onPress={ErrorAlert} />
             Get started with an account.
             {'\n'}
             {'\n'}* indicates a required field.
@@ -52,8 +51,8 @@ const CreateAccount = ({ navigation }) => {
             <TextInput
               label="User Name"
               value={user_text}
-              onChangeText={(user_text) => setTextUser(user_text)}
               style={styles.textinput}
+              onChangeText={(user_text) => setTextUser(user_text)}
             />
 
             <TextInput
