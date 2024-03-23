@@ -100,6 +100,43 @@ app.post('/additem', async (req, res) => {
 
 app.post('/adduser', async (req, res) => {
   console.log('addUser');
+  console.log(req.body);
+  try {
+    // const { id } = req.params;
+    const {
+      user_text,
+      pass_text,
+      name_text,
+      email_text,
+      phone_text,
+      zip_text,
+      usertype_text,
+      joindate_text,
+    } = req.body;
+    const [{ insertId }] = await connection.promise().query(
+      `INSERT INTO users (username, password, name, email, phone, zip, usertype, joindate)
+          VALUES  
+          (?,?,?,?,?,?,?,?)`,
+      [
+        user_text,
+        pass_text,
+        name_text,
+        email_text,
+        phone_text,
+        zip_text,
+        usertype_text,
+        joindate_text,
+      ],
+    );
+    res.status(200).json({
+      message: 'User Created',
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: err,
+    });
+  }
 });
 
 //==================

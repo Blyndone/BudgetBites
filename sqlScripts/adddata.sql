@@ -1,16 +1,16 @@
 -- Insert test data into the users table
-INSERT INTO `users` (`username`, `password`, `email`, `userType`, `joinDate`)
-VALUES
-    ('Foodie123', 'foodpass', 'foodie@example.com', 'buyer', '2022-01-01'),
-    ('ChefMaster', 'masterchef', 'chef@example.com', 'seller', '2022-02-15'),
-    ('FitnessFanatic', 'fitpass', 'fitnessfan@example.com', 'buyer', '2022-04-05'),
-    ('TechGeek', 'techpass', 'techgeek@example.com', 'buyer', '2022-05-20'),
-    ('GardeningGuru', 'greenpass', 'gardener@example.com', 'seller', '2022-06-12'),
-    ('TravelExplorer', 'travelpass', 'traveler@example.com', 'buyer', '2022-07-18'),
-    ('Bookworm', 'bookpass', 'reader@example.com', 'buyer', '2022-08-25'),
-    ('Fashionista', 'stylepass', 'fashionista@example.com', 'seller', '2022-09-30'),
-    ('PetLover', 'petpass', 'petlover@example.com', 'buyer', '2022-10-15');
 
+INSERT INTO `users` (`username`, `password`, `name`, `email`, `phone`, `zip`, `usertype`, `joindate`)
+VALUES
+    ('Foodie123', 'foodpass', 'Foodie', 'foodie@example.com', 1234567890, 12345, 'buyer', '2022-01-01'),
+    ('ChefMaster', 'masterchef', 'Chef Master', 'chef@example.com', 1234567891, 12346, 'seller', '2022-02-15'),
+    ('FitnessFanatic', 'fitpass', 'Fitness Fanatic', 'fitnessfan@example.com', 1234567892, 12347, 'buyer', '2022-04-05'),
+    ('TechGeek', 'techpass', 'Tech Geek', 'techgeek@example.com', 1234567893, 12348, 'buyer', '2022-05-20'),
+    ('GardeningGuru', 'greenpass', 'Gardening Guru', 'gardener@example.com', 1234567894, 12349, 'seller', '2022-06-12'),
+    ('TravelExplorer', 'travelpass', 'Travel Explorer', 'traveler@example.com', 1234567895, 12340, 'buyer', '2022-07-18'),
+    ('Bookworm', 'bookpass', 'Bookworm', 'reader@example.com', 1234567896, 12341, 'buyer', '2022-08-25'),
+    ('Fashionista', 'stylepass', 'Fashionista', 'fashionista@example.com', 1234567897, 12342, 'seller', '2022-09-30'),
+    ('PetLover', 'petpass', 'Pet Lover', 'petlover@example.com', 1234567898, 12343, 'buyer', '2022-10-15');
 
 -- Insert test data into the items table (food items)
 INSERT INTO `items` (`name`, `description`, `category`, `price`, `count`, `expiration`, `location`, `status`, `img`, `listeddate`)

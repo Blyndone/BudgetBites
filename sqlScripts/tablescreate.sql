@@ -2,7 +2,10 @@ CREATE TABLE `users` (
 	`userID` INT NOT NULL AUTO_INCREMENT,
 	`username` VARCHAR(50) NOT NULL,
 	`password` VARCHAR(50) NOT NULL,
+    `name` VARCHAR(100) NOT NULL,
 	`email` VARCHAR(50),
+    `phone` INT(10),
+    `zip` INT(5),
 	`usertype` VARCHAR(50),
 	`joindate` DATE,
 	PRIMARY KEY (`userID`)

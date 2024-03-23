@@ -13,7 +13,7 @@ const CreateAccount = ({ navigation }) => {
   const [user_text, setTextUser] = React.useState('');
   const [pass_text, setTextPass] = React.useState('');
 
-  const [value, setValue] = React.useState('first');
+  const [usertype_text, setUserType] = React.useState('customer');
 
   return (
     <SafeAreaView style={styles.form}>
@@ -35,7 +35,7 @@ const CreateAccount = ({ navigation }) => {
           <TextInput
             label="User Name"
             value={user_text}
-            onChangeText={(user_text) => setTextUser(namuser_texte_text)}
+            onChangeText={(user_text) => setTextUser(user_text)}
             style={styles.textinput}
           />
 
@@ -84,15 +84,15 @@ const CreateAccount = ({ navigation }) => {
 
         <View>
           <RadioButton.Group
-            onValueChange={(newValue) => setValue(newValue)}
-            value={value}
+            onValueChange={(usertype_text) => setUserType(usertype_text)}
+            value={usertype_text}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <RadioButton value="first" />
+              <RadioButton value="buyer" />
               <Text style={styles.bodytext}>Customer</Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <RadioButton value="second" />
+              <RadioButton value="seller" />
               <Text style={styles.bodytext}>Seller</Text>
             </View>
           </RadioButton.Group>
@@ -105,7 +105,30 @@ const CreateAccount = ({ navigation }) => {
           mode="contained"
           title="List"
           buttonColor="#eb6b34"
-          onPress={() => navigation.navigate('List')}
+          onPress={() => {
+            //NEED INPUT CLEANING AND PASSWORD HASHING
+            const date = new Date();
+            const joindate_text = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+
+            fetch('http://10.0.2.2:5000/adduser', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                name_text: name_text,
+                email_text: email_text,
+                phone_text: phone_text,
+                zip_text: zip_text,
+                user_text: user_text,
+                pass_text: pass_text,
+                usertype_text: usertype_text,
+                joindate_text: joindate_text,
+              }),
+            });
+
+            navigation.navigate('List');
+          }}
         >
           {' '}
           Submit{' '}
