@@ -7,7 +7,11 @@ app.use(express.json());
 
 import mysql from 'mysql2';
 
+//===========================================
+
 // connecting Database
+
+//===========================================
 const connection = mysql.createPool({
   host: 'localhost',
   user: 'root',
@@ -16,7 +20,11 @@ const connection = mysql.createPool({
   multipleStatements: true,
 });
 
+//===========================================
+
 //SETUP Testing Database
+
+//===========================================
 
 const droptables = fs.readFileSync('sqlScripts/droptables.sql').toString();
 const createtables = fs.readFileSync('sqlScripts/tablescreate.sql').toString();
@@ -35,24 +43,30 @@ connection.query(
   },
 );
 
-app.post('/testtable', async (req, res) => {
-  try {
-    const { name, address, country } = req.body;
-    const [{ insertId }] = await connection.promise().query(
-      `INSERT INTO testtable (name, address, country) 
-      VALUES (?, ?,?)`,
-      [name, address, country],
-    );
-    res.status(202).json({
-      message: 'User Created',
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: err,
-    });
-  }
-});
+//===========================================
 
+//INSERT
+//Needed Functions
+//Add User
+//Add Item
+//Add Listing
+//===========================================
+
+//==================
+// Add New Item
+// Input Form:
+// name: name_text
+// description: description_text
+// category:
+// price:
+// count:
+// expiration:
+// location:
+// status:
+// img:
+// listeddate:
+
+//==================
 app.post('/additem', async (req, res) => {
   console.log('AddItems');
   try {
@@ -74,11 +88,54 @@ app.post('/additem', async (req, res) => {
   }
 });
 
-app.get('/testtable', async (req, res) => {
+//==================
+// Add New User
+// Input Form:
+// username:
+// password:
+// email:
+// userType:
+// joinDate:
+//==================
+
+app.post('/adduser', async (req, res) => {
+  console.log('addUser');
+});
+
+//==================
+// Add Listing
+// Input Form:
+// itemID:
+// sellerID:
+// createDate:
+
+//==================
+
+app.post('/addlisting', async (req, res) => {
+  console.log('addlisting');
+});
+
+//===========================================
+
+//QUERY
+//Needed Functions
+//Retrieve Full Item List
+//Retrieve Item by Id
+//Retrieve Password Hash
+//Retrive Search Item List?
+//Retrieve Reservations
+
+//===========================================
+
+//==================
+// Get All Items
+//==================
+app.get('/getitems', async (req, res) => {
+  console.log('get all items');
   try {
-    const data = await connection.promise().query(`SELECT *  from testtable;`);
+    const data = await connection.promise().query(`SELECT *  from items;`);
     res.status(200).json({
-      testtable: data[0],
+      items: data[0],
     });
   } catch (err) {
     res.status(500).json({
@@ -87,23 +144,13 @@ app.get('/testtable', async (req, res) => {
   }
 });
 
-app.get('/user/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const data = await connection
-      .promise()
-      .query(`SELECT *  from testtable where id = ?`, [id]);
-    res.status(200).json({
-      user: data[0][0],
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: err,
-    });
-  }
-});
-
-app.get('/items/:itemID', async (req, res) => {
+//==================
+// Get Items By Id
+// Input Form:
+// itemID: itemID
+//==================
+app.get('/getitems/:itemID', async (req, res) => {
+  console.log('get items by id');
   try {
     const { itemID } = req.params;
     const data = await connection
@@ -119,56 +166,181 @@ app.get('/items/:itemID', async (req, res) => {
   }
 });
 
-app.get('/items', async (req, res) => {
-  console.log('Items');
-  try {
-    const data = await connection.promise().query(`SELECT *  from items;`);
-    res.status(200).json({
-      items: data[0],
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: err,
-    });
-  }
+//==================
+// Retrieve Password
+//
+//==================
+
+app.get('/verifypassword/:password', async (req, res) => {
+  console.log('retrieve password');
 });
 
-app.patch('/user/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, address, country } = req.body;
-    const update = await connection
-      .promise()
-      .query(
-        `UPDATE testtable set name = ?, address = ?, country = ? where id = ?`,
-        [name, address, country, id],
-      );
-    res.status(200).json({
-      message: 'updated',
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: err,
-    });
-  }
+//==================
+// Retrieve Reservations by UserID
+// Input Form:
+// userID:
+// userType:
+//==================
+
+app.get('/getreservations/:userID', async (req, res) => {
+  console.log('get reservations');
 });
 
-app.delete('/user/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const update = await connection
-      .promise()
-      .query(`DELETE FROM  testtable where id = ?`, [id]);
-    res.status(200).json({
-      message: 'deleted',
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: err,
-    });
-  }
+//===========================================
+
+// UPDATE
+// Update user Information
+// Update Item Status
+// Update Item Info
+// Update Reservation Information
+
+//===========================================
+
+//==================
+// Update User Information
+
+// Input Form:
+// userID:
+// username:
+// password:
+// email:
+//==================
+
+app.patch('/updateuser/:userID', async (req, res) => {
+  console.log('update user info');
 });
 
+//==================
+// Update Item Status
+
+// Input Form:
+// itemID:
+// status:
+//==================
+
+app.patch('/updateitemstatus/:itemID', async (req, res) => {
+  console.log('update item status');
+});
+
+//==================
+// Update Item Information
+
+// Input Form:
+// name:
+// description:
+// category:
+// price:
+// count:
+// expiration:
+// location:
+// status:
+// img:
+// listeddate:
+//==================
+
+app.patch('/updateitem/:itemID', async (req, res) => {
+  console.log('update item information');
+});
+
+//==================
+// Update Reservation status
+
+// Input Form:
+// reservationID:
+// status:
+
+//==================
+
+app.patch('/updatereservation/:itemID', async (req, res) => {
+  console.log('update reservation status');
+});
+
+// EXAMPLE CODE FRAGMENT
+// app.patch('/user/:id', async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { name, address, country } = req.body;
+//     const update = await connection
+//       .promise()
+//       .query(
+//         `UPDATE testtable set name = ?, address = ?, country = ? where id = ?`,
+//         [name, address, country, id],
+//       );
+//     res.status(200).json({
+//       message: 'updated',
+//     });
+//   } catch (err) {
+//     res.status(500).json({
+//       message: err,
+//     });
+//   }
+// });
+
+//===========================================
+
+//DELETE
+//Needed Functions
+//Delete Item
+//Delete Reservation
+
+//===========================================
+
+//==================
+// Delete Item
+
+// Input Form:
+// itemID:
+//==================
+
+app.delete('/deleteitem/:itemid', async (req, res) => {
+  console.log('delete item');
+
+  // EXAMPLE CODE FRAGMENT
+  // try {
+  //   const { id } = req.params;
+  //   const update = await connection
+  //     .promise()
+  //     .query(`DELETE FROM  testtable where id = ?`, [id]);
+  //   res.status(200).json({
+  //     message: 'deleted',
+  //   });
+  // } catch (err) {
+  //   res.status(500).json({
+  //     message: err,
+  //   });
+  // }
+});
+
+//==================
+// Delete Reservation
+
+// Input Form:
+// reservationID:
+
+//==================
+
+app.delete('/deletereservation/:reservationid', async (req, res) => {
+  console.log('delete reservation');
+
+  // EXAMPLE CODE FRAGMENT
+  // try {
+  //   const { id } = req.params;
+  //   const update = await connection
+  //     .promise()
+  //     .query(`DELETE FROM  testtable where id = ?`, [id]);
+  //   res.status(200).json({
+  //     message: 'deleted',
+  //   });
+  // } catch (err) {
+  //   res.status(500).json({
+  //     message: err,
+  //   });
+  // }
+});
+
+//==================
+// Server Listen
+//==================
 app.listen(5000, () => {
   console.log('Server listening in http://localhost:5000');
 });

@@ -31,7 +31,7 @@ const List = () => {
 
   const GetItems = async () => {
     try {
-      const response = await fetch('http://10.0.2.2:5000/items');
+      const response = await fetch('http://10.0.2.2:5000/getitems');
       const json = await response.json();
       console.log(searchQuery);
       console.log(searchQuery.length);
