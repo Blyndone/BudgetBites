@@ -1,16 +1,17 @@
-import express from 'express';
-import * as fs from 'fs';
-
-// const bcrypt = require('bcrypt');
-// var cors = require('cors');
-// const jwt = require('jsonwebtoken');
+// import express from 'express';
+// import * as fs from 'fs';
+const express = require('express');
+const fs = require('fs');
+const bcrypt = require('bcrypt');
+var cors = require('cors');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 
 app.use(express.json());
 
-import mysql from 'mysql2';
-
+// import mysql from 'mysql2';
+const mysql = require('mysql2');
 //===========================================
 
 // connecting Database

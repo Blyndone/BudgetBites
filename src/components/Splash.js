@@ -3,7 +3,6 @@ import { View, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text } from 'react-native-paper';
-import ItemsList from './ItemsList';
 
 const Separator = () => <View style={styles.separator} />;
 const Splash = ({ navigation }) => {
@@ -18,8 +17,6 @@ const Splash = ({ navigation }) => {
       />
       <Text style={styles.titleText}>Welcome to Budget Bites!</Text>
       <View>
-        {/* <ItemsList /> */}
-
         <Separator />
         <Button
           mode="contained"
@@ -45,7 +42,7 @@ const Splash = ({ navigation }) => {
           mode="contained"
           title="Guest Login"
           buttonColor="#eb6b34"
-          onPress={() => navigation.navigate('List')}
+          onPress={() => navigation.navigate('Guest List View')}
         >
           Guest Login
         </Button>

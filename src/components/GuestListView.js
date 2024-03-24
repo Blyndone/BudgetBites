@@ -16,7 +16,7 @@ import React, { useEffect, useState } from 'react';
 import { Searchbar, Icon } from 'react-native-paper';
 import images from '../../assets/testimages/ImageIndex.js';
 
-const List = () => {
+const GuestListView = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [itemName, setItemName] = useState(0);
   const [itemDescripton, setItemDescription] = useState(0);
@@ -166,7 +166,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'teal',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: StatusBar.currentHeight || 0,
   },
   item: {
     flex: 1,
@@ -250,4 +249,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default List;
+export default GuestListView;

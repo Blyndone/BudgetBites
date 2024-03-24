@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 // import Logo from './testimage.js';
 import Splash from './src/components/Splash.js';
-import List from './src/components/List.js';
+import GuestListView from './src/components/GuestListView.js';
 import CreateAccount from './src/components/CreateAccount.js';
 import Login from './src/components/Login.js';
 import CreateListing from './src/components/CreateListing.js';
@@ -90,8 +90,8 @@ function App(): React.JSX.Element {
             }}
           />
           <Stack.Screen
-            name="List"
-            component={List}
+            name="Guest List View"
+            component={GuestListView}
             options={{
               headerStyle: {
                 backgroundColor: '#eb6b34',
