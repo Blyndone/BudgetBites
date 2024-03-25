@@ -32,7 +32,7 @@ npm start
 press a for android
 
 In a separate terminal
-node ./server.mjs
+node ./server.js
 ```
 
 Possible Issues:
