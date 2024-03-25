@@ -19,6 +19,13 @@ default schema set to budgetbites
 port set to 3306
 
 Project cloned to local directory
+.env file created in the project root with the following fields set:
+HOST= 'localhost'
+USER= 'root'
+PASSWORD= 'budgetbites'
+DATABASE= 'budgetbites'
+PORT=5000
+REACT_APP_ADDRESS='http://10.0.2.2:5000'
 ```
 
 
