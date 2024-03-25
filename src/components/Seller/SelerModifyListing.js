@@ -3,7 +3,7 @@ import { View, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
-
+import { REACT_APP_ADDRESS } from '@env';
 const Separator = () => <View style={styles.separator} />;
 const CreateListing = ({ navigation }) => {
   var [name_text, setName] = React.useState('');
@@ -75,7 +75,7 @@ const CreateListing = ({ navigation }) => {
               }
             }
 
-            fetch('http://10.0.2.2:5000/additem', {
+            fetch(`${REACT_APP_ADDRESS}/additem`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

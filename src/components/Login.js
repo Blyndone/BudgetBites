@@ -3,7 +3,7 @@ import { View, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
-
+import { REACT_APP_ADDRESS } from '@env';
 const Separator = () => <View style={styles.separator} />;
 const Login = ({ navigation }) => {
   const [user_text, setTextUser] = React.useState('');
@@ -48,7 +48,33 @@ const Login = ({ navigation }) => {
           mode="contained"
           title="List"
           buttonColor="#eb6b34"
-          onPress={() => navigation.navigate('List')}
+          onPress={() => {
+            try {
+              const myHeaders = new Headers();
+              myHeaders.append('Content-Type', 'application/json');
+
+              const raw = JSON.stringify({
+                username: user_text,
+                password: pass_text,
+              });
+
+              const requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow',
+              };
+
+              fetch(`${REACT_APP_ADDRESS}/auth`, requestOptions)
+                .then((response) => response.text())
+                .then((result) => console.log(result))
+                .catch((error) => console.error(error));
+            } catch (e) {
+              console.log(e);
+            }
+
+            navigation.navigate('Guest List View');
+          }}
         >
           {' '}
           Submit{' '}

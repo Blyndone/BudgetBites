@@ -1,8 +1,9 @@
 // import express from 'express';
 // import * as fs from 'fs';
+require('dotenv').config();
 const express = require('express');
 const fs = require('fs');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 var cors = require('cors');
 const jwt = require('jsonwebtoken');
 
@@ -18,12 +19,13 @@ const mysql = require('mysql2');
 
 //===========================================
 const connection = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'budgetbites',
-  database: 'budgetbites',
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
   multipleStatements: true,
 });
+
 
 //===========================================
 
@@ -106,6 +108,7 @@ app.post('/additem', async (req, res) => {
 app.post('/adduser', async (req, res) => {
   console.log('addUser');
   console.log(req.body);
+
   try {
     // const { id } = req.params;
     const {
@@ -118,13 +121,18 @@ app.post('/adduser', async (req, res) => {
       usertype_text,
       joindate_text,
     } = req.body;
+
+    const hashedpass = await bcrypt.hash(pass_text, 10, function (_err, hash) {
+      console.log({ user_text, password: hash });
+    });
+
     const [{ insertId }] = await connection.promise().query(
       `INSERT INTO users (username, password, name, email, phone, zip, usertype, joindate)
           VALUES  
           (?,?,?,?,?,?,?,?)`,
       [
         user_text,
-        pass_text,
+        hashedpass,
         name_text,
         email_text,
         phone_text,
@@ -162,45 +170,49 @@ app.post('/auth', async (req, res) => {
   //   .get('users')
   //   .value()
   //   .filter((user) => email === user.email);
-  const data = await connection
+  const [data, fields] = await connection
     .promise()
     .query(`SELECT *  from users where username = ?;`, [username]);
-  console.log(data);
-  console.log(data.length);
+  console.log('DATA', data);
 
   // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
 
   // // If found, compare the hashed passwords and generate the JWT token for the user
-  // if (data.length === 1) {
-  //   bcrypt.compare(password, user[0].password, function (_err, result) {
-  //     if (!result) {
-  //       return res.status(401).json({ message: 'Invalid password' });
-  //     } else {
-  //       let loginData = {
-  //         email,
-  //         signInTime: Date.now(),
-  //       };
+  if (data.length === 1) {
+    var salt = bcrypt.genSaltSync(10);
+    var hash = bcrypt.hashSync('petpass', salt);
+    result = bcrypt.compareSync(hash, password);
+    // bcrypt.compare(password, data.password, function (_err, result) {
+    if (!result) {
+      return res.status(401).json({ message: 'Invalid password' });
+    } else {
+      let loginData = {
+        username,
+        signInTime: Date.now(),
+      };
 
-  //       const token = jwt.sign(loginData, jwtSecretKey);
-  //       res.status(200).json({ message: 'success', token });
-  //     }
-  //   });
-  //   // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
-  // } else if (user.length === 0) {
-  //   bcrypt.hash(password, 10, function (_err, hash) {
-  //     console.log({ email, password: hash });
-  //     db.get('users').push({ email, password: hash }).write();
+      const token = jwt.sign(username, jwtSecretKey);
+      // res.status(200).json({ message: 'success', token });
+      res.status(200).json({ message: 'Correct Password' });
+    }
+    // }
+    // );
+    // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
+  } else if (data.length === 0) {
+    // bcrypt.hash(password, 10, function (_err, hash) {
+    //   console.log({ email, password: hash });
+    //   db.get('users').push({ email, password: hash }).write();
 
-  //     let loginData = {
-  //       email,
-  //       signInTime: Date.now(),
-  //     };
+    //   let loginData = {
+    //     email,
+    //     signInTime: Date.now(),
+    //   };
 
-  //     const token = jwt.sign(loginData, jwtSecretKey);
-  //     res.status(200).json({ message: 'success', token });
-  //   });
-  // }
-  res.status(200).json({ message: 'success', data });
+    //   const token = jwt.sign(loginData, jwtSecretKey);
+    // });
+    res.status(200).json({ message: 'User Not Found' });
+  }
+  // res.status(200).json({ message: 'success', data });
 });
 
 //==================
@@ -442,6 +454,6 @@ app.delete('/deletereservation/:reservationid', async (req, res) => {
 //==================
 // Server Listen
 //==================
-app.listen(5000, () => {
+app.listen(process.env.PORT, () => {
   console.log('Server listening in http://localhost:5000');
 });

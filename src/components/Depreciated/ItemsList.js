@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
-
+import { REACT_APP_ADDRESS } from '@env';
 const ItemsList = () => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   const GetItems = async () => {
     try {
-      const response = await fetch('http://10.0.2.2:5000/items');
+      const response = await fetch(`${REACT_APP_ADDRESS}/items`);
       const json = await response.json();
       setData(json.items);
     } catch (error) {

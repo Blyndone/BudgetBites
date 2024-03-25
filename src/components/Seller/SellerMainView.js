@@ -15,7 +15,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Searchbar, Icon } from 'react-native-paper';
 import images from '../../assets/testimages/ImageIndex.js';
-
+import { REACT_APP_ADDRESS } from '@env';
 const GuestListView = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [itemName, setItemName] = useState(0);
@@ -31,7 +31,7 @@ const GuestListView = () => {
 
   const GetItems = async () => {
     try {
-      const response = await fetch('http://10.0.2.2:5000/getitems');
+      const response = await fetch(`${REACT_APP_ADDRESS}/getitems`);
       const json = await response.json();
       console.log(searchQuery);
       console.log(searchQuery.length);

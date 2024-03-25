@@ -10,7 +10,7 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
-
+import { REACT_APP_ADDRESS } from '@env';
 const Separator = () => <View style={styles.separator} />;
 const CreateAccount = ({ navigation }) => {
   const [name_text, setTextName] = React.useState('');
@@ -150,7 +150,7 @@ const CreateAccount = ({ navigation }) => {
               const date = new Date();
               const joindate_text = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 
-              fetch('http://10.0.2.2:5000/adduser', {
+              fetch(`${REACT_APP_ADDRESS}/adduser`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ const CreateAccount = ({ navigation }) => {
                 }),
               });
 
-              navigation.navigate('List');
+              navigation.navigate('Guest List View');
             }}
           >
             {' '}

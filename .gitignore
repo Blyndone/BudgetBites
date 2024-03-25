@@ -69,3 +69,4 @@ serverR.mjs
 servertest.mjs
 testimage.js
 src\components\ServerPing copy.js
+.env
