@@ -9,7 +9,7 @@ const Splash = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Image
-        source={require('../../assets/OIG1.png')}
+        source={require('../../assets/BB-logo.png')}
         style={{
           width: 300,
           height: 300,
