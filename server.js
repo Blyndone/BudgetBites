@@ -25,7 +25,7 @@ const connection = mysql.createPool({
   database: process.env.DATABASE,
   multipleStatements: true,
 });
-
+const saltRounds = 10;
 
 //===========================================
 
@@ -122,9 +122,8 @@ app.post('/adduser', async (req, res) => {
       joindate_text,
     } = req.body;
 
-    const hashedpass = await bcrypt.hash(pass_text, 10, function (_err, hash) {
-      console.log({ user_text, password: hash });
-    });
+    const hashedpass = await bcrypt.hash(pass_text, saltRounds);
+    console.log({ user_text, password: hashedpass });
 
     const [{ insertId }] = await connection.promise().query(
       `INSERT INTO users (username, password, name, email, phone, zip, usertype, joindate)
@@ -162,8 +161,8 @@ app.post('/adduser', async (req, res) => {
 app.post('/auth', async (req, res) => {
   const { username, password } = req.body;
   console.log('Auth');
-  console.log(req.body);
-  console.log(username, password);
+  // console.log(req.body);
+  // console.log(username, password);
 
   // Look up the user entry in the database
   // const user = db
@@ -173,16 +172,14 @@ app.post('/auth', async (req, res) => {
   const [data, fields] = await connection
     .promise()
     .query(`SELECT *  from users where username = ?;`, [username]);
-  console.log('DATA', data);
 
   // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
 
   // // If found, compare the hashed passwords and generate the JWT token for the user
   if (data.length === 1) {
-    var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync('petpass', salt);
-    result = bcrypt.compareSync(hash, password);
-    // bcrypt.compare(password, data.password, function (_err, result) {
+    console.log('pass', data[0].password);
+    console.log('hash', password);
+    result = bcrypt.compare(password, data[0].password);
     if (!result) {
       return res.status(401).json({ message: 'Invalid password' });
     } else {
@@ -191,9 +188,14 @@ app.post('/auth', async (req, res) => {
         signInTime: Date.now(),
       };
 
-      const token = jwt.sign(username, jwtSecretKey);
+      const token = jwt.sign(username, process.env.jwtSecretKey);
+
+      //=======
+      //Verify Key => Username
+      // console.log(jwt.verify(token, process.env.jwtSecretKey));
+      //=======
       // res.status(200).json({ message: 'success', token });
-      res.status(200).json({ message: 'Correct Password' });
+      res.status(200).json({ message: 'Correct Password', token });
     }
     // }
     // );
