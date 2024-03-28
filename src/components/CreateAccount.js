@@ -12,7 +12,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 const Separator = () => <View style={styles.separator} />;
-const CreateAccount = ({ navigation }) => {
+const CreateAccount = ({ navigation, route }) => {
   const [name_text, setTextName] = React.useState('');
   const [email_text, setTextEmail] = React.useState('');
   const [phone_text, setTextPhone] = React.useState('');

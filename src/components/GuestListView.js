@@ -15,9 +15,10 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Searchbar, Icon } from 'react-native-paper';
 import images from '../../assets/testimages/ImageIndex.js';
-import { REACT_APP_ADDRESS} from "@env"
+import { REACT_APP_ADDRESS } from '@env';
+import * as SecureStore from 'expo-secure-store';
 
-const GuestListView = () => {
+const GuestListView = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [itemName, setItemName] = useState(0);
   const [itemDescripton, setItemDescription] = useState(0);
@@ -30,9 +31,17 @@ const GuestListView = () => {
 
   const [searchQuery, setSearchQuery] = React.useState('');
 
+  async function getValueFor(key) {
+    let result = await SecureStore.getItemAsync(key);
+    if (result) {
+      alert("🔐 Here's your value 🔐 \n" + result);
+    } else {
+      alert('No values stored under that key.');
+    }
+  }
+
   const GetItems = async () => {
     try {
-      console.log(REACT_APP_ADDRESS)
       const response = await fetch(`${REACT_APP_ADDRESS}/getitems`);
       const json = await response.json();
       console.log(searchQuery);
@@ -117,7 +126,7 @@ const GuestListView = () => {
         }}
       >
         {' '}
-        List of Items
+        List of Items {route.params?.user}
       </Text>
 
       <Searchbar

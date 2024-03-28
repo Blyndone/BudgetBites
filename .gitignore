@@ -70,3 +70,8 @@ servertest.mjs
 testimage.js
 src\components\ServerPing copy.js
 .env
+
+# Expo
+.expo
+dist/
+web-build/

@@ -115,7 +115,7 @@ const GuestListView = () => {
         }}
       >
         {' '}
-        List of Items
+        BUYER List of Items
       </Text>
 
       <Searchbar

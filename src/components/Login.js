@@ -1,15 +1,32 @@
 import * as React from 'react';
-import { View, StyleSheet, SafeAreaView, Image } from 'react-native';
+import { View, StyleSheet, SafeAreaView, Image, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
+import * as SecureStore from 'expo-secure-store';
+
 const Separator = () => <View style={styles.separator} />;
 const Login = ({ navigation }) => {
   const [user_text, setTextUser] = React.useState('');
   const [pass_text, setTextPass] = React.useState('');
 
-  const [value, setValue] = React.useState('first');
+  // const [value, setValue] = React.useState('first');
+  const [key, onChangeKey] = React.useState('');
+  const [value, onChangeValue] = React.useState('');
+
+  async function save(key, value) {
+    await SecureStore.setItemAsync(key, value);
+  }
+
+  async function getValueFor(key) {
+    let result = await SecureStore.getItemAsync(key);
+    if (result) {
+      alert("🔐 Here's your value 🔐 \n" + result);
+    } else {
+      alert('No values stored under that key.');
+    }
+  }
 
   return (
     <SafeAreaView style={styles.form}>
@@ -17,9 +34,34 @@ const Login = ({ navigation }) => {
         <Text style={styles.titleText}>Login</Text>
         <Separator />
         <Text style={styles.bodytext}>
-          Enter details to login.
+          Enter details to login. {key} {value}
           {'\n'}
         </Text>
+        <View>
+          <Button
+            mode="contained"
+            title="List"
+            buttonColor="#eb6b34"
+            onPress={() => {
+              save(key, value);
+              onChangeKey('K1');
+              onChangeValue('V2');
+            }}
+          >
+            TEST
+          </Button>
+
+          <Button
+            mode="contained"
+            title="List"
+            buttonColor="#eb6b34"
+            onPress={() => {
+              getValueFor('blyndone');
+            }}
+          >
+            TEST
+          </Button>
+        </View>
 
         <View
           style={{
@@ -66,14 +108,35 @@ const Login = ({ navigation }) => {
               };
 
               fetch(`${REACT_APP_ADDRESS}/auth`, requestOptions)
-                .then((response) => response.text())
-                .then((result) => console.log(result))
+                .then((response) => {
+                  res = response;
+                  return response.text();
+                })
+                .then((response) => {
+                  if (res.status == 500) {
+                    alert('USER NOT FOUND');
+                    console.log(res.status);
+                    return;
+                  } else if (res.status == 401) {
+                    alert('INVALID PASSWORD');
+                    console.log(res.status);
+                    return;
+                  } else {
+                    console.log(response);
+                    const token = JSON.parse(response).token;
+                    console.log(user_text, token);
+                    save(user_text, token);
+                    navigation.navigate({
+                      name: 'Guest List View',
+                      params: { user: user_text },
+                    });
+                  }
+                })
+
                 .catch((error) => console.error(error));
             } catch (e) {
               console.log(e);
             }
-
-            navigation.navigate('Guest List View');
           }}
         >
           {' '}

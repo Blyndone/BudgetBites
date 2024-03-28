@@ -181,6 +181,7 @@ app.post('/auth', async (req, res) => {
     console.log('hash', password);
     result = bcrypt.compare(password, data[0].password);
     if (!result) {
+      console.log('Invalid password');
       return res.status(401).json({ message: 'Invalid password' });
     } else {
       let loginData = {
@@ -195,8 +196,10 @@ app.post('/auth', async (req, res) => {
       // console.log(jwt.verify(token, process.env.jwtSecretKey));
       //=======
       // res.status(200).json({ message: 'success', token });
-      res.status(200).json({ message: 'Correct Password', token });
+      console.log(token);
+      res.status(200).json({ token: token, message: 'Correct Password' });
     }
+
     // }
     // );
     // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
@@ -212,7 +215,8 @@ app.post('/auth', async (req, res) => {
 
     //   const token = jwt.sign(loginData, jwtSecretKey);
     // });
-    res.status(200).json({ message: 'User Not Found' });
+    console.log('User Not Found');
+    res.status(500).json({ message: 'User Not Found' });
   }
   // res.status(200).json({ message: 'success', data });
 });
