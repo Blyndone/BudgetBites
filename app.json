@@ -3,6 +3,8 @@
   "displayName": "BudgetBites",
   "android": {
     "usesCleartextTraffic": true
-  }
-   
+  },
+  "plugins": [
+    "expo-secure-store"
+  ]
 }

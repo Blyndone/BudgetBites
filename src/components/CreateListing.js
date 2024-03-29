@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 const Separator = () => <View style={styles.separator} />;
-const CreateListing = ({ navigation }) => {
+const CreateListing = ({ navigation, route }) => {
   var [name_text, setName] = React.useState('');
   var [desc_text, setDescription] = React.useState('');
   var [price_text, setPrice] = React.useState('');
