@@ -158,9 +158,9 @@ app.post('/adduser', async (req, res) => {
 // password:
 
 //==================
-app.post('/auth', async (req, res) => {
+app.post('/authenticate', async (req, res) => {
   const { username, password } = req.body;
-  console.log('Auth');
+  console.log('Authenticate');
   // console.log(req.body);
   // console.log(username, password);
 
@@ -219,6 +219,75 @@ app.post('/auth', async (req, res) => {
     res.status(500).json({ message: 'User Not Found' });
   }
   // res.status(200).json({ message: 'success', data });
+});
+
+//==================
+// Authorize
+// Input Form:
+// username:
+// jwt
+
+//==================
+app.post('/auth', async (req, res) => {
+  try {
+    const { user_text, token } = req.body;
+    console.log('Auth');
+    console.log(user_text, token);
+    console.log(jwt.verify(token, process.env.jwtSecretKey));
+    res.status(200).json({ message: 'Correct Token' });
+  } catch (err) {
+    res.status(500).json({ message: 'Incorrect Token' });
+    console.log(err);
+  }
+
+  // const [data, fields] = await connection
+  //   .promise()
+  //   .query(`SELECT *  from users where username = ?;`, [username]);
+
+  // // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
+
+  // // // If found, compare the hashed passwords and generate the JWT token for the user
+  // if (data.length === 1) {
+  //   console.log('pass', data[0].password);
+  //   console.log('hash', password);
+  //   result = bcrypt.compare(password, data[0].password);
+  //   if (!result) {
+  //     console.log('Invalid password');
+  //     return res.status(401).json({ message: 'Invalid password' });
+  //   } else {
+  //     let loginData = {
+  //       username,
+  //       signInTime: Date.now(),
+  //     };
+
+  //     const token = jwt.sign(username, process.env.jwtSecretKey);
+
+  //     //=======
+  //     //Verify Key => Username
+  //     // console.log(jwt.verify(token, process.env.jwtSecretKey));
+  //     //=======
+  //     // res.status(200).json({ message: 'success', token });
+  // console.log(token);
+
+  // }
+  //   // );
+  //   // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
+  // } else{
+  //   // bcrypt.hash(password, 10, function (_err, hash) {
+  //   //   console.log({ email, password: hash });
+  //   //   db.get('users').push({ email, password: hash }).write();
+
+  //   //   let loginData = {
+  //   //     email,
+  //   //     signInTime: Date.now(),
+  //   //   };
+
+  //   //   const token = jwt.sign(loginData, jwtSecretKey);
+  //   // });
+  //   console.log('User Not Found');
+  //   res.status(500).json({ message: 'User Not Found' });
+  // }
+  // // res.status(200).json({ message: 'success', data });
 });
 
 //==================

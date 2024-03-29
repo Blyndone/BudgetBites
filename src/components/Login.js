@@ -19,14 +19,15 @@ const Login = ({ navigation }) => {
     await SecureStore.setItemAsync(key, value);
   }
 
-  async function getValueFor(key) {
-    let result = await SecureStore.getItemAsync(key);
-    if (result) {
-      alert("🔐 Here's your value 🔐 \n" + result);
-    } else {
-      alert('No values stored under that key.');
-    }
-  }
+  // async function getValueFor(key) {
+  //   let result = await SecureStore.getItemAsync(key);
+  //   if (result) {
+  //     alert("🔐 Here's your value 🔐 \n" + result);
+  //     return result;
+  //   } else {
+  //     alert('No values stored under that key.');
+  //   }
+  // }
 
   return (
     <SafeAreaView style={styles.form}>
@@ -38,7 +39,7 @@ const Login = ({ navigation }) => {
           {'\n'}
         </Text>
         <View>
-          <Button
+          {/* <Button
             mode="contained"
             title="List"
             buttonColor="#eb6b34"
@@ -49,9 +50,9 @@ const Login = ({ navigation }) => {
             }}
           >
             TEST
-          </Button>
+          </Button> */}
 
-          <Button
+          {/* <Button
             mode="contained"
             title="List"
             buttonColor="#eb6b34"
@@ -60,6 +61,38 @@ const Login = ({ navigation }) => {
             }}
           >
             TEST
+          </Button> */}
+          <Button
+            mode="contained"
+            title="List"
+            buttonColor="#eb6b34"
+            onPress={() => {
+              (async () => {
+                await SecureStore.getItemAsync('blyndone').then((response) => {
+                  const myHeaders = new Headers();
+                  myHeaders.append('Content-Type', 'application/json');
+
+                  const raw = JSON.stringify({
+                    user_text: 'blyndone',
+                    token: response,
+                  });
+
+                  const requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow',
+                  };
+
+                  fetch(`${REACT_APP_ADDRESS}/auth`, requestOptions)
+                    .then((response) => response.text())
+                    .then((result) => console.log(result))
+                    .catch((error) => console.error(error));
+                });
+              })();
+            }}
+          >
+            auth
           </Button>
         </View>
 
@@ -107,7 +140,7 @@ const Login = ({ navigation }) => {
                 redirect: 'follow',
               };
 
-              fetch(`${REACT_APP_ADDRESS}/auth`, requestOptions)
+              fetch(`${REACT_APP_ADDRESS}/authenticate`, requestOptions)
                 .then((response) => {
                   res = response;
                   return response.text();
@@ -122,9 +155,9 @@ const Login = ({ navigation }) => {
                     console.log(res.status);
                     return;
                   } else {
-                    console.log(response);
+                    // console.log(response);
                     const token = JSON.parse(response).token;
-                    console.log(user_text, token);
+                    // console.log(user_text, token);
                     save(user_text, token);
                     navigation.navigate({
                       name: 'Guest List View',

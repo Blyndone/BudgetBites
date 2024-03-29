@@ -10,7 +10,9 @@ VALUES
     ('TravelExplorer', 'travelpass', 'Travel Explorer', 'traveler@example.com', 1234567895, 12340, 'buyer', '2022-07-18'),
     ('Bookworm', 'bookpass', 'Bookworm', 'reader@example.com', 1234567896, 12341, 'buyer', '2022-08-25'),
     ('Fashionista', 'stylepass', 'Fashionista', 'fashionista@example.com', 1234567897, 12342, 'seller', '2022-09-30'),
+    ('blyndone', '$2a$10$a7tYo.WegcM0k.2IQ4u7v.DKdpx5bEgesHjPa/SP8MMrSxRla20ha', 'Rick Duel', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'seller', '2022-09-30'),
     ('PetLover', 'petpass', 'Pet Lover', 'petlover@example.com', 1234567898, 12343, 'buyer', '2022-10-15');
+
 
 -- Insert test data into the items table (food items)
 INSERT INTO `items` (`name`, `description`, `category`, `price`, `count`, `expiration`, `location`, `status`, `img`, `listeddate`)
@@ -47,15 +49,27 @@ VALUES
 
 
 -- Insert test data into the listing table
-INSERT INTO listing (listingID, itemID, sellerID, createDate)
+INSERT INTO listing (itemID, sellerID, createDate)
 VALUES
-    (1, 1, 2, '2022-01-10'),
-    (2, 2, 1, '2022-02-25'),
-    (3, 3, 2, '2022-03-20');
+    (1, 2, '2022-01-10'),
+    (2, 1, '2022-02-25'),
+    (3, 2, '2022-03-20'),
+    (4, 2, '2022-03-20'),
+    (5, 2, '2022-03-20'),
+    (6, 2, '2022-03-20'),
+    (7, 2, '2022-03-20'),
+    (8, 2, '2022-03-20');
+
 
 -- Insert test data into the reserved table
-INSERT INTO reserved (reservationID, buyerID, itemID, reservationDate, status)
+INSERT INTO reserved (buyerID, itemID, reservationDate, status)
 VALUES
-    (1, 1, 2, '2022-02-28', 'reserved'),
-    (2, 2, 1, '2022-03-05', 'reserved'),
-    (3, 1, 3, '2022-03-25', 'reserved');
+    (1, 2, '2022-02-28', 'reserved'),
+    (2, 1, '2022-03-05', 'reserved'),
+    (1, 3, '2022-03-25', 'reserved'),
+    (1, 4, '2022-03-25', 'reserved'),
+    (1, 5, '2022-03-25', 'reserved'),
+    (1, 6, '2022-03-25', 'reserved'),
+    (1, 7, '2022-03-25', 'reserved'),
+    (1, 8, '2022-03-25', 'reserved'),
+    (1, 9, '2022-03-25', 'reserved');
