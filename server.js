@@ -435,26 +435,38 @@ app.delete('/deleteitem/:itemid', async (req, res) => {
 
 // Input Form:
 // reservationID:
-
+//fetch call:
+//DELETE
+//http://localhost:5000/deletereservation/1
 //==================
 
 app.delete('/deletereservation/:reservationid', async (req, res) => {
   console.log('delete reservation');
 
-  // EXAMPLE CODE FRAGMENT
-  // try {
-  //   const { id } = req.params;
-  //   const update = await connection
-  //     .promise()
-  //     .query(`DELETE FROM  testtable where id = ?`, [id]);
-  //   res.status(200).json({
-  //     message: 'deleted',
-  //   });
-  // } catch (err) {
-  //   res.status(500).json({
-  //     message: err,
-  //   });
-  // }
+  try {
+    const reservationID = req.params.reservationid;
+
+    console.log('Attempting to delete reservation with ID:', reservationID);
+
+    // Check if the reservation exists
+    const [findResult] = await connection
+      .promise()
+      .query('SELECT * FROM reserved WHERE reservationID = ?', [reservationID]);
+    if (findResult.length === 0) {
+      return res.status(404).json({ message: 'Reservation not found' });
+    }
+
+    // Delete the reservation
+    await connection
+      .promise()
+      .query('DELETE FROM reserved WHERE reservationID = ?', [reservationID]);
+    res.status(200).json({ message: 'Reservation deleted successfully' });
+  } catch (error) {
+    console.error(error); // Logging the error
+    res
+      .status(500)
+      .json({ message: 'Internal Server Error', error: error.message });
+  }
 });
 
 //==================
