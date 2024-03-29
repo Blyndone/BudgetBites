@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import * as SecureStore from 'expo-secure-store';
+import Auth from './Persist';
 
 const Separator = () => <View style={styles.separator} />;
 const Login = ({ navigation }) => {
@@ -67,29 +68,15 @@ const Login = ({ navigation }) => {
             title="List"
             buttonColor="#eb6b34"
             onPress={() => {
-              (async () => {
-                await SecureStore.getItemAsync('blyndone').then((response) => {
-                  const myHeaders = new Headers();
-                  myHeaders.append('Content-Type', 'application/json');
-
-                  const raw = JSON.stringify({
-                    user_text: 'blyndone',
-                    token: response,
-                  });
-
-                  const requestOptions = {
-                    method: 'POST',
-                    headers: myHeaders,
-                    body: raw,
-                    redirect: 'follow',
-                  };
-
-                  fetch(`${REACT_APP_ADDRESS}/auth`, requestOptions)
-                    .then((response) => response.text())
-                    .then((result) => console.log(result))
-                    .catch((error) => console.error(error));
-                });
-              })();
+              Auth(user_text).then((resp) => {
+                try {
+                  r = JSON.parse(resp);
+                  console.log(r.message);
+                  console.log(resp);
+                } catch (err) {
+                  console.log(err);
+                }
+              });
             }}
           >
             auth

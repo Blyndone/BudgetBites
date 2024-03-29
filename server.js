@@ -231,10 +231,15 @@ app.post('/authenticate', async (req, res) => {
 app.post('/auth', async (req, res) => {
   try {
     const { user_text, token } = req.body;
-    console.log('Auth');
-    console.log(user_text, token);
-    console.log(jwt.verify(token, process.env.jwtSecretKey));
-    res.status(200).json({ message: 'Correct Token' });
+    if (token != null) {
+      console.log('Auth');
+      console.log(user_text, token);
+      console.log(jwt.verify(token, process.env.jwtSecretKey));
+      res.status(200).json({ message: 'Correct Token', user_text: user_text });
+    } else {
+      res.status(500).json({ message: 'No Token' });
+      console.log('No Token Provded');
+    }
   } catch (err) {
     res.status(500).json({ message: 'Incorrect Token' });
     console.log(err);
