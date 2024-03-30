@@ -107,12 +107,6 @@ const GuestMainView = ({ navigation, route }) => {
                 onPress={() => setModalVisible(!modalVisible)}
               ></Button>
               <View style={{ padding: 10 }}></View>
-              <Button
-                mode="contained"
-                title="Reserve"
-                color="#eb6b34"
-                onPress={() => setModalVisible(!modalVisible)}
-              ></Button>
             </View>
           </View>
         </View>
@@ -151,7 +145,11 @@ const GuestMainView = ({ navigation, route }) => {
               setModalVisible(true);
             }}
           >
-            <View style={styles.item}>
+            <View
+              style={
+                item.status === 'Available' ? styles.item : styles.itemreserved
+              }
+            >
               <Image
                 source={images[item.itemID]}
                 style={{
@@ -190,6 +188,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 5,
     backgroundColor: '#fca503',
+  },
+  itemreserved: {
+    flex: 1,
+    padding: 5,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    height: 100,
+    width: 360,
+    flexDirection: 'row',
+    // justifyContent: 'flex-end',
+    alignItems: 'center',
+    borderWidth: 5,
+    backgroundColor: '#fc6f03',
   },
   titleText: {
     fontSize: 50,

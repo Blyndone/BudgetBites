@@ -172,8 +172,6 @@ const BuyerMainView = ({ navigation, route }) => {
       >
         {' '}
         BUYER List of Items
-        {userdata.user_name}
-        {userdata.user_type}
       </Text>
 
       <Searchbar
