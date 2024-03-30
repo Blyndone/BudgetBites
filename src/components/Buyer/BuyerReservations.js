@@ -17,6 +17,7 @@ import { Searchbar, Icon } from 'react-native-paper';
 import images from '../../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '.././Persist';
+import ProfileButton from '../Components/ProfleButton.js';
 
 const BuyerReservations = ({ navigation, route }) => {
   //=========================
@@ -41,9 +42,19 @@ const BuyerReservations = ({ navigation, route }) => {
       user_name: route.params.data.user_name,
       user_type: route.params.data.user_type,
     });
+    navigation.setOptions({
+      headerRight: () => (
+        <ProfileButton
+          navigation={navigation}
+          data={{
+            user_name: route.params.data.user_name,
+            user_type: route.params.data.user_type,
+          }}
+        />
+      ),
+    });
   }, []);
   //=========================
-
   const [modalVisible, setModalVisible] = useState(false);
   const [itemName, setItemName] = useState(0);
   const [itemDescripton, setItemDescription] = useState(0);

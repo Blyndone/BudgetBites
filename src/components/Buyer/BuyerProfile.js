@@ -13,11 +13,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '../Persist';
+import ProfileButton from '../Components/ProfleButton';
+
 const Separator = () => <View style={styles.separator} />;
 const BuyerProfile = ({ navigation, route }) => {
   //=========================
   // USER AUTH AND PAGE TYPE
-  const pagetype = 'seller';
+  const pagetype = 'buyer';
   const [userdata, setUserData] = React.useState('');
   useEffect(() => {
     Auth(route.params.data.user_name).then((resp) => {
@@ -36,6 +38,17 @@ const BuyerProfile = ({ navigation, route }) => {
     setUserData({
       user_name: route.params.data.user_name,
       user_type: route.params.data.user_type,
+    });
+    navigation.setOptions({
+      headerRight: () => (
+        <ProfileButton
+          navigation={navigation}
+          data={{
+            user_name: route.params.data.user_name,
+            user_type: route.params.data.user_type,
+          }}
+        />
+      ),
     });
   }, []);
   //=========================

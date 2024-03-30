@@ -42,6 +42,7 @@ import SellerCreateListing from './src/components/Seller/SellerCreateListing.js'
 import BuyerReservations from './src/components/Buyer/BuyerReservations.js';
 import BuyerProfile from './src/components/Buyer/BuyerProfile.js';
 import SellerProfile from './src/components/Seller/SellerProfile.js';
+
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;

@@ -17,6 +17,7 @@ import { Searchbar, Icon } from 'react-native-paper';
 import images from '../../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '.././Persist';
+import ProfileButton from '../Components/ProfleButton.js';
 
 const SellerMainView = ({ navigation, route }) => {
   //=========================
@@ -40,6 +41,17 @@ const SellerMainView = ({ navigation, route }) => {
     setUserData({
       user_name: route.params.data.user_name,
       user_type: route.params.data.user_type,
+    });
+    navigation.setOptions({
+      headerRight: () => (
+        <ProfileButton
+          navigation={navigation}
+          data={{
+            user_name: route.params.data.user_name,
+            user_type: route.params.data.user_type,
+          }}
+        />
+      ),
     });
   }, []);
   //=========================

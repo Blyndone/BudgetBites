@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '../Persist';
+import ProfileButton from '../Components/ProfleButton';
 const Separator = () => <View style={styles.separator} />;
 const SellerCreateListing = ({ navigation, route }) => {
   //=========================
@@ -30,9 +31,19 @@ const SellerCreateListing = ({ navigation, route }) => {
       user_name: route.params.data.user_name,
       user_type: route.params.data.user_type,
     });
+    navigation.setOptions({
+      headerRight: () => (
+        <ProfileButton
+          navigation={navigation}
+          data={{
+            user_name: route.params.data.user_name,
+            user_type: route.params.data.user_type,
+          }}
+        />
+      ),
+    });
   }, []);
   //=========================
-
   var [name_text, setName] = React.useState('');
   var [desc_text, setDescription] = React.useState('');
   var [price_text, setPrice] = React.useState('');
