@@ -18,7 +18,7 @@ import images from '../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
 import * as SecureStore from 'expo-secure-store';
 
-const GuestListView = ({ navigation, route }) => {
+const GuestMainView = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [itemName, setItemName] = useState(0);
   const [itemDescripton, setItemDescription] = useState(0);
@@ -260,4 +260,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GuestListView;
+export default GuestMainView;

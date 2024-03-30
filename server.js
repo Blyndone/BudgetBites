@@ -77,7 +77,6 @@ connection.query(
 app.post('/additem', async (req, res) => {
   console.log('AddItems');
   try {
-    // const { id } = req.params;
     const { name_text, desc_text, price_text } = req.body;
     const [{ insertId }] = await connection.promise().query(
       `INSERT INTO items (name, description, category, price, count, expiration, location, status, img, listeddate)
@@ -161,64 +160,38 @@ app.post('/adduser', async (req, res) => {
 app.post('/authenticate', async (req, res) => {
   const { username, password } = req.body;
   console.log('Authenticate');
-  // console.log(req.body);
-  // console.log(username, password);
 
-  // Look up the user entry in the database
-  // const user = db
-  //   .get('users')
-  //   .value()
-  //   .filter((user) => email === user.email);
   const [data, fields] = await connection
     .promise()
     .query(`SELECT *  from users where username = ?;`, [username]);
 
-  // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
-
-  // // If found, compare the hashed passwords and generate the JWT token for the user
   if (data.length === 1) {
-    console.log('pass', data[0].password);
-    console.log('hash', password);
-    result = bcrypt.compare(password, data[0].password);
-    if (!result) {
-      console.log('Invalid password');
-      return res.status(401).json({ message: 'Invalid password' });
-    } else {
-      let loginData = {
-        username,
-        signInTime: Date.now(),
-      };
+    result = bcrypt.compare(password, data[0].password).then((result) => {
+      if (!result) {
+        console.log('Invalid password');
+        return res.status(401).json({ message: 'Invalid password' });
+      } else {
+        let loginData = {
+          username,
+          signInTime: Date.now(),
+        };
 
-      const token = jwt.sign(username, process.env.jwtSecretKey);
+        const token = jwt.sign(username, process.env.jwtSecretKey);
 
-      //=======
-      //Verify Key => Username
-      // console.log(jwt.verify(token, process.env.jwtSecretKey));
-      //=======
-      // res.status(200).json({ message: 'success', token });
-      console.log(token);
-      res.status(200).json({ token: token, message: 'Correct Password' });
-    }
-
-    // }
-    // );
-    // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
+        res.status(200).json({
+          token: token,
+          message: 'Correct Password',
+          data: {
+            user_name: data[0].username,
+            user_type: data[0].usertype,
+          },
+        });
+      }
+    });
   } else if (data.length === 0) {
-    // bcrypt.hash(password, 10, function (_err, hash) {
-    //   console.log({ email, password: hash });
-    //   db.get('users').push({ email, password: hash }).write();
-
-    //   let loginData = {
-    //     email,
-    //     signInTime: Date.now(),
-    //   };
-
-    //   const token = jwt.sign(loginData, jwtSecretKey);
-    // });
     console.log('User Not Found');
     res.status(500).json({ message: 'User Not Found' });
   }
-  // res.status(200).json({ message: 'success', data });
 });
 
 //==================
@@ -235,64 +208,36 @@ app.post('/auth', async (req, res) => {
       console.log('Auth');
       console.log(user_text, token);
       console.log(jwt.verify(token, process.env.jwtSecretKey));
-      res.status(200).json({ message: 'Correct Token', user_text: user_text });
+      if (jwt.verify(token, process.env.jwtSecretKey) == user_text) {
+        console.log('Correct Token');
+        try {
+          const data = await connection
+            .promise()
+            .query(
+              `SELECT usertype  from users where username = ?;`,
+              user_text,
+            );
+
+          res.status(200).json({
+            message: 'Correct Token',
+            status: 'Accepted',
+            data: {
+              user_name: user_text,
+              user_type: data[0][0].usertype,
+            },
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      }
     } else {
-      res.status(500).json({ message: 'No Token' });
+      res.status(500).json({ message: 'No Token', status: 'Rejected' });
       console.log('No Token Provded');
     }
   } catch (err) {
-    res.status(500).json({ message: 'Incorrect Token' });
+    res.status(500).json({ message: 'Incorrect Token', status: 'Rejected' });
     console.log(err);
   }
-
-  // const [data, fields] = await connection
-  //   .promise()
-  //   .query(`SELECT *  from users where username = ?;`, [username]);
-
-  // // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
-
-  // // // If found, compare the hashed passwords and generate the JWT token for the user
-  // if (data.length === 1) {
-  //   console.log('pass', data[0].password);
-  //   console.log('hash', password);
-  //   result = bcrypt.compare(password, data[0].password);
-  //   if (!result) {
-  //     console.log('Invalid password');
-  //     return res.status(401).json({ message: 'Invalid password' });
-  //   } else {
-  //     let loginData = {
-  //       username,
-  //       signInTime: Date.now(),
-  //     };
-
-  //     const token = jwt.sign(username, process.env.jwtSecretKey);
-
-  //     //=======
-  //     //Verify Key => Username
-  //     // console.log(jwt.verify(token, process.env.jwtSecretKey));
-  //     //=======
-  //     // res.status(200).json({ message: 'success', token });
-  // console.log(token);
-
-  // }
-  //   // );
-  //   // If no user is found, hash the given password and create a new entry in the auth db with the email and hashed password
-  // } else{
-  //   // bcrypt.hash(password, 10, function (_err, hash) {
-  //   //   console.log({ email, password: hash });
-  //   //   db.get('users').push({ email, password: hash }).write();
-
-  //   //   let loginData = {
-  //   //     email,
-  //   //     signInTime: Date.now(),
-  //   //   };
-
-  //   //   const token = jwt.sign(loginData, jwtSecretKey);
-  //   // });
-  //   console.log('User Not Found');
-  //   res.status(500).json({ message: 'User Not Found' });
-  // }
-  // // res.status(200).json({ message: 'success', data });
 });
 
 //==================

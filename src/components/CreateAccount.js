@@ -147,9 +147,10 @@ const CreateAccount = ({ navigation, route }) => {
                 return;
               }
 
-              const date = new Date();
-              const joindate_text = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-
+              const joindate_text = new Date()
+                .toISOString()
+                .substr(0, 19)
+                .replace('T', ' ');
               fetch(`${REACT_APP_ADDRESS}/adduser`, {
                 method: 'POST',
                 headers: {
@@ -167,7 +168,7 @@ const CreateAccount = ({ navigation, route }) => {
                 }),
               });
 
-              navigation.navigate('Guest List View');
+              navigation.navigate('Guest Main View');
             }}
           >
             {' '}

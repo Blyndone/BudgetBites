@@ -14,9 +14,36 @@ import {
 
 import React, { useEffect, useState } from 'react';
 import { Searchbar, Icon } from 'react-native-paper';
-import images from '../../assets/testimages/ImageIndex.js';
+import images from '../../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
-const GuestListView = () => {
+import Auth from '.././Persist';
+
+const SellerMainView = ({ navigation, route }) => {
+  //=========================
+  // USER AUTH AND PAGE TYPE
+  const pagetype = 'seller';
+  const [userdata, setUserData] = React.useState('');
+  useEffect(() => {
+    Auth(route.params.data.user_name).then((resp) => {
+      try {
+        r = JSON.parse(resp);
+        if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
+          navigation.navigate('Splash');
+        }
+        // console.log(r.status);
+        // console.log(resp);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
+    setUserData({
+      user_name: route.params.data.user_name,
+      user_type: route.params.data.user_type,
+    });
+  }, []);
+  //=========================
+
   const [modalVisible, setModalVisible] = useState(false);
   const [itemName, setItemName] = useState(0);
   const [itemDescripton, setItemDescription] = useState(0);
@@ -249,4 +276,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GuestListView;
+export default SellerMainView;

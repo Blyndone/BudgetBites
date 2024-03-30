@@ -10,7 +10,9 @@ VALUES
     ('TravelExplorer', 'travelpass', 'Travel Explorer', 'traveler@example.com', 1234567895, 12340, 'buyer', '2022-07-18'),
     ('Bookworm', 'bookpass', 'Bookworm', 'reader@example.com', 1234567896, 12341, 'buyer', '2022-08-25'),
     ('Fashionista', 'stylepass', 'Fashionista', 'fashionista@example.com', 1234567897, 12342, 'seller', '2022-09-30'),
-    ('blyndone', '$2a$10$a7tYo.WegcM0k.2IQ4u7v.DKdpx5bEgesHjPa/SP8MMrSxRla20ha', 'Rick Duel', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'seller', '2022-09-30'),
+    ('blyndone', '$2a$10$a7tYo.WegcM0k.2IQ4u7v.DKdpx5bEgesHjPa/SP8MMrSxRla20ha', 'Rick Duel', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'buyer', '2022-09-30'),
+    ('blyndtwo', '$2a$10$sYW24sbnydfZGnk7gJtQ9O9sAIOP7xRUteB3P8kFbAvuKVHQlIbDW', 'Rick Duel', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'seller', '2022-09-30'),
+   
     ('PetLover', 'petpass', 'Pet Lover', 'petlover@example.com', 1234567898, 12343, 'buyer', '2022-10-15');
 
 

@@ -6,29 +6,29 @@ import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import * as SecureStore from 'expo-secure-store';
 import Auth from './Persist';
+import { useEffect } from 'react';
 
 const Separator = () => <View style={styles.separator} />;
 const Login = ({ navigation }) => {
+  //=================
+  const [userdata, setUserData] = React.useState('');
+  useEffect(() => {
+    setUserData({
+      user_name: 'NAME',
+      role: 'Buyer',
+    });
+  }, []);
+  //===================
+
   const [user_text, setTextUser] = React.useState('');
   const [pass_text, setTextPass] = React.useState('');
 
-  // const [value, setValue] = React.useState('first');
   const [key, onChangeKey] = React.useState('');
   const [value, onChangeValue] = React.useState('');
 
   async function save(key, value) {
     await SecureStore.setItemAsync(key, value);
   }
-
-  // async function getValueFor(key) {
-  //   let result = await SecureStore.getItemAsync(key);
-  //   if (result) {
-  //     alert("🔐 Here's your value 🔐 \n" + result);
-  //     return result;
-  //   } else {
-  //     alert('No values stored under that key.');
-  //   }
-  // }
 
   return (
     <SafeAreaView style={styles.form}>
@@ -40,30 +40,8 @@ const Login = ({ navigation }) => {
           {'\n'}
         </Text>
         <View>
+          {/* AUTH TEST */}
           {/* <Button
-            mode="contained"
-            title="List"
-            buttonColor="#eb6b34"
-            onPress={() => {
-              save(key, value);
-              onChangeKey('K1');
-              onChangeValue('V2');
-            }}
-          >
-            TEST
-          </Button> */}
-
-          {/* <Button
-            mode="contained"
-            title="List"
-            buttonColor="#eb6b34"
-            onPress={() => {
-              getValueFor('blyndone');
-            }}
-          >
-            TEST
-          </Button> */}
-          <Button
             mode="contained"
             title="List"
             buttonColor="#eb6b34"
@@ -71,7 +49,7 @@ const Login = ({ navigation }) => {
               Auth(user_text).then((resp) => {
                 try {
                   r = JSON.parse(resp);
-                  console.log(r.message);
+                  console.log(r.status);
                   console.log(resp);
                 } catch (err) {
                   console.log(err);
@@ -80,7 +58,7 @@ const Login = ({ navigation }) => {
             }}
           >
             auth
-          </Button>
+          </Button> */}
         </View>
 
         <View
@@ -133,6 +111,7 @@ const Login = ({ navigation }) => {
                   return response.text();
                 })
                 .then((response) => {
+                  console.log(res.status);
                   if (res.status == 500) {
                     alert('USER NOT FOUND');
                     console.log(res.status);
@@ -144,12 +123,26 @@ const Login = ({ navigation }) => {
                   } else {
                     // console.log(response);
                     const token = JSON.parse(response).token;
+                    const data = JSON.parse(response).data;
+                    // console.log(data);
                     // console.log(user_text, token);
                     save(user_text, token);
-                    navigation.navigate({
-                      name: 'Guest List View',
-                      params: { user: user_text },
-                    });
+                    if (data.user_type == 'seller') {
+                      navigation.navigate({
+                        name: 'Seller Main View',
+                        params: { data },
+                      });
+                    } else if (data.user_type == 'buyer') {
+                      navigation.navigate({
+                        name: 'Buyer Main View',
+                        params: { data },
+                      });
+                    } else {
+                      navigation.navigate({
+                        name: 'Guest Main View',
+                        params: { data },
+                      });
+                    }
                   }
                 })
 

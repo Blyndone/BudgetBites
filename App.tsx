@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 // import Logo from './testimage.js';
 import Splash from './src/components/Splash.js';
-import GuestListView from './src/components/GuestListView.js';
+import GuestMainView from './src/components/GuestMainView.js';
 import CreateAccount from './src/components/CreateAccount.js';
 import Login from './src/components/Login.js';
 import CreateListing from './src/components/CreateListing.js';
@@ -34,6 +34,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import { PaperProvider } from 'react-native-paper';
+import BuyerMainView from './src/components/Buyer/BuyerMainView.js';
+import SellerMainView from './src/components/Seller/SellerMainView.js';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -90,8 +92,28 @@ function App(): React.JSX.Element {
             }}
           />
           <Stack.Screen
-            name="Guest List View"
-            component={GuestListView}
+            name="Guest Main View"
+            component={GuestMainView}
+            options={{
+              headerStyle: {
+                backgroundColor: '#eb6b34',
+              },
+            }}
+          />
+
+          <Stack.Screen
+            name="Buyer Main View"
+            component={BuyerMainView}
+            options={{
+              headerStyle: {
+                backgroundColor: '#eb6b34',
+              },
+            }}
+          />
+
+          <Stack.Screen
+            name="Seller Main View"
+            component={SellerMainView}
             options={{
               headerStyle: {
                 backgroundColor: '#eb6b34',
