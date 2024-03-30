@@ -346,6 +346,49 @@ app.get('/getreservations/:userID', async (req, res) => {
 
 app.patch('/updateuser/:userID', async (req, res) => {
   console.log('update user info');
+
+  // const saltRounds = 10; // Adjust the number based on the security requirements
+  app.patch('/updateuser/:userID', async (req, res) => {
+    console.log('update user info');
+    try {
+      const userID = req.params.userID;
+      let { username, password, name, email, phone, zip, usertype, joindate } =
+        req.body;
+
+      // Hash the password if it's provided
+      let hashedPassword = password;
+      if (password && password.trim() !== '') {
+        hashedPassword = await bcrypt.hash(password, saltRounds);
+      }
+
+      // Update the user details in the database
+      const [updateResult] = await connection
+        .promise()
+        .query(
+          'UPDATE users SET username = ?, password = ?, name = ?, email = ?, phone = ?, zip = ?, usertype = ?, joindate = ? WHERE userID = ?',
+          [
+            username,
+            hashedPassword,
+            name,
+            email,
+            phone,
+            zip,
+            usertype,
+            joindate,
+            userID,
+          ],
+        );
+
+      if (updateResult.affectedRows === 0) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.status(200).json({ message: 'User updated successfully' });
+    } catch (error) {
+      console.error('Error on update:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  });
 });
 
 //==================
