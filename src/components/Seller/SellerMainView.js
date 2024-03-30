@@ -41,6 +41,7 @@ const SellerMainView = ({ navigation, route }) => {
     setUserData({
       user_name: route.params.data.user_name,
       user_type: route.params.data.user_type,
+      user_id: route.params.data.user_id,
     });
     navigation.setOptions({
       headerRight: () => (
@@ -49,6 +50,7 @@ const SellerMainView = ({ navigation, route }) => {
           data={{
             user_name: route.params.data.user_name,
             user_type: route.params.data.user_type,
+            user_id: route.params.data.user_id,
           }}
         />
       ),
@@ -70,7 +72,7 @@ const SellerMainView = ({ navigation, route }) => {
 
   const GetItems = async () => {
     try {
-      const response = await fetch(`${REACT_APP_ADDRESS}/getitems`);
+      const response = await fetch(`${REACT_APP_ADDRESS}/items`);
       const json = await response.json();
       console.log(searchQuery);
       console.log(searchQuery.length);

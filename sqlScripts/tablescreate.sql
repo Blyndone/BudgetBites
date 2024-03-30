@@ -44,7 +44,7 @@ CREATE TABLE `reserved` (
     `reservationID` INT NOT NULL AUTO_INCREMENT,
     `buyerID` INT,
     `itemID` INT,
-    `reservationdate` DATETIME,
+    `reservationdate` DATE,
     `status` VARCHAR(50),
     FOREIGN KEY (`buyerID`) REFERENCES users(`userID`),
     FOREIGN KEY (`itemID`) REFERENCES items(`itemID`),

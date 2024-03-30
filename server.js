@@ -93,7 +93,48 @@ app.post('/additem', async (req, res) => {
     });
   }
 });
+//==================
+// Add New Item
+// Input Form:
+// name: name_text
+// description: description_text
+// category:
+// price:
+// count:
+// expiration:
+// location:
+// status:
+// img:
+// listeddate:
 
+//==================
+app.post('/reservation', async (req, res) => {
+  console.log('add reservation');
+  try {
+    const { buyerID, itemID } = req.body;
+    const joindate_text = new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
+
+    const [{ insertId }] = await connection.promise().query(
+      `INSERT INTO reserved (buyerID, itemID, status, reservationDate)
+          VALUES  
+          (?,?,"reserved", ?);
+          
+          UPDATE items SET status = "Reserved" WHERE itemID = ?;   
+          `,
+      [buyerID, itemID, joindate_text, itemID],
+    );
+    res.status(200).json({
+      message: 'Reservation Created',
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err,
+    });
+  }
+});
 //==================
 // Add New User
 // Input Form:
@@ -184,6 +225,7 @@ app.post('/authenticate', async (req, res) => {
           data: {
             user_name: data[0].username,
             user_type: data[0].usertype,
+            user_id: data[0].userID,
           },
         });
       }
@@ -268,7 +310,7 @@ app.post('/addlisting', async (req, res) => {
 //==================
 // Get All Items
 //==================
-app.get('/getitems', async (req, res) => {
+app.get('/items', async (req, res) => {
   console.log('get all items');
   try {
     const data = await connection.promise().query(`SELECT *  from items;`);
@@ -320,20 +362,23 @@ app.get('/verifypassword/:password', async (req, res) => {
 // userType:
 //==================
 
-app.get('/reservations/:userID', async (req, res) => {
-  console.log('get items by id');
-  try {
-    const { userID } = req.params;
+app.get('/reservations/:username', async (req, res) => {
+  console.log('get items by username');
 
-    const query = `SELECT I.name, I.description, I.price, I.img, I.status FROM 
+  try {
+    const { username } = req.params;
+
+    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status FROM 
     items I JOIN 
     listing L JOIN users U ON U.userID = L.sellerID
     ON I.itemid = L.itemID
-    WHERE U.userID = ?`;
+    WHERE U.username = ?; 
+    `;
 
-    const data = await connection.promise().query(query, [userID]);
+    const data = await connection.promise().query(query, [username]);
+    console.log(data);
     res.status(200).json({
-      items: data,
+      items: data[0],
     });
     console.log(data);
   } catch (err) {

@@ -42,7 +42,7 @@ const GuestMainView = ({ navigation, route }) => {
 
   const GetItems = async () => {
     try {
-      const response = await fetch(`${REACT_APP_ADDRESS}/getitems`);
+      const response = await fetch(`${REACT_APP_ADDRESS}/items`);
       const json = await response.json();
       console.log(searchQuery);
       console.log(searchQuery.length);

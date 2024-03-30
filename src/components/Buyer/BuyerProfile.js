@@ -38,6 +38,7 @@ const BuyerProfile = ({ navigation, route }) => {
     setUserData({
       user_name: route.params.data.user_name,
       user_type: route.params.data.user_type,
+      user_id: route.params.data.user_id,
     });
     navigation.setOptions({
       headerRight: () => (

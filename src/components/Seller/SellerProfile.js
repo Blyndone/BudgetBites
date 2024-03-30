@@ -37,6 +37,7 @@ const SellerProfile = ({ navigation, route }) => {
     setUserData({
       user_name: route.params.data.user_name,
       user_type: route.params.data.user_type,
+      user_id: route.params.data.user_id,
     });
     navigation.setOptions({
       headerRight: () => (
@@ -45,6 +46,7 @@ const SellerProfile = ({ navigation, route }) => {
           data={{
             user_name: route.params.data.user_name,
             user_type: route.params.data.user_type,
+            user_id: route.params.data.user_id,
           }}
         />
       ),

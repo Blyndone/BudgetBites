@@ -41,6 +41,7 @@ const BuyerMainView = ({ navigation, route }) => {
     setUserData({
       user_name: route.params.data.user_name,
       user_type: route.params.data.user_type,
+      user_id: route.params.data.user_id,
     });
     navigation.setOptions({
       headerRight: () => (
@@ -70,7 +71,7 @@ const BuyerMainView = ({ navigation, route }) => {
 
   const GetItems = async () => {
     try {
-      const response = await fetch(`${REACT_APP_ADDRESS}/getitems`);
+      const response = await fetch(`${REACT_APP_ADDRESS}/items`);
       const json = await response.json();
       console.log(searchQuery);
       console.log(searchQuery.length);
@@ -114,6 +115,7 @@ const BuyerMainView = ({ navigation, route }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>{itemName}</Text>
+
             <View style={{ padding: 10 }}></View>
             <Image
               source={images[itemID]}
@@ -139,7 +141,22 @@ const BuyerMainView = ({ navigation, route }) => {
                 mode="contained"
                 title="Reserve"
                 color="#eb6b34"
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => {
+                  console.log('PRESS');
+
+                  fetch(`${REACT_APP_ADDRESS}/reservation`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      buyerID: userdata.user_id,
+                      itemID: itemID,
+                    }),
+                  });
+                  GetItems();
+                  setModalVisible(!modalVisible);
+                }}
               ></Button>
             </View>
           </View>
@@ -173,6 +190,7 @@ const BuyerMainView = ({ navigation, route }) => {
         renderItem={({ item }) => (
           <Pressable
             onPress={() => {
+              // console.log(data);
               setItemName(item.name);
               setItemImage(item.img);
               setItemID(item.itemID);
@@ -181,7 +199,11 @@ const BuyerMainView = ({ navigation, route }) => {
               setModalVisible(true);
             }}
           >
-            <View style={styles.item}>
+            <View
+              style={
+                item.status === 'Available' ? styles.item : styles.itemreserved
+              }
+            >
               <Image
                 source={images[item.itemID]}
                 style={{
@@ -236,6 +258,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 5,
     backgroundColor: '#fca503',
+  },
+  itemreserved: {
+    flex: 1,
+    padding: 5,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    height: 100,
+    width: 360,
+    flexDirection: 'row',
+    // justifyContent: 'flex-end',
+    alignItems: 'center',
+    borderWidth: 5,
+    backgroundColor: '#fc6f03',
   },
   titleText: {
     fontSize: 50,

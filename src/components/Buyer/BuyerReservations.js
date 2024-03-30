@@ -41,6 +41,7 @@ const BuyerReservations = ({ navigation, route }) => {
     setUserData({
       user_name: route.params.data.user_name,
       user_type: route.params.data.user_type,
+      user_id: route.params.data.user_id,
     });
     navigation.setOptions({
       headerRight: () => (
@@ -55,6 +56,7 @@ const BuyerReservations = ({ navigation, route }) => {
     });
   }, []);
   //=========================
+
   const [modalVisible, setModalVisible] = useState(false);
   const [itemName, setItemName] = useState(0);
   const [itemDescripton, setItemDescription] = useState(0);
@@ -69,10 +71,10 @@ const BuyerReservations = ({ navigation, route }) => {
 
   const GetItems = async () => {
     try {
-      const response = await fetch(`${REACT_APP_ADDRESS}/getitems`);
+      const response = await fetch(
+        `${REACT_APP_ADDRESS}/reservations/${route.params.data.user_name}`,
+      );
       const json = await response.json();
-      console.log(searchQuery);
-      console.log(searchQuery.length);
 
       if (!(searchQuery.length === 0)) {
         let results = Object.values(json.items).filter(
@@ -84,6 +86,7 @@ const BuyerReservations = ({ navigation, route }) => {
               .toLowerCase()
               .includes(searchQuery.toLowerCase()),
         );
+
         setData(results);
       } else {
         setData(json.items);
@@ -153,19 +156,9 @@ const BuyerReservations = ({ navigation, route }) => {
         }}
       >
         {' '}
-        BUYER REVERVATION
-        {userdata.user_name}
-        {userdata.user_type}
+        BUYER Reservations
       </Text>
 
-      <Searchbar
-        placeholder="Search"
-        onChangeText={setSearchQuery}
-        value={searchQuery}
-        onIconPress={GetItems}
-        onSubmitEditing={GetItems}
-        icon="camera"
-      />
       <FlatList
         data={data}
         keyExtractor={({ itemID }) => itemID}
@@ -206,7 +199,7 @@ const BuyerReservations = ({ navigation, route }) => {
           onPress={() => {
             console.log('Button Press');
             navigation.navigate({
-              name: 'Seller Create Listing',
+              name: 'Buyer Reservations',
               params: { data: userdata },
             });
           }}
@@ -234,7 +227,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'flex-end',
     alignItems: 'center',
     borderWidth: 5,
-    backgroundColor: '#fca503',
+    backgroundColor: '#fc6f03',
   },
   titleText: {
     fontSize: 50,
