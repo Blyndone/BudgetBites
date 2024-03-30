@@ -430,23 +430,25 @@ app.patch('/updatereservation/:itemID', async (req, res) => {
 // itemID:
 //==================
 
-app.delete('/deleteitem/:itemid', async (req, res) => {
+app.delete('/items/:itemid', async (req, res) => {
   console.log('delete item');
 
-  // EXAMPLE CODE FRAGMENT
-  // try {
-  //   const { id } = req.params;
-  //   const update = await connection
-  //     .promise()
-  //     .query(`DELETE FROM  testtable where id = ?`, [id]);
-  //   res.status(200).json({
-  //     message: 'deleted',
-  //   });
-  // } catch (err) {
-  //   res.status(500).json({
-  //     message: err,
-  //   });
-  // }
+  try {
+    const itemID = req.params.itemid;
+    console.log('Attempting to delete item with ID:', itemID);
+
+    // delete the item
+    await connection
+      .promise()
+      .query('DELETE FROM items WHERE itemID = ?', [itemID]);
+
+    res.status(200).json({ message: 'Item deleted successfully' });
+  } catch (err) {
+    console.error('Error:', err);
+    res
+      .status(500)
+      .json({ message: 'Internal Server Error', error: err.message });
+  }
 });
 
 //==================
@@ -459,32 +461,55 @@ app.delete('/deleteitem/:itemid', async (req, res) => {
 //http://localhost:5000/deletereservation/1
 //==================
 
-app.delete('/deletereservation/:reservationid', async (req, res) => {
+app.delete('/reservation/:reservationID', async (req, res) => {
   console.log('delete reservation');
 
   try {
-    const reservationID = req.params.reservationid;
+    const reservationID = req.params.reservationID;
+    console.log('Attempting to delete item with ID:', reservationID);
 
-    console.log('Attempting to delete reservation with ID:', reservationID);
-
-    // Check if the reservation exists
-    const [findResult] = await connection
-      .promise()
-      .query('SELECT * FROM reserved WHERE reservationID = ?', [reservationID]);
-    if (findResult.length === 0) {
-      return res.status(404).json({ message: 'Reservation not found' });
-    }
-
-    // Delete the reservation
+    // delete or update reservations referencing the item
     await connection
       .promise()
       .query('DELETE FROM reserved WHERE reservationID = ?', [reservationID]);
+
     res.status(200).json({ message: 'Reservation deleted successfully' });
-  } catch (error) {
-    console.error(error); // Logging the error
+  } catch (err) {
+    console.error('Error:', err);
     res
       .status(500)
-      .json({ message: 'Internal Server Error', error: error.message });
+      .json({ message: 'Internal Server Error', error: err.message });
+  }
+});
+
+//==================
+// Delete Listing
+
+// Input Form:
+// reservationID:
+//fetch call:
+//DELETE
+//http://localhost:5000/deletereservation/1
+//==================
+
+app.delete('/listing/:listingID', async (req, res) => {
+  console.log('delete listing');
+
+  try {
+    const listingID = req.params.listingID;
+    console.log('Attempting to delete item with ID:', listingID);
+
+    // delete or update listings referencing the item
+    await connection
+      .promise()
+      .query('DELETE FROM listing WHERE itemID = ?', [listingID]);
+
+    res.status(200).json({ message: 'Listing deleted successfully' });
+  } catch (err) {
+    console.error('Error:', err);
+    res
+      .status(500)
+      .json({ message: 'Internal Server Error', error: err.message });
   }
 });
 
