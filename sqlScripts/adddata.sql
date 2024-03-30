@@ -2,6 +2,10 @@
 
 INSERT INTO `users` (`username`, `password`, `name`, `email`, `phone`, `zip`, `usertype`, `joindate`)
 VALUES
+
+    ('customer', '$2a$10$/dRwPs/RMUjIXeTLxwV4H.bq1EJK4lJ77xUAHg3i6j.NimnBpD7QO', 'Customer Name', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'buyer', '2022-09-30'),
+    ('seller', '$2a$10$DwegiHX1775HpYMk81ge.Ox6KWFbylqT2cV83tHUxLK79wS87eMn.', 'Seller Name', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'seller', '2022-09-30'),
+    ('Fashionista', 'stylepass', 'Fashionista', 'fashionista@example.com', 1234567897, 12342, 'seller', '2022-09-30'),
     ('Foodie123', 'foodpass', 'Foodie', 'foodie@example.com', 1234567890, 12345, 'buyer', '2022-01-01'),
     ('ChefMaster', 'masterchef', 'Chef Master', 'chef@example.com', 1234567891, 12346, 'seller', '2022-02-15'),
     ('FitnessFanatic', 'fitpass', 'Fitness Fanatic', 'fitnessfan@example.com', 1234567892, 12347, 'buyer', '2022-04-05'),
@@ -9,9 +13,6 @@ VALUES
     ('GardeningGuru', 'greenpass', 'Gardening Guru', 'gardener@example.com', 1234567894, 12349, 'seller', '2022-06-12'),
     ('TravelExplorer', 'travelpass', 'Travel Explorer', 'traveler@example.com', 1234567895, 12340, 'buyer', '2022-07-18'),
     ('Bookworm', 'bookpass', 'Bookworm', 'reader@example.com', 1234567896, 12341, 'buyer', '2022-08-25'),
-    ('Fashionista', 'stylepass', 'Fashionista', 'fashionista@example.com', 1234567897, 12342, 'seller', '2022-09-30'),
-    ('blyndone', '$2a$10$a7tYo.WegcM0k.2IQ4u7v.DKdpx5bEgesHjPa/SP8MMrSxRla20ha', 'Rick Duel', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'buyer', '2022-09-30'),
-    ('blyndtwo', '$2a$10$sYW24sbnydfZGnk7gJtQ9O9sAIOP7xRUteB3P8kFbAvuKVHQlIbDW', 'Rick Duel', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'seller', '2022-09-30'),
    
     ('PetLover', 'petpass', 'Pet Lover', 'petlover@example.com', 1234567898, 12343, 'buyer', '2022-10-15');
 

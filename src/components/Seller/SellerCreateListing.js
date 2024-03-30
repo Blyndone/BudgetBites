@@ -1,11 +1,38 @@
 import * as React from 'react';
-import { View, StyleSheet, SafeAreaView, Image } from 'react-native';
+import { useEffect } from 'react';
+import { View, StyleSheet, SafeAreaView, Image, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
+import Auth from '../Persist';
 const Separator = () => <View style={styles.separator} />;
-const CreateListing = ({ navigation, route }) => {
+const SellerCreateListing = ({ navigation, route }) => {
+  //=========================
+  // USER AUTH AND PAGE TYPE
+  const pagetype = 'seller';
+  const [userdata, setUserData] = React.useState('');
+  useEffect(() => {
+    Auth(route.params.data.user_name).then((resp) => {
+      try {
+        r = JSON.parse(resp);
+        if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
+          navigation.navigate('Splash');
+        }
+        // console.log(r.status);
+        // console.log(resp);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
+    setUserData({
+      user_name: route.params.data.user_name,
+      user_type: route.params.data.user_type,
+    });
+  }, []);
+  //=========================
+
   var [name_text, setName] = React.useState('');
   var [desc_text, setDescription] = React.useState('');
   var [price_text, setPrice] = React.useState('');
@@ -65,7 +92,7 @@ const CreateListing = ({ navigation, route }) => {
               desc_text.length == 0 ||
               price_text.length == 0
             ) {
-              navigation.navigate('List');
+              alert('Please Input an Item');
               return;
             } else {
               try {
@@ -87,7 +114,10 @@ const CreateListing = ({ navigation, route }) => {
               }),
             });
 
-            navigation.navigate('List');
+            navigation.navigate({
+              name: 'Seller Main View',
+              params: { userdata },
+            });
           }}
         >
           {' '}
@@ -132,4 +162,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateListing;
+export default SellerCreateListing;

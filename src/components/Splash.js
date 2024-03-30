@@ -42,19 +42,19 @@ const Splash = ({ navigation }) => {
           mode="contained"
           title="Guest Login"
           buttonColor="#eb6b34"
-          onPress={() => navigation.navigate('Guest List View')}
+          onPress={() => navigation.navigate('Guest Main View')}
         >
           Guest Login
         </Button>
         <Separator />
-        <Button
+        {/* <Button
           mode="contained"
           title="Create Listing"
           buttonColor="#eb6b34"
-          onPress={() => navigation.navigate('Create Listing')}
+          onPress={() => navigation.navigate('Seller Create Listing')}
         >
           Create Listing
-        </Button>
+        </Button> */}
         <Separator />
       </View>
     </SafeAreaView>

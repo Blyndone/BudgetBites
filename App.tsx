@@ -15,13 +15,10 @@ import {
   Text,
   useColorScheme,
   View,
+  Button,
+  Pressable,
 } from 'react-native';
 // import Logo from './testimage.js';
-import Splash from './src/components/Splash.js';
-import GuestMainView from './src/components/GuestMainView.js';
-import CreateAccount from './src/components/CreateAccount.js';
-import Login from './src/components/Login.js';
-import CreateListing from './src/components/CreateListing.js';
 
 import { NavigationContainer, StackRouter } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -34,9 +31,17 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import { PaperProvider } from 'react-native-paper';
+//Import Pages
+import Splash from './src/components/Splash.js';
+import GuestMainView from './src/components/GuestMainView.js';
+import CreateAccount from './src/components/CreateAccount.js';
+import Login from './src/components/Login.js';
 import BuyerMainView from './src/components/Buyer/BuyerMainView.js';
 import SellerMainView from './src/components/Seller/SellerMainView.js';
-
+import SellerCreateListing from './src/components/Seller/SellerCreateListing.js';
+import BuyerReservations from './src/components/Buyer/BuyerReservations.js';
+import BuyerProfile from './src/components/Buyer/BuyerProfile.js';
+import SellerProfile from './src/components/Seller/SellerProfile.js';
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
@@ -83,7 +88,7 @@ function App(): React.JSX.Element {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Splash">
           <Stack.Screen
-            name="Budget Bites"
+            name="Splash"
             component={Splash}
             options={{
               headerStyle: {
@@ -100,7 +105,6 @@ function App(): React.JSX.Element {
               },
             }}
           />
-
           <Stack.Screen
             name="Buyer Main View"
             component={BuyerMainView}
@@ -108,9 +112,9 @@ function App(): React.JSX.Element {
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },
+              headerRight: () => <BuyerProfileButton />,
             }}
           />
-
           <Stack.Screen
             name="Seller Main View"
             component={SellerMainView}
@@ -118,9 +122,9 @@ function App(): React.JSX.Element {
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },
+              headerRight: () => <SellerProfileButton />,
             }}
           />
-
           <Stack.Screen
             name="Account Creation"
             component={CreateAccount}
@@ -130,7 +134,6 @@ function App(): React.JSX.Element {
               },
             }}
           />
-
           <Stack.Screen
             name="Login"
             component={Login}
@@ -140,14 +143,44 @@ function App(): React.JSX.Element {
               },
             }}
           />
-
           <Stack.Screen
-            name="Create Listing"
-            component={CreateListing}
+            name="Seller Create Listing"
+            component={SellerCreateListing}
             options={{
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },
+              headerRight: () => <SellerProfileButton />,
+            }}
+          />
+          <Stack.Screen
+            name="Buyer Reservations"
+            component={BuyerReservations}
+            options={{
+              headerStyle: {
+                backgroundColor: '#eb6b34',
+              },
+              headerRight: () => <BuyerProfileButton />,
+            }}
+          />
+          <Stack.Screen
+            name="Buyer Profile"
+            component={BuyerProfile}
+            options={{
+              headerStyle: {
+                backgroundColor: '#eb6b34',
+              },
+              headerRight: () => <BuyerProfileButton />,
+            }}
+          />
+          <Stack.Screen
+            name="Seller Profile"
+            component={SellerProfile}
+            options={{
+              headerStyle: {
+                backgroundColor: '#eb6b34',
+              },
+              headerRight: () => <SellerProfileButton />,
             }}
           />
         </Stack.Navigator>
@@ -187,6 +220,39 @@ function App(): React.JSX.Element {
   );
 }
 
+const BuyerProfileButton = () => {
+  return (
+    <Pressable
+      onPress={() => {
+        console.log('press');
+      }}
+    >
+      <Text style={[styles.headerButton]}>Profile</Text>
+    </Pressable>
+
+    //   <Button
+    //     onPress={() => {
+    //       console.log('PRESS');
+    //     }}
+    //     title="Account"
+    //     color="##faa543"
+    //     styles = {}
+    //   />
+  );
+};
+
+const SellerProfileButton = () => {
+  return (
+    <Pressable
+      onPress={() => {
+        console.log('press');
+      }}
+    >
+      <Text style={[styles.headerButton]}>Profile</Text>
+    </Pressable>
+  );
+};
+
 const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,
@@ -195,6 +261,11 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 24,
     fontWeight: '600',
+  },
+  headerButton: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: 'black',
   },
   sectionDescription: {
     marginTop: 8,

@@ -437,22 +437,32 @@ app.delete('/items/:itemid', async (req, res) => {
     const itemID = req.params.itemid;
     console.log('Attempting to delete item with ID:', itemID);
 
-    // delete or update reservations referencing the item
+    // Check if the item exists
+    const [itemExists] = await connection
+      .promise()
+      .query('SELECT * FROM items WHERE itemID = ?', [itemID]);
+    if (itemExists.length === 0) {
+      console.log('Item not found with ID:', itemID);
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    // If the item exists, delete any reservations referencing the item
     await connection
       .promise()
       .query('DELETE FROM reserved WHERE itemID = ?', [itemID]);
 
-    // delete or update listings referencing the item
+    // Delete any listings referencing the item
     await connection
       .promise()
       .query('DELETE FROM listing WHERE itemID = ?', [itemID]);
 
-    // delete the item
+    // Finally, delete the item
     await connection
       .promise()
       .query('DELETE FROM items WHERE itemID = ?', [itemID]);
 
-    res.status(200).json({ message: 'Item and records deleted successfully' });
+    console.log('Item with ID:', itemID, 'has been deleted successfully.');
+    res.status(200).json({ message: 'Item deleted successfully' });
   } catch (err) {
     console.error('Error:', err);
     res
@@ -476,13 +486,21 @@ app.delete('/reservation/:reservationID', async (req, res) => {
 
   try {
     const reservationID = req.params.reservationID;
-    console.log('Attempting to delete item with ID:', reservationID);
+    console.log('Attempting to delete reservation with ID:', reservationID);
 
-    // delete or update reservations referencing the item
+    // Check if the reservation exists before deleting
+    const [reservation] = await connection
+      .promise()
+      .query('SELECT * FROM reserved WHERE reservationID = ?', [reservationID]);
+    if (reservation.length === 0) {
+      console.log('No reservation found with ID:', reservationID);
+      return res.status(404).json({ message: 'Reservation not found' });
+    }
+
     await connection
       .promise()
       .query('DELETE FROM reserved WHERE reservationID = ?', [reservationID]);
-
+    console.log('Deleted reservation with ID:', reservationID);
     res.status(200).json({ message: 'Reservation deleted successfully' });
   } catch (err) {
     console.error('Error:', err);
@@ -507,13 +525,21 @@ app.delete('/listing/:listingID', async (req, res) => {
 
   try {
     const listingID = req.params.listingID;
-    console.log('Attempting to delete item with ID:', listingID);
+    console.log('Attempting to delete listing with ID:', listingID);
 
-    // delete or update listings referencing the item
+    // Check if the listing exists before deleting
+    const [listing] = await connection
+      .promise()
+      .query('SELECT * FROM listing WHERE listingID = ?', [listingID]);
+    if (listing.length === 0) {
+      console.log('No listing found with ID:', listingID);
+      return res.status(404).json({ message: 'Listing not found' });
+    }
+
     await connection
       .promise()
-      .query('DELETE FROM listing WHERE itemID = ?', [listingID]);
-
+      .query('DELETE FROM listing WHERE listingID = ?', [listingID]);
+    console.log('Deleted listing with ID:', listingID);
     res.status(200).json({ message: 'Listing deleted successfully' });
   } catch (err) {
     console.error('Error:', err);

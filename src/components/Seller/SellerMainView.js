@@ -183,6 +183,20 @@ const SellerMainView = ({ navigation, route }) => {
           </Pressable>
         )}
       />
+      <View style={[styles.bottomContaier]}>
+        <Button
+          mode="contained"
+          title="Create Listing"
+          color="#eb6b34"
+          style={[styles.bottomButton]}
+          onPress={() => {
+            navigation.navigate({
+              name: 'Seller Create Listing',
+              params: { data: userdata },
+            });
+          }}
+        ></Button>
+      </View>
     </SafeAreaView>
   );
 };
@@ -274,6 +288,12 @@ const styles = StyleSheet.create({
     color: '#f194ff',
     backgroundColor: '#f194ff',
   },
+  bottomContaier: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+  },
+  bottomButton: {},
 });
 
 export default SellerMainView;

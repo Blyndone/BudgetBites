@@ -36,8 +36,11 @@ const Login = ({ navigation }) => {
         <Text style={styles.titleText}>Login</Text>
         <Separator />
         <Text style={styles.bodytext}>
-          Enter details to login. {key} {value}
+          Enter details to login.
           {'\n'}
+          Seller: User: seller | Pass: seller
+          {'\n'}
+          Buyer: User: customer | Pass: customer
         </Text>
         <View>
           {/* AUTH TEST */}
