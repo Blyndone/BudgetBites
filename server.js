@@ -320,8 +320,27 @@ app.get('/verifypassword/:password', async (req, res) => {
 // userType:
 //==================
 
-app.get('/getreservations/:userID', async (req, res) => {
-  console.log('get reservations');
+app.get('/reservations/:userID', async (req, res) => {
+  console.log('get items by id');
+  try {
+    const { userID } = req.params;
+
+    const query = `SELECT I.name, I.description, I.price, I.img, I.status FROM 
+    items I JOIN 
+    listing L JOIN users U ON U.userID = L.sellerID
+    ON I.itemid = L.itemID
+    WHERE U.userID = ?`;
+
+    const data = await connection.promise().query(query, [userID]);
+    res.status(200).json({
+      items: data,
+    });
+    console.log(data);
+  } catch (err) {
+    res.status(500).json({
+      message: err,
+    });
+  }
 });
 
 //===========================================
