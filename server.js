@@ -437,12 +437,22 @@ app.delete('/items/:itemid', async (req, res) => {
     const itemID = req.params.itemid;
     console.log('Attempting to delete item with ID:', itemID);
 
+    // delete or update reservations referencing the item
+    await connection
+      .promise()
+      .query('DELETE FROM reserved WHERE itemID = ?', [itemID]);
+
+    // delete or update listings referencing the item
+    await connection
+      .promise()
+      .query('DELETE FROM listing WHERE itemID = ?', [itemID]);
+
     // delete the item
     await connection
       .promise()
       .query('DELETE FROM items WHERE itemID = ?', [itemID]);
 
-    res.status(200).json({ message: 'Item deleted successfully' });
+    res.status(200).json({ message: 'Item and records deleted successfully' });
   } catch (err) {
     console.error('Error:', err);
     res
