@@ -514,6 +514,30 @@ app.patch('/updateuser/:userID', async (req, res) => {
 
 app.patch('/updateitemstatus/:itemID', async (req, res) => {
   console.log('update item status');
+
+  try {
+      const itemID = req.params.itemID;
+      let status = req.body;
+      const update = await connection
+        .promise()
+        .query(
+          'UPDATE items SET status = ? WHERE itemID = ?',
+          [
+            status,
+            itemID,
+          ],
+        );
+
+      if (update.affectedRows === 0) {
+        return res.status(404).json({ message: 'Item not found' });
+      }
+
+      res.status(200).json({ message: 'Item status updated successfully' });
+    } catch (error) {
+      console.error('Error on update:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  });
 });
 
 //==================
@@ -534,6 +558,40 @@ app.patch('/updateitemstatus/:itemID', async (req, res) => {
 
 app.patch('/updateitem/:itemID', async (req, res) => {
   console.log('update item information');
+
+  try {
+      const itemID = req.params.itemID;
+      let { name, description, category, price, count, expiration, location, status, img, listeddate } =
+        req.body;
+      const update = await connection
+        .promise()
+        .query(
+          'UPDATE items SET name = ?, description = ?, category = ?, price = ?, count = ?, expiration = ?, location = ?, status = ?, img = ?, listeddate = ? WHERE itemID = ?',
+          [
+            name,
+            description,
+            category,
+            price,
+            count,
+            expiration,
+            location,
+            status,
+            img,
+            listeddate,
+            itemID,
+          ],
+        );
+
+      if (update.affectedRows === 0) {
+        return res.status(404).json({ message: 'Item not found' });
+      }
+
+      res.status(200).json({ message: 'Item details updated successfully' });
+    } catch (error) {
+      console.error('Error on update:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  });
 });
 
 //==================
@@ -547,6 +605,30 @@ app.patch('/updateitem/:itemID', async (req, res) => {
 
 app.patch('/updatereservation/:itemID', async (req, res) => {
   console.log('update reservation status');
+
+  try {
+      const reservationID = req.params.reservationID;
+      let status = req.body;
+      const update = await connection
+        .promise()
+        .query(
+          'UPDATE reserved SET status = ? WHERE reservationID = ?',
+          [
+            status,
+            reservationID,
+          ],
+        );
+
+      if (update.affectedRows === 0) {
+        return res.status(404).json({ message: 'Reservation not found' });
+      }
+
+      res.status(200).json({ message: 'Reservation status updated successfully' });
+    } catch (error) {
+      console.error('Error on update:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  });
 });
 
 // EXAMPLE CODE FRAGMENT
