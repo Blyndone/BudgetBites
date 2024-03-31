@@ -92,6 +92,7 @@ function App(): React.JSX.Element {
             name="Splash"
             component={Splash}
             options={{
+              title: '',
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },

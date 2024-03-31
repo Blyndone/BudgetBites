@@ -18,6 +18,8 @@ import images from '../../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '.././Persist';
 import ProfileButton from '../Components/ProfleButton.js';
+import ListItem from '../Components/ListItem.js';
+import { getItem } from 'expo-secure-store';
 
 const BuyerMainView = ({ navigation, route }) => {
   //=========================
@@ -63,7 +65,6 @@ const BuyerMainView = ({ navigation, route }) => {
   const [itemImage, setItemImage] = useState(0);
   const [itemPrice, setItemPrice] = useState(0);
   const [itemID, setItemID] = useState(0);
-
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -153,8 +154,9 @@ const BuyerMainView = ({ navigation, route }) => {
                       buyerID: userdata.user_id,
                       itemID: itemID,
                     }),
+                  }).then(() => {
+                    GetItems();
                   });
-                  GetItems();
                   setModalVisible(!modalVisible);
                 }}
               ></Button>
@@ -185,37 +187,22 @@ const BuyerMainView = ({ navigation, route }) => {
       <FlatList
         data={data}
         keyExtractor={({ itemID }) => itemID}
-        renderItem={({ item }) => (
-          <Pressable
-            onPress={() => {
-              // console.log(data);
-              setItemName(item.name);
-              setItemImage(item.img);
-              setItemID(item.itemID);
-              setItemDescription(item.description);
-              setItemPrice(item.price);
-              setModalVisible(true);
-            }}
-          >
-            <View
-              style={
-                item.status === 'Available' ? styles.item : styles.itemreserved
-              }
+        renderItem={({ item }) => {
+          return (
+            <Pressable
+              onPress={() => {
+                setItemName(item.name);
+                setItemImage(item.img);
+                setItemID(item.itemID);
+                setItemDescription(item.description);
+                setItemPrice(item.price);
+                setModalVisible(true);
+              }}
             >
-              <Image
-                source={images[item.itemID]}
-                style={{
-                  width: 50,
-                  height: 50,
-                }}
-              />
-
-              <Text style={styles.instance}>{item.name}</Text>
-              <Text style={styles.instance}>{item.description}</Text>
-              <Text style={styles.instance}>{item.price}</Text>
-            </View>
-          </Pressable>
-        )}
+              <ListItem item={item} />
+            </Pressable>
+          );
+        }}
       />
 
       <View style={[styles.bottomContaier]}>

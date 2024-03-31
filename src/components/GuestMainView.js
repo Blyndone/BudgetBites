@@ -17,6 +17,7 @@ import { Searchbar, Icon } from 'react-native-paper';
 import images from '../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
 import * as SecureStore from 'expo-secure-store';
+import ListItem from './Components/ListItem.js';
 
 const GuestMainView = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -134,36 +135,22 @@ const GuestMainView = ({ navigation, route }) => {
       <FlatList
         data={data}
         keyExtractor={({ itemID }) => itemID}
-        renderItem={({ item }) => (
-          <Pressable
-            onPress={() => {
-              setItemName(item.name);
-              setItemImage(item.img);
-              setItemID(item.itemID);
-              setItemDescription(item.description);
-              setItemPrice(item.price);
-              setModalVisible(true);
-            }}
-          >
-            <View
-              style={
-                item.status === 'Available' ? styles.item : styles.itemreserved
-              }
+        renderItem={({ item }) => {
+          return (
+            <Pressable
+              onPress={() => {
+                setItemName(item.name);
+                setItemImage(item.img);
+                setItemID(item.itemID);
+                setItemDescription(item.description);
+                setItemPrice(item.price);
+                setModalVisible(true);
+              }}
             >
-              <Image
-                source={images[item.itemID]}
-                style={{
-                  width: 50,
-                  height: 50,
-                }}
-              />
-
-              <Text style={styles.instance}>{item.name}</Text>
-              <Text style={styles.instance}>{item.description}</Text>
-              <Text style={styles.instance}>{item.price}</Text>
-            </View>
-          </Pressable>
-        )}
+              <ListItem item={item} />
+            </Pressable>
+          );
+        }}
       />
     </SafeAreaView>
   );
