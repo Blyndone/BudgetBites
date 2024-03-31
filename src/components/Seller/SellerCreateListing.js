@@ -20,8 +20,6 @@ const SellerCreateListing = ({ navigation, route }) => {
         if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
           navigation.navigate('Splash');
         }
-        // console.log(r.status);
-        // console.log(resp);
       } catch (err) {
         console.log(err);
       }
@@ -124,6 +122,7 @@ const SellerCreateListing = ({ navigation, route }) => {
                 name_text: name_text,
                 desc_text: desc_text,
                 price_text: price_text,
+                user_id: userdata.user_id,
               }),
             });
 

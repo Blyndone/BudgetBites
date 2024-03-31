@@ -20,20 +20,20 @@ VALUES
 -- Insert test data into the items table (food items)
 INSERT INTO `items` (`name`, `description`, `category`, `price`, `count`, `expiration`, `location`, `status`, `img`, `listeddate`)
 VALUES 
-('Pasta Carbonara', 'Classic Italian pasta with bacon and eggs', 'Main Course', 12.99, 15, '2024-04-15', 'Italian Bistro', 'Reserved', 'carbonara_image.jpg', '2024-03-12'),
+('Pasta Carbonara', 'Classic Italian pasta with bacon and eggs', 'Main Course', 12.99, 15, '2024-04-15', 'Italian Bistro', 'Available', 'carbonara_image.jpg', '2024-03-12'),
 ('Vegetarian Salad', 'Fresh and healthy salad with mixed greens', 'Salad', 8.99, 20, '2024-04-20', 'Vegetarian Delight', 'Available', 'salad_image.jpg', '2024-03-13'),
-('Sushi Platter', 'Assorted sushi rolls with wasabi and soy sauce', 'Sushi', 24.99, 12, '2024-04-25', 'Sushi Paradise', 'Reserved', 'sushi_image.jpg', '2024-03-14'),
+('Sushi Platter', 'Assorted sushi rolls with wasabi and soy sauce', 'Sushi', 24.99, 12, '2024-04-25', 'Sushi Paradise', 'Available', 'sushi_image.jpg', '2024-03-14'),
 ('Chocolate Cake', 'Rich and decadent chocolate cake with frosting', 'Dessert', 16.99, 8, '2024-04-10', 'Sweet Delights Bakery', 'Available', 'cake_image.jpg', '2024-03-15'),
-('Steak Fajitas', 'Sizzling beef fajitas with bell peppers and onions', 'Main Course', 21.99, 15, '2024-04-22', 'Tex-Mex Grill', 'Reserved', 'fajitas_image.jpg', '2024-03-23'),
+('Steak Fajitas', 'Sizzling beef fajitas with bell peppers and onions', 'Main Course', 21.99, 15, '2024-04-22', 'Tex-Mex Grill', 'Available', 'fajitas_image.jpg', '2024-03-23'),
 ('Greek Salad', 'Traditional Greek salad with olives and feta cheese', 'Salad', 11.99, 20, '2024-04-25', 'Olympian Eats', 'Available', 'greek_salad_image.jpg', '2024-03-24'),
 ('Dragon Roll', 'Specialty sushi roll with eel and avocado', 'Sushi', 26.99, 10, '2024-04-20', 'Dragon Sushi Bar', 'Available', 'dragon_roll_image.jpg', '2024-03-25'),
-('Tiramisu', 'Classic Italian dessert with coffee-soaked ladyfingers', 'Dessert', 19.99, 8, '2024-04-15', 'Dolce Vita Patisserie', 'Reserved', 'tiramisu_image.jpg', '2024-03-26'),
+('Tiramisu', 'Classic Italian dessert with coffee-soaked ladyfingers', 'Dessert', 19.99, 8, '2024-04-15', 'Dolce Vita Patisserie', 'Available', 'tiramisu_image.jpg', '2024-03-26'),
 ('Chicken Alfredo Pizza', 'Creamy Alfredo sauce with chicken on a pizza crust', 'Pizza', 17.99, 15, '2024-04-18', 'Alfredos Pizza Palace', 'Available', 'chicken_alfredo_pizza_image.jpg', '2024-03-27'),
 ('Vegetarian Biryani', 'Spiced rice with mixed vegetables and aromatic spices', 'Curry', 14.99, 20, '2024-04-28', 'Biryani Bliss', 'Available', 'biryani_image.jpg', '2024-03-28'),
-('Iced Matcha Latte', 'Cold matcha green tea latte with milk and ice', 'Beverage', 6.99, 30, '2024-04-30', 'Matcha Haven', 'Reserved', 'matcha_latte_image.jpg', '2024-03-29'),
+('Iced Matcha Latte', 'Cold matcha green tea latte with milk and ice', 'Beverage', 6.99, 30, '2024-04-30', 'Matcha Haven', 'Available', 'matcha_latte_image.jpg', '2024-03-29'),
 ('Caprese Panini', 'Grilled panini with mozzarella, tomatoes, and basil', 'Sandwich', 9.99, 25, '2024-05-05', 'Panini Paradise', 'Available', 'caprese_panini_image.jpg', '2024-03-30'),
 ('Seafood Paella', 'Spanish rice dish with a variety of seafood', 'Main Course', 23.99, 12, '2024-05-10', 'Paella Passion', 'Available', 'seafood_paella_image.jpg', '2024-04-01'),
-('Mango Tango Smoothie', 'Sweet and tropical smoothie with fresh mango', 'Beverage', 8.99, 30, '2024-05-15', 'Smoothie Delight', 'Reserved', 'mango_smoothie_image.jpg', '2024-04-02'),
+('Mango Tango Smoothie', 'Sweet and tropical smoothie with fresh mango', 'Beverage', 8.99, 30, '2024-05-15', 'Smoothie Delight', 'Available', 'mango_smoothie_image.jpg', '2024-04-02'),
 ('Spaghetti Bolognese', 'Classic Italian pasta with meat sauce', 'Main Course', 14.99, 18, '2024-04-18', 'Mama Mia Trattoria', 'Available', 'bolognese_image.jpg', '2024-03-16'),
 ('Caesar Salad', 'Romaine lettuce with croutons and Caesar dressing', 'Salad', 10.99, 25, '2024-04-22', 'Fresh Greens Cafe', 'Available', 'caesar_salad_image.jpg', '2024-03-17'),
 ('Sashimi Platter', 'Fresh slices of raw fish with wasabi and soy sauce', 'Sushi', 29.99, 10, '2024-04-28', 'Tokyo Sushi House', 'Available', 'sashimi_image.jpg', '2024-03-18'),
@@ -51,28 +51,28 @@ VALUES
 
 
 
--- Insert test data into the listing table
-INSERT INTO listing (itemID, sellerID, createDate)
-VALUES
-    (1, 2, '2022-01-10'),
-    (2, 1, '2022-02-25'),
-    (3, 2, '2022-03-20'),
-    (4, 2, '2022-03-20'),
-    (5, 2, '2022-03-20'),
-    (6, 2, '2022-03-20'),
-    (7, 2, '2022-03-20'),
-    (8, 2, '2022-03-20');
+-- -- Insert test data into the listing table
+-- INSERT INTO listing (itemID, sellerID, createDate)
+-- VALUES
+--     (1, 2, '2022-01-10'),
+--     (2, 1, '2022-02-25'),
+--     (3, 2, '2022-03-20'),
+--     (4, 2, '2022-03-20'),
+--     (5, 2, '2022-03-20'),
+--     (6, 2, '2022-03-20'),
+--     (7, 2, '2022-03-20'),
+--     (8, 2, '2022-03-20');
 
 
--- Insert test data into the reserved table
-INSERT INTO reserved (buyerID, itemID, reservationDate, status)
-VALUES
-    (1, 2, '2022-02-28', 'reserved'),
-    (2, 1, '2022-03-05', 'reserved'),
-    (1, 3, '2022-03-25', 'reserved'),
-    (1, 4, '2022-03-25', 'reserved'),
-    (1, 5, '2022-03-25', 'reserved'),
-    (1, 6, '2022-03-25', 'reserved'),
-    (1, 7, '2022-03-25', 'reserved'),
-    (1, 8, '2022-03-25', 'reserved'),
-    (1, 9, '2022-03-25', 'reserved');
+-- -- Insert test data into the reserved table
+-- INSERT INTO reserved (buyerID, itemID, reservationDate, status)
+-- VALUES
+--     (1, 2, '2022-02-28', 'reserved'),
+--     (2, 1, '2022-03-05', 'reserved'),
+--     (1, 3, '2022-03-25', 'reserved'),
+--     (1, 4, '2022-03-25', 'reserved'),
+--     (1, 5, '2022-03-25', 'reserved'),
+--     (1, 6, '2022-03-25', 'reserved'),
+--     (1, 7, '2022-03-25', 'reserved'),
+--     (1, 8, '2022-03-25', 'reserved'),
+--     (1, 9, '2022-03-25', 'reserved');

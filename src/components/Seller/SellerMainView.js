@@ -19,6 +19,7 @@ import { REACT_APP_ADDRESS } from '@env';
 import Auth from '.././Persist';
 import ProfileButton from '../Components/ProfleButton.js';
 import ListItem from '../Components/ListItem.js';
+import { useFocusEffect } from '@react-navigation/native';
 const SellerMainView = ({ navigation, route }) => {
   //=========================
   // USER AUTH AND PAGE TYPE
@@ -31,8 +32,6 @@ const SellerMainView = ({ navigation, route }) => {
         if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
           navigation.navigate('Splash');
         }
-        // console.log(r.status);
-        // console.log(resp);
       } catch (err) {
         console.log(err);
       }
@@ -68,29 +67,14 @@ const SellerMainView = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  const [searchQuery, setSearchQuery] = React.useState('');
-
   const GetItems = async () => {
     try {
-      const response = await fetch(`${REACT_APP_ADDRESS}/items`);
+      const response = await fetch(
+        `${REACT_APP_ADDRESS}/listing/${route.params.data.user_name}`,
+      );
       const json = await response.json();
-      console.log(searchQuery);
-      console.log(searchQuery.length);
 
-      if (!(searchQuery.length === 0)) {
-        let results = Object.values(json.items).filter(
-          (item) =>
-            String(item.name)
-              .toLowerCase()
-              .includes(searchQuery.toLowerCase()) ||
-            String(item.description)
-              .toLowerCase()
-              .includes(searchQuery.toLowerCase()),
-        );
-        setData(results);
-      } else {
-        setData(json.items);
-      }
+      setData(json.items);
     } catch (error) {
       console.error(error);
     } finally {
@@ -98,9 +82,11 @@ const SellerMainView = ({ navigation, route }) => {
     }
   };
 
-  useEffect(() => {
-    GetItems();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      GetItems();
+    }, []),
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -159,14 +145,6 @@ const SellerMainView = ({ navigation, route }) => {
         SELLER List of Items
       </Text>
 
-      <Searchbar
-        placeholder="Search"
-        onChangeText={setSearchQuery}
-        value={searchQuery}
-        onIconPress={GetItems}
-        onSubmitEditing={GetItems}
-        icon="camera"
-      />
       <FlatList
         data={data}
         keyExtractor={({ itemID }) => itemID}

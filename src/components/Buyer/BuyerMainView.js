@@ -19,7 +19,6 @@ import { REACT_APP_ADDRESS } from '@env';
 import Auth from '.././Persist';
 import ProfileButton from '../Components/ProfleButton.js';
 import ListItem from '../Components/ListItem.js';
-import { getItem } from 'expo-secure-store';
 
 const BuyerMainView = ({ navigation, route }) => {
   //=========================
@@ -52,6 +51,7 @@ const BuyerMainView = ({ navigation, route }) => {
           data={{
             user_name: route.params.data.user_name,
             user_type: route.params.data.user_type,
+            user_id: route.params.data.user_id,
           }}
         />
       ),
@@ -143,8 +143,6 @@ const BuyerMainView = ({ navigation, route }) => {
                 title="Reserve"
                 color="#eb6b34"
                 onPress={() => {
-                  console.log('PRESS');
-
                   fetch(`${REACT_APP_ADDRESS}/reservation`, {
                     method: 'POST',
                     headers: {

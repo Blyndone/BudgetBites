@@ -77,17 +77,34 @@ connection.query(
 app.post('/additem', async (req, res) => {
   console.log('AddItems');
   try {
-    const { name_text, desc_text, price_text } = req.body;
+    const { name_text, desc_text, price_text, user_id } = req.body;
+    const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
     const [{ insertId }] = await connection.promise().query(
       `INSERT INTO items (name, description, category, price, count, expiration, location, status, img, listeddate)
           VALUES  
-          (?,?, 'CATEGORY', ?, 1, '2024-12-31', 'LOCATION', 'Available', 'IMAGE', '2024-01-01')`,
-      [name_text, desc_text, price_text],
+          (?,?, 'CATEGORY', ?, 1, '2024-12-31', 'LOCATION', 'Available', 'IMAGE', '2024-01-01');
+          
+        INSERT INTO listing (itemID, sellerID, createDate)
+          VALUES  
+          ((SELECT LAST_INSERT_ID()),?,?)
+          
+          `,
+      [name_text, desc_text, price_text, user_id, date],
     );
+    // .query(
+    //   `INSERT INTO listing (itemID, sellerID, createDate)
+    //     VALUES
+    //     (?,?,?)`,
+    //   [insertId, user_id, date],
+    // );
+
     res.status(200).json({
       message: 'Item Created',
+      data: insertId,
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: err,
     });
@@ -370,6 +387,39 @@ app.get('/reservations/:username', async (req, res) => {
 
     const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status FROM 
     items I JOIN 
+    reserved R JOIN users U ON U.userID = R.buyerID
+    ON I.itemid = R.itemID
+    WHERE U.username = ?; 
+    `;
+
+    const data = await connection.promise().query(query, [username]);
+    console.log(data);
+    res.status(200).json({
+      items: data[0],
+    });
+    console.log(data);
+  } catch (err) {
+    res.status(500).json({
+      message: err,
+    });
+  }
+});
+
+//==================
+// Retrieve Listing by username
+// Input Form:
+// userID:
+// userType:
+//==================
+
+app.get('/listing/:username', async (req, res) => {
+  console.log('get listing by username');
+
+  try {
+    const { username } = req.params;
+
+    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status FROM 
+    items I JOIN 
     listing L JOIN users U ON U.userID = L.sellerID
     ON I.itemid = L.itemID
     WHERE U.username = ?; 
@@ -387,7 +437,6 @@ app.get('/reservations/:username', async (req, res) => {
     });
   }
 });
-
 //===========================================
 
 // UPDATE
