@@ -127,25 +127,33 @@ app.post('/additem', async (req, res) => {
 //==================
 app.post('/reservation', async (req, res) => {
   console.log('add reservation');
+
   try {
     const { buyerID, itemID } = req.body;
     const joindate_text = new Date()
       .toISOString()
       .slice(0, 19)
       .replace('T', ' ');
-
-    const [{ insertId }] = await connection.promise().query(
-      `INSERT INTO reserved (buyerID, itemID, status, reservationDate)
-          VALUES  
-          (?,?,"reserved", ?);
-          
-          UPDATE items SET status = "Reserved" WHERE itemID = ?;   
-          `,
-      [buyerID, itemID, joindate_text, itemID],
-    );
-    res.status(200).json({
-      message: 'Reservation Created',
-    });
+    if (
+      (
+        await connection
+          .promise()
+          .query('SELECT status from items WHERE itemID = ?', [itemID])
+      )[0][0].status == 'Available'
+    ) {
+      const [{ insertId }] = await connection.promise().query(
+        `INSERT INTO reserved (buyerID, itemID, status, reservationDate)
+        VALUES  
+        (?,?,"reserved", ?);
+        
+        UPDATE items SET status = "Reserved" WHERE itemID = ?;   
+        `,
+        [buyerID, itemID, joindate_text, itemID],
+      );
+      res.status(200).json({
+        message: 'Reservation Created',
+      });
+    }
   } catch (err) {
     res.status(500).json({
       message: err,
