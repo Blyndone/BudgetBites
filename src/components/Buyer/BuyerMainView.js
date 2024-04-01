@@ -16,6 +16,7 @@ import React, { useEffect, useState } from 'react';
 import { Searchbar, Icon } from 'react-native-paper';
 import images from '../../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
+import { useFocusEffect } from '@react-navigation/native';
 import Auth from '.././Persist';
 import ProfileButton from '../Components/ProfleButton.js';
 import ListItem from '../Components/ListItem.js';
@@ -97,10 +98,11 @@ const BuyerMainView = ({ navigation, route }) => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    GetItems();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      GetItems();
+    }, []),
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -210,7 +212,6 @@ const BuyerMainView = ({ navigation, route }) => {
           color="#eb6b34"
           style={[styles.bottomButton]}
           onPress={() => {
-            console.log('Button Press');
             navigation.navigate({
               name: 'Buyer Reservations',
               params: { data: userdata },

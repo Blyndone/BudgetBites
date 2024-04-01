@@ -140,9 +140,22 @@ const BuyerReservations = ({ navigation, route }) => {
               <View style={{ padding: 10 }}></View>
               <Button
                 mode="contained"
-                title="Reserve"
+                title="Cancel Reservation"
                 color="#eb6b34"
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => {
+                  fetch(`${REACT_APP_ADDRESS}/reservation/` + itemID, {
+                    method: 'DELETE',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      itemID: itemID,
+                    }),
+                  }).then(() => {
+                    GetItems();
+                  });
+                  setModalVisible(!modalVisible);
+                }}
               ></Button>
             </View>
           </View>
@@ -180,22 +193,6 @@ const BuyerReservations = ({ navigation, route }) => {
           );
         }}
       />
-
-      <View style={[styles.bottomContaier]}>
-        <Button
-          mode="contained"
-          title="My Reservations"
-          color="#eb6b34"
-          style={[styles.bottomButton]}
-          onPress={() => {
-            console.log('Button Press');
-            navigation.navigate({
-              name: 'Buyer Reservations',
-              params: { data: userdata },
-            });
-          }}
-        ></Button>
-      </View>
     </SafeAreaView>
   );
 };
