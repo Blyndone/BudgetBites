@@ -10,6 +10,7 @@ import Auth from '../Persist';
 import ProfileButton from '../Components/ProfleButton';
 import images from '../../../assets/testimages/ImageIndex';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 const Separator = () => <View style={styles.separator} />;
 const SellerCreateListing = ({ navigation, route }) => {
@@ -63,6 +64,11 @@ const SellerCreateListing = ({ navigation, route }) => {
     { label: 'Dairy', value: 'Dairy' },
   ]);
   const [modalVisible, setModalVisible] = useState(false);
+  const DismissKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+  );
 
   const SingleImage = ({ image, size }) => {
     return (
@@ -149,28 +155,32 @@ const SellerCreateListing = ({ navigation, route }) => {
             padding: 10,
           }}
         >
-          <TextInput
-            label="Item Name"
-            value={name_text}
-            onChangeText={(name_text) => setName(name_text)}
-            style={styles.textinput}
-          />
-
-          <TextInput
-            label="Description"
-            value={desc_text}
-            onChangeText={(desc_text) => setDescription(desc_text)}
-            style={styles.textinput}
-          />
-
-          <TextInput
-            label="Price"
-            value={price_text}
-            onChangeText={(price_text) => setPrice(price_text)}
-            style={styles.textinput}
-            keyboardType="number-pad"
-            maxLength={10}
-          />
+          <DismissKeyboard>
+            <TextInput
+              label="Item Name"
+              value={name_text}
+              onChangeText={(name_text) => setName(name_text)}
+              style={styles.textinput}
+            />
+          </DismissKeyboard>
+          <DismissKeyboard>
+            <TextInput
+              label="Description"
+              value={desc_text}
+              onChangeText={(desc_text) => setDescription(desc_text)}
+              style={styles.textinput}
+            />
+          </DismissKeyboard>
+          <DismissKeyboard>
+            <TextInput
+              label="Price"
+              value={price_text}
+              onChangeText={(price_text) => setPrice(price_text)}
+              style={styles.textinput}
+              keyboardType="number-pad"
+              maxLength={10}
+            />
+          </DismissKeyboard>
 
           <View style={{ flexDirection: 'row' }}>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>

@@ -101,6 +101,7 @@ const SellerMainView = ({ navigation, route }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>{itemName}</Text>
+
             <View style={{ padding: 10 }}></View>
             <Image
               source={images[itemImage]}
@@ -156,6 +157,7 @@ const SellerMainView = ({ navigation, route }) => {
                 setItemID(item.itemID);
                 setItemDescription(item.description);
                 setItemPrice(item.price);
+
                 setModalVisible(true);
               }}
             >

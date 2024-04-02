@@ -26,6 +26,7 @@ const GuestMainView = ({ navigation, route }) => {
   const [itemImage, setItemImage] = useState(0);
   const [itemPrice, setItemPrice] = useState(0);
   const [itemID, setItemID] = useState(0);
+  const [itemLocation, setItemLocation] = useState('');
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -87,6 +88,7 @@ const GuestMainView = ({ navigation, route }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>{itemName}</Text>
+            <Text style={styles.modalTitle}>{itemLocation}</Text>
             <View style={{ padding: 10 }}></View>
             <Image
               source={images[itemID]}
@@ -144,6 +146,7 @@ const GuestMainView = ({ navigation, route }) => {
                 setItemID(item.itemID);
                 setItemDescription(item.description);
                 setItemPrice(item.price);
+                setItemLocation(item.location);
                 setModalVisible(true);
               }}
             >

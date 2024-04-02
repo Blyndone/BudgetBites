@@ -90,7 +90,7 @@ app.post('/additem', async (req, res) => {
     const [{ insertId }] = await connection.promise().query(
       `INSERT INTO items (name, description, category, price, count, expiration, location, status, img, listeddate)
           VALUES  
-          (?,?, ?, ?, 1, '2024-12-31', 'LOCATION', 'Available', ?, '2024-01-01');
+          (?,?, ?, ?, 1, '2024-12-31', (SELECT locationname FROM users WHERE userID = ?), 'Available', ?, ?);
           
         INSERT INTO listing (itemID, sellerID, createDate)
           VALUES  
@@ -102,7 +102,9 @@ app.post('/additem', async (req, res) => {
         desc_text,
         category_text,
         price_text,
+        user_id,
         img_select,
+        date,
         user_id,
         date,
       ],
@@ -408,7 +410,7 @@ app.get('/reservations/:username', async (req, res) => {
   try {
     const { username } = req.params;
 
-    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status FROM 
+    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status, I.location FROM 
     items I JOIN 
     reserved R JOIN users U ON U.userID = R.buyerID
     ON I.itemid = R.itemID

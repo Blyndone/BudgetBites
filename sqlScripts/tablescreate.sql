@@ -6,7 +6,8 @@ CREATE TABLE `users` (
 	`email` VARCHAR(50),
     `phone` INT(10),
     `zip` INT(5),
-	`usertype` VARCHAR(50),
+	`locationname` VARCHAR(255),
+    `usertype` VARCHAR(50),   
 	`joindate` DATE,
 	PRIMARY KEY (`userID`)
 );

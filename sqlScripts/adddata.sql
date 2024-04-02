@@ -1,9 +1,13 @@
 -- Insert test data into the users table
+INSERT INTO `users` (`username`, `password`, `name`, `email`, `phone`, `zip`, `locationname`, `usertype`, `joindate`)
+VALUES
+
+    ('seller', '$2a$10$DwegiHX1775HpYMk81ge.Ox6KWFbylqT2cV83tHUxLK79wS87eMn.', 'Seller Name', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'Fast Johnnys Pizza', 'seller', '2022-09-30');
+
 
 INSERT INTO `users` (`username`, `password`, `name`, `email`, `phone`, `zip`, `usertype`, `joindate`)
 VALUES
 
-    ('seller', '$2a$10$DwegiHX1775HpYMk81ge.Ox6KWFbylqT2cV83tHUxLK79wS87eMn.', 'Seller Name', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'seller', '2022-09-30'),
     ('customer', '$2a$10$/dRwPs/RMUjIXeTLxwV4H.bq1EJK4lJ77xUAHg3i6j.NimnBpD7QO', 'Customer Name', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'buyer', '2022-09-30'),
     ('Fashionista', 'stylepass', 'Fashionista', 'fashionista@example.com', 1234567897, 12342, 'seller', '2022-09-30'),
     ('Foodie123', 'foodpass', 'Foodie', 'foodie@example.com', 1234567890, 12345, 'buyer', '2022-01-01'),
