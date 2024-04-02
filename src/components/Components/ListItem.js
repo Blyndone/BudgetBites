@@ -72,6 +72,8 @@ const styles = StyleSheet.create({
   },
   titleview: {
     flex: 0.8,
+    // borderColor: 'black',
+    // borderWidth: 1,
     alignContent: 'center',
   },
   descview: {
@@ -91,13 +93,13 @@ const styles = StyleSheet.create({
     height: 50,
   },
   title: {
-    textAlign: 'center',
+    textAlign: 'left',
     // flexBasis: 120,
     flexGrow: 1,
     fontWeight: 'bold',
   },
   location: {
-    textAlign: 'center',
+    textAlign: 'left',
     // flexBasis: 120,
     flexGrow: 0.7,
   },
