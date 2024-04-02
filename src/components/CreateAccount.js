@@ -237,6 +237,7 @@ const CreateAccount = ({ navigation, route }) => {
             mode="contained"
             title="List"
             buttonColor="#eb6b34"
+            labelStyle={{ fontSize: 18, color: 'black' }}
             onPress={() => {
               //NEED INPUT CLEANING AND PASSWORD HASHING
               errormessage = '';

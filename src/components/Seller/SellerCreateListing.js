@@ -218,6 +218,7 @@ const SellerCreateListing = ({ navigation, route }) => {
             <TextInput
               label="# of Days Until Expiration"
               value={expiration_text}
+              style={styles.textinput}
               onChangeText={(expiration_text) => setExpiration(expiration_text)}
               keyboardType="number-pad"
             />
@@ -248,8 +249,9 @@ const SellerCreateListing = ({ navigation, route }) => {
                     borderTopEndRadius: 5,
                     borderTopStartRadius: 5,
                     borderRadius: 0,
-                    width: '73%',
+                    width: '70%',
                     alignItems: 'center',
+                    margin: 5,
                   }}
                   dropDownContainerStyle={{
                     backgroundColor: '#decceb',

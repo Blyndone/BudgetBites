@@ -7,13 +7,12 @@ import {
   StyleSheet,
   SafeAreaView,
   Image,
-  Button,
   FlatList,
   StatusBar,
 } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
-import { Searchbar, Icon } from 'react-native-paper';
+import { Searchbar, Icon, Button } from 'react-native-paper';
 import images from '../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
 import * as SecureStore from 'expo-secure-store';
@@ -111,9 +110,12 @@ const GuestMainView = ({ navigation, route }) => {
               <Button
                 mode="contained"
                 title="Close"
-                color="#eb6b34"
+                buttonColor="#eb6b34"
+                labelStyle={{ fontSize: 16, color: 'black' }}
                 onPress={() => setModalVisible(!modalVisible)}
-              ></Button>
+              >
+                Close
+              </Button>
             </View>
           </View>
         </View>

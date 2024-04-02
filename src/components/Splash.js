@@ -22,6 +22,7 @@ const Splash = ({ navigation }) => {
           mode="contained"
           title="Login"
           buttonColor="#eb6b34"
+          labelStyle={{ fontSize: 16, color: 'black' }}
           onPress={() => navigation.navigate('Login')}
         >
           {' '}
@@ -33,6 +34,7 @@ const Splash = ({ navigation }) => {
           mode="contained"
           title="CreateAccount"
           buttonColor="#eb6b34"
+          labelStyle={{ fontSize: 16, color: 'black' }}
           onPress={() => navigation.navigate('Account Creation')}
         >
           Create Account
@@ -42,6 +44,7 @@ const Splash = ({ navigation }) => {
           mode="contained"
           title="Guest Login"
           buttonColor="#eb6b34"
+          labelStyle={{ fontSize: 16, color: 'black' }}
           onPress={() => navigation.navigate('Guest Main View')}
         >
           Guest Login

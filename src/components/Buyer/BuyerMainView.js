@@ -7,13 +7,12 @@ import {
   StyleSheet,
   SafeAreaView,
   Image,
-  Button,
   FlatList,
   StatusBar,
 } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
-import { Searchbar, Icon } from 'react-native-paper';
+import { Searchbar, Icon, Button } from 'react-native-paper';
 import images from '../../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
 import { useFocusEffect } from '@react-navigation/native';
@@ -143,14 +142,18 @@ const BuyerMainView = ({ navigation, route }) => {
               <Button
                 mode="contained"
                 title="Close"
-                color="#eb6b34"
+                buttonColor="#eb6b34"
+                labelStyle={{ fontSize: 16, color: 'black' }}
                 onPress={() => setModalVisible(!modalVisible)}
-              ></Button>
+              >
+                Close
+              </Button>
               <View style={{ padding: 10 }}></View>
               <Button
                 mode="contained"
                 title="Reserve"
-                color="#eb6b34"
+                buttonColor="#eb6b34"
+                labelStyle={{ fontSize: 16, color: 'black' }}
                 onPress={() => {
                   fetch(`${REACT_APP_ADDRESS}/reservation`, {
                     method: 'POST',
@@ -166,7 +169,9 @@ const BuyerMainView = ({ navigation, route }) => {
                   });
                   setModalVisible(!modalVisible);
                 }}
-              ></Button>
+              >
+                Reserve
+              </Button>
             </View>
           </View>
         </View>
@@ -194,6 +199,7 @@ const BuyerMainView = ({ navigation, route }) => {
       <FlatList
         data={data}
         keyExtractor={({ itemID }) => itemID}
+        ListFooterComponent={<View style={{ padding: 25 }}></View>}
         renderItem={({ item }) => {
           return (
             <Pressable
@@ -221,7 +227,8 @@ const BuyerMainView = ({ navigation, route }) => {
         <Button
           mode="contained"
           title="My Reservations"
-          color="#eb6b34"
+          buttonColor="#eb6b34"
+          labelStyle={{ fontSize: 16, color: 'black' }}
           style={[styles.bottomButton]}
           onPress={() => {
             navigation.navigate({
@@ -229,7 +236,9 @@ const BuyerMainView = ({ navigation, route }) => {
               params: { data: userdata },
             });
           }}
-        ></Button>
+        >
+          My Reservations
+        </Button>
       </View>
     </SafeAreaView>
   );

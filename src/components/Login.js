@@ -91,6 +91,7 @@ const Login = ({ navigation }) => {
           mode="contained"
           title="List"
           buttonColor="#eb6b34"
+          labelStyle={{ fontSize: 18, color: 'black' }}
           onPress={() => {
             try {
               const myHeaders = new Headers();
@@ -155,8 +156,7 @@ const Login = ({ navigation }) => {
             }
           }}
         >
-          {' '}
-          Submit{' '}
+          Submit
         </Button>
 
         <Separator />

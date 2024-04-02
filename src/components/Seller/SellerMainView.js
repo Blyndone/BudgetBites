@@ -7,13 +7,12 @@ import {
   StyleSheet,
   SafeAreaView,
   Image,
-  Button,
   FlatList,
   StatusBar,
 } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
-import { Searchbar, Icon } from 'react-native-paper';
+import { Searchbar, Icon, Button } from 'react-native-paper';
 import images from '../../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '.././Persist';
@@ -122,16 +121,18 @@ const SellerMainView = ({ navigation, route }) => {
               <Button
                 mode="contained"
                 title="Close"
-                color="#eb6b34"
+                buttonColor="#eb6b34"
+                labelStyle={{ fontSize: 16, color: 'black' }}
                 onPress={() => setModalVisible(!modalVisible)}
-              ></Button>
+              >Close</Button>
               <View style={{ padding: 10 }}></View>
               <Button
                 mode="contained"
                 title="Delete Listing"
-                color="#eb6b34"
+                buttonColor="#eb6b34"
+                labelStyle={{ fontSize: 16, color: 'black' }}
                 onPress={() => setModalVisible(!modalVisible)}
-              ></Button>
+              >Delete Listing</Button>
             </View>
           </View>
         </View>
@@ -178,15 +179,17 @@ const SellerMainView = ({ navigation, route }) => {
         <Button
           mode="contained"
           title="Create Listing"
-          color="#eb6b34"
-          style={[styles.bottomButton]}
+          buttonColor="#eb6b34"
+          labelStyle={{ fontSize: 16, color: 'black' }}
           onPress={() => {
             navigation.navigate({
               name: 'Seller Create Listing',
               params: { data: userdata },
             });
           }}
-        ></Button>
+        >
+          Create Listing
+        </Button>
       </View>
     </SafeAreaView>
   );
