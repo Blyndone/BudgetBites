@@ -200,6 +200,7 @@ const SellerCreateListing = ({ navigation, route }) => {
                   backgroundColor: '#decceb',
                   borderColor: '#00000000',
                   borderTopColor: 'black',
+                  width: '73%',
                 }}
                 open={open}
                 value={category_text}
