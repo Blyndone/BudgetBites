@@ -18,6 +18,7 @@ CREATE TABLE `items` (
 	`name` VARCHAR(100) NOT NULL,
 	`description` VARCHAR(255),
 	`category` VARCHAR(50),
+    `msrp` DECIMAL(10,2),
 	`price` DECIMAL(10,2),
 	`count` INT(100),
 	`expiration` DATE,

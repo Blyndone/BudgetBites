@@ -91,7 +91,7 @@ const GuestMainView = ({ navigation, route }) => {
             <Text style={styles.modalTitle}>{itemLocation}</Text>
             <View style={{ padding: 10 }}></View>
             <Image
-              source={images[itemID]}
+              source={images[itemImage]}
               style={{
                 width: 150,
                 height: 150,
@@ -109,7 +109,6 @@ const GuestMainView = ({ navigation, route }) => {
                 color="#eb6b34"
                 onPress={() => setModalVisible(!modalVisible)}
               ></Button>
-              <View style={{ padding: 10 }}></View>
             </View>
           </View>
         </View>
@@ -122,7 +121,6 @@ const GuestMainView = ({ navigation, route }) => {
           color: 'black',
         }}
       >
-        {' '}
         List of Items {route.params?.user}
       </Text>
 
