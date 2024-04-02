@@ -132,7 +132,7 @@ const GuestMainView = ({ navigation, route }) => {
         value={searchQuery}
         onIconPress={GetItems}
         onSubmitEditing={GetItems}
-        icon="camera"
+        icon="magnify"
       />
       <FlatList
         data={data}
