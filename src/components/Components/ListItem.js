@@ -7,7 +7,7 @@ const ListItem = ({ item }) => {
       style={item.status === 'Available' ? styles.item : styles.itemreserved}
     >
       <Image
-        source={images[item.itemID]}
+        source={images[item.img]}
         style={{
           width: 50,
           height: 50,

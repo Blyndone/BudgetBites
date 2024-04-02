@@ -95,7 +95,6 @@ const SellerMainView = ({ navigation, route }) => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}
       >
@@ -104,7 +103,7 @@ const SellerMainView = ({ navigation, route }) => {
             <Text style={styles.modalTitle}>{itemName}</Text>
             <View style={{ padding: 10 }}></View>
             <Image
-              source={images[itemID]}
+              source={images[itemImage]}
               style={{
                 width: 150,
                 height: 150,
@@ -125,7 +124,7 @@ const SellerMainView = ({ navigation, route }) => {
               <View style={{ padding: 10 }}></View>
               <Button
                 mode="contained"
-                title="Reserve"
+                title="Delete Listing"
                 color="#eb6b34"
                 onPress={() => setModalVisible(!modalVisible)}
               ></Button>

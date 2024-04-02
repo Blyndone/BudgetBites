@@ -119,7 +119,7 @@ const BuyerReservations = ({ navigation, route }) => {
             <Text style={styles.modalTitle}>{itemName}</Text>
             <View style={{ padding: 10 }}></View>
             <Image
-              source={images[itemID]}
+              source={images[itemImage]}
               style={{
                 width: 150,
                 height: 150,
