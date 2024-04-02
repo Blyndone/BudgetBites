@@ -224,6 +224,7 @@ app.post('/adduser', async (req, res) => {
     );
     res.status(200).json({
       message: 'User Created',
+      user_id: insertId,
     });
   } catch (err) {
     console.log(err);

@@ -11,6 +11,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
+import * as SecureStore from 'expo-secure-store';
+
 const Separator = () => <View style={styles.separator} />;
 const CreateAccount = ({ navigation, route }) => {
   const [name_text, setTextName] = React.useState('');
@@ -21,6 +23,12 @@ const CreateAccount = ({ navigation, route }) => {
   const [pass_text, setTextPass] = React.useState('');
   const [pass_text_verify, setTextPassVerify] = React.useState('');
   const [usertype_text, setUserType] = React.useState('customer');
+  const [userdata, setUserData] = React.useState({
+    user_name: '',
+    user_type: '',
+    user_id: '',
+  });
+
   let errormessage = '';
 
   const ErrorAlert = () =>
@@ -30,6 +38,103 @@ const CreateAccount = ({ navigation, route }) => {
       [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
     );
 
+  const SubmitAccount = async () => {
+    const joindate_text = new Date()
+      .toISOString()
+      .substr(0, 19)
+      .replace('T', ' ');
+    try {
+      const response = await fetch(`${REACT_APP_ADDRESS}/adduser`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name_text: name_text,
+          email_text: email_text,
+          phone_text: phone_text,
+          zip_text: zip_text,
+          user_text: user_text,
+          pass_text: pass_text,
+          usertype_text: usertype_text,
+          joindate_text: joindate_text,
+        }),
+      });
+      const res = await response.json();
+      console.log(res.user_id);
+      AuthNav();
+      return res.user_id;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  async function save(key, value) {
+    await SecureStore.setItemAsync(key, value);
+  }
+  const AuthNav = async () => {
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+
+      const raw = JSON.stringify({
+        username: user_text,
+        password: pass_text,
+      });
+
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+
+      fetch(`${REACT_APP_ADDRESS}/authenticate`, requestOptions)
+        .then((response) => {
+          res = response;
+          return response.text();
+        })
+        .then((response) => {
+          console.log(res.status);
+          if (res.status == 500) {
+            alert('USER NOT FOUND');
+            console.log(res.status);
+            return;
+          } else if (res.status == 401) {
+            alert('INVALID PASSWORD');
+            console.log(res.status);
+            return;
+          } else {
+            console.log('XXXX');
+            // console.log(response);
+            const token = JSON.parse(response).token;
+            const data = JSON.parse(response).data;
+            // console.log(data);
+            // console.log(user_text, token);
+            save(user_text, token);
+            if (data.user_type == 'seller') {
+              navigation.navigate({
+                name: 'Seller Main View',
+                params: { data },
+              });
+            } else if (data.user_type == 'buyer') {
+              navigation.navigate({
+                name: 'Buyer Main View',
+                params: { data },
+              });
+            } else {
+              navigation.navigate({
+                name: 'Guest Main View',
+                params: { data },
+              });
+            }
+          }
+        })
+
+        .catch((error) => console.error(error));
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <SafeAreaView style={styles.form}>
       <ScrollView>
@@ -146,29 +251,35 @@ const CreateAccount = ({ navigation, route }) => {
                 ErrorAlert();
                 return;
               }
+              SubmitAccount();
 
-              const joindate_text = new Date()
-                .toISOString()
-                .substr(0, 19)
-                .replace('T', ' ');
-              fetch(`${REACT_APP_ADDRESS}/adduser`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  name_text: name_text,
-                  email_text: email_text,
-                  phone_text: phone_text,
-                  zip_text: zip_text,
-                  user_text: user_text,
-                  pass_text: pass_text,
-                  usertype_text: usertype_text,
-                  joindate_text: joindate_text,
-                }),
-              });
-
-              navigation.navigate('Guest Main View');
+              // .then((res) => {
+              //   if (usertype_text == 'seller') {
+              //     navigation.navigate({
+              //       name: 'Seller Main View',
+              //       params: {
+              //         data: {
+              //           user_name: user_text,
+              //           user_type: usertype_text,
+              //           user_id: res,
+              //         },
+              //       },
+              //     });
+              //   } else if (usertype_text == 'buyer') {
+              //     navigation.navigate({
+              //       name: 'Buyer Main View',
+              //       params: {
+              //         data: {
+              //           user_name: user_text,
+              //           user_type: usertype_text,
+              //           user_id: res,
+              //         },
+              //       },
+              //     });
+              //   } else {
+              //     navigation.navigate('Guest Main View');
+              //   }
+              // });
             }}
           >
             {' '}
