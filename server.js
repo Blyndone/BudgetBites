@@ -86,9 +86,10 @@ app.post('/additem', async (req, res) => {
       img_select,
       category_text,
       msrp,
+      expiration_text,
     } = req.body;
     var tmpdate = new Date();
-    var duration = 2;
+    var duration = parseInt(expiration_text);
     tmpdate.setTime(tmpdate.getTime() + duration * 86400000);
     const expdate = tmpdate.toISOString().slice(0, 19).replace('T', ' ');
     const date = new Date().toISOString().slice(0, 19).replace('T', ' ');

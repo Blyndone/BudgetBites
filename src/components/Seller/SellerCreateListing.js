@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Modal, Button, FlatList, Pressable } from 'react-native';
+import { Modal, FlatList, Pressable } from 'react-native';
 import { View, StyleSheet, SafeAreaView, Image, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Text, TextInput, RadioButton } from 'react-native-paper';
+import { Text, TextInput, Button, RadioButton } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '../Persist';
 import ProfileButton from '../Components/ProfleButton';
@@ -139,34 +139,36 @@ const SellerCreateListing = ({ navigation, route }) => {
       </Modal>
 
       <View style={styles.textinput}>
-        <Text style={styles.titleText}>Food Listing</Text>
+        <View>
+          <Text style={styles.titleText}>Food Listing</Text>
+        </View>
         <Separator />
-        <Text style={styles.bodytext}>
-          Create a new food listing.
-          {'\n'}
-          {'\n'}
-          Input the item name, a short description, and the price below!
-          {'\n'}
-        </Text>
-
-        <View
-          style={{
-            padding: 10,
-          }}
-        >
-          <TextInput
-            label="Item Name"
-            value={name_text}
-            onChangeText={(name_text) => setName(name_text)}
-            style={styles.textinput}
-          />
-
-          <TextInput
-            label="Description"
-            value={desc_text}
-            onChangeText={(desc_text) => setDescription(desc_text)}
-            style={styles.textinput}
-          />
+        <View>
+          <Text style={styles.bodytext}>
+            Create a new food listing.
+            {'\n'}
+            {'\n'}
+            Input the item name, a short description, and the price below!
+            {'\n'}
+          </Text>
+        </View>
+        <View>
+          <View>
+            <TextInput
+              label="Item Name"
+              value={name_text}
+              onChangeText={(name_text) => setName(name_text)}
+              style={styles.textinput}
+            />
+          </View>
+          <View>
+            <TextInput
+              label="Description"
+              value={desc_text}
+              onChangeText={(desc_text) => setDescription(desc_text)}
+              style={styles.textinput}
+            />
+          </View>
 
           <View style={[styles.pricerow]}>
             <TextInput
@@ -174,12 +176,18 @@ const SellerCreateListing = ({ navigation, route }) => {
               value={price_text}
               onChangeText={(price_text) => {
                 setPrice(price_text);
-                setDiscountCalc(
-                  (
-                    parseFloat(price_text) *
-                    (1 - parseFloat(discount_text) / 100)
-                  ).toFixed(2),
-                );
+
+                if (price_text == 0 || discount_text == 0) {
+                  setDiscountCalc('');
+                } else {
+                  setDiscountCalc(
+                    (
+                      parseFloat(price_text) *
+                      (1 - parseFloat(discount_text) / 100)
+                    ).toFixed(2),
+                  );
+                }
+                2;
               }}
               style={styles.price}
               keyboardType="number-pad"
@@ -190,16 +198,28 @@ const SellerCreateListing = ({ navigation, route }) => {
               value={discount_text}
               onChangeText={(discount_text) => {
                 setDiscount(discount_text);
-                setDiscountCalc(
-                  (
-                    parseFloat(price_text) *
-                    (1 - parseFloat(discount_text) / 100)
-                  ).toFixed(2),
-                );
+                if (price_text == 0 || discount_text == 0) {
+                  setDiscountCalc('');
+                } else {
+                  setDiscountCalc(
+                    (
+                      parseFloat(price_text) *
+                      (1 - parseFloat(discount_text) / 100)
+                    ).toFixed(2),
+                  );
+                }
               }}
               style={styles.discount}
               keyboardType="number-pad"
               maxLength={10}
+            />
+          </View>
+          <View>
+            <TextInput
+              label="# of Days Until Expiration"
+              value={expiration_text}
+              onChangeText={(expiration_text) => setExpiration(expiration_text)}
+              keyboardType="number-pad"
             />
           </View>
 
@@ -210,9 +230,12 @@ const SellerCreateListing = ({ navigation, route }) => {
                 <Button
                   mode="contained"
                   title="Select an Image"
-                  color="#eb6b34"
+                  buttonColor="#eb6b34"
+                  labelStyle={{ fontSize: 15 }}
                   onPress={() => setModalVisible(!modalVisible)}
-                ></Button>
+                >
+                  Select an Image
+                </Button>
               </View>
             </View>
             <View style={{ padding: 10 }}></View>
@@ -253,11 +276,11 @@ const SellerCreateListing = ({ navigation, route }) => {
       </View>
 
       <View>
-        <Separator />
         <Button
           mode="contained"
           title="Submit"
-          color="#eb6b34"
+          buttonColor="#eb6b34"
+          labelStyle={{ fontSize: 20 }}
           onPress={() => {
             const price_discounted = (
               parseFloat(price_text) *
@@ -294,6 +317,7 @@ const SellerCreateListing = ({ navigation, route }) => {
                 user_id: userdata.user_id,
                 img_select: img_select,
                 category_text: category_text,
+                expiration_text: expiration_text,
               }),
             });
 
@@ -302,9 +326,9 @@ const SellerCreateListing = ({ navigation, route }) => {
               params: { userdata },
             });
           }}
-        ></Button>
-
-        <Separator />
+        >
+          Submit
+        </Button>
       </View>
     </SafeAreaView>
   );
@@ -314,7 +338,7 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     backgroundColor: 'teal',
-    justifyContent: 'top',
+
     padding: 25,
   },
   centeredView: {

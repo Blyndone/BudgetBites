@@ -122,7 +122,7 @@ const BuyerReservations = ({ navigation, route }) => {
             <Text style={styles.modalTitle}>{itemName}</Text>
             <Text style={styles.modalTitle}>{itemLocation}</Text>
             <Text style={itemDuration > 10 ? styles.explong : styles.expshort}>
-              {itemDuration} Days Remaining!
+              {itemDuration + 1} Days Remaining!
             </Text>
             <View style={{ padding: 10 }}></View>
             <Image

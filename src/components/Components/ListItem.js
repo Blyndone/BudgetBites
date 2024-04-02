@@ -13,7 +13,7 @@ const ListItem = ({ item }) => {
         <Image source={images[item.img]} style={styles.img} />
 
         <Text style={duration > 10 ? styles.explong : styles.expshort}>
-          {duration} Days!
+          {duration + 1} Days!
         </Text>
       </View>
       <View style={styles.titleview}>
@@ -36,7 +36,7 @@ const ListItem = ({ item }) => {
           <Text style={styles.msrp}>${item.msrp}</Text>
         </View>
         <View>
-          {/* <View style={{ padding: 10 }}></View> */}
+          <View style={{ padding: 8 }}></View>
           <Text style={styles.price}> Price</Text>
           <Text style={styles.price}>${item.price}</Text>
         </View>
