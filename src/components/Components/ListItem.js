@@ -33,7 +33,7 @@ const ListItem = ({ item }) => {
       <View style={styles.priceview}>
         <View>
           <Text style={styles.msrp}>MSRP</Text>
-          <Text style={styles.msrp}>${item.price}</Text>
+          <Text style={styles.msrp}>${item.msrp}</Text>
         </View>
         <View>
           {/* <View style={{ padding: 10 }}></View> */}

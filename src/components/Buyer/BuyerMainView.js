@@ -65,8 +65,10 @@ const BuyerMainView = ({ navigation, route }) => {
   const [itemDescripton, setItemDescription] = useState(0);
   const [itemImage, setItemImage] = useState(0);
   const [itemPrice, setItemPrice] = useState(0);
+
   const [itemID, setItemID] = useState(0);
   const [itemLocation, setItemLocation] = useState('');
+  const [itemDuration, setDuration] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -120,6 +122,9 @@ const BuyerMainView = ({ navigation, route }) => {
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>{itemName}</Text>
             <Text style={styles.modalTitle}>{itemLocation}</Text>
+            <Text style={itemDuration > 10 ? styles.explong : styles.expshort}>
+              {itemDuration} Days Remaining!
+            </Text>
 
             <View style={{ padding: 10 }}></View>
             <Image
@@ -193,12 +198,16 @@ const BuyerMainView = ({ navigation, route }) => {
           return (
             <Pressable
               onPress={() => {
+                const exp = new Date(item.expiration);
+                const cur = new Date();
+
                 setItemName(item.name);
                 setItemImage(item.img);
                 setItemID(item.itemID);
                 setItemDescription(item.description);
                 setItemPrice(item.price);
                 setItemLocation(item.location);
+                setDuration(parseInt((exp - cur) / 86400000));
                 setModalVisible(true);
               }}
             >
@@ -330,6 +339,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     right: 10,
+  },
+  explong: {
+    textAlign: 'center',
+    // flexBasis: 120,
+
+    textDecorationStyle: 'solid',
+    fontWeight: 'bold',
+    color: 'green',
+    fontSize: 20,
+  },
+  expshort: {
+    textAlign: 'center',
+    // flexBasis: 120,
+
+    textDecorationStyle: 'solid',
+    fontWeight: 'bold',
+    color: 'red',
+    fontSize: 20,
   },
   bottomButton: {},
 });

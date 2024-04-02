@@ -76,6 +76,7 @@ connection.query(
 //==================
 app.post('/additem', async (req, res) => {
   console.log('AddItems');
+
   try {
     const {
       name_text,
@@ -84,13 +85,18 @@ app.post('/additem', async (req, res) => {
       user_id,
       img_select,
       category_text,
+      msrp,
     } = req.body;
+    var tmpdate = new Date();
+    var duration = 2;
+    tmpdate.setTime(tmpdate.getTime() + duration * 86400000);
+    const expdate = tmpdate.toISOString().slice(0, 19).replace('T', ' ');
     const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     const [{ insertId }] = await connection.promise().query(
-      `INSERT INTO items (name, description, category, price, count, expiration, location, status, img, listeddate)
+      `INSERT INTO items (name, description, category, msrp, price, count, expiration, location, status, img, listeddate)
           VALUES  
-          (?,?, ?, ?, 1, '2024-12-31', (SELECT locationname FROM users WHERE userID = ?), 'Available', ?, ?);
+          (?,?, ?, ?, ?, 1, ?, (SELECT locationname FROM users WHERE userID = ?), 'Available', ?, ?);
           
         INSERT INTO listing (itemID, sellerID, createDate)
           VALUES  
@@ -101,7 +107,9 @@ app.post('/additem', async (req, res) => {
         name_text,
         desc_text,
         category_text,
+        msrp,
         price_text,
+        expdate,
         user_id,
         img_select,
         date,
@@ -444,7 +452,7 @@ app.get('/listing/:username', async (req, res) => {
   try {
     const { username } = req.params;
 
-    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status, I.expiration, I.location, I.category FROM 
+    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status, I.expiration, I.location, I.category, I.msrp FROM 
     items I JOIN 
     listing L JOIN users U ON U.userID = L.sellerID
     ON I.itemid = L.itemID

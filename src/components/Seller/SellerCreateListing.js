@@ -63,12 +63,11 @@ const SellerCreateListing = ({ navigation, route }) => {
     { label: 'Veggies', value: 'Veggies' },
     { label: 'Dairy', value: 'Dairy' },
   ]);
+  const [expiration_text, setExpiration] = useState('');
+  const [discount_text, setDiscount] = useState('');
+  const [discount_calc, setDiscountCalc] = useState('');
+
   const [modalVisible, setModalVisible] = useState(false);
-  // const DismissKeyboard = ({ children }) => (
-  //   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-  //     {children}
-  //   </TouchableWithoutFeedback>
-  // );
 
   const SingleImage = ({ image, size }) => {
     return (
@@ -155,32 +154,54 @@ const SellerCreateListing = ({ navigation, route }) => {
             padding: 10,
           }}
         >
-          {/* <DismissKeyboard> */}
           <TextInput
             label="Item Name"
             value={name_text}
             onChangeText={(name_text) => setName(name_text)}
             style={styles.textinput}
           />
-          {/* </DismissKeyboard> */}
-          {/* <DismissKeyboard> */}
+
           <TextInput
             label="Description"
             value={desc_text}
             onChangeText={(desc_text) => setDescription(desc_text)}
             style={styles.textinput}
           />
-          {/* </DismissKeyboard> */}
-          {/* <DismissKeyboard> */}
-          <TextInput
-            label="Price"
-            value={price_text}
-            onChangeText={(price_text) => setPrice(price_text)}
-            style={styles.textinput}
-            keyboardType="number-pad"
-            maxLength={10}
-          />
-          {/* </DismissKeyboard> */}
+
+          <View style={[styles.pricerow]}>
+            <TextInput
+              label="Price"
+              value={price_text}
+              onChangeText={(price_text) => {
+                setPrice(price_text);
+                setDiscountCalc(
+                  (
+                    parseFloat(price_text) *
+                    (1 - parseFloat(discount_text) / 100)
+                  ).toFixed(2),
+                );
+              }}
+              style={styles.price}
+              keyboardType="number-pad"
+              maxLength={10}
+            />
+            <TextInput
+              label="Discount %"
+              value={discount_text}
+              onChangeText={(discount_text) => {
+                setDiscount(discount_text);
+                setDiscountCalc(
+                  (
+                    parseFloat(price_text) *
+                    (1 - parseFloat(discount_text) / 100)
+                  ).toFixed(2),
+                );
+              }}
+              style={styles.discount}
+              keyboardType="number-pad"
+              maxLength={10}
+            />
+          </View>
 
           <View style={{ flexDirection: 'row' }}>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -195,31 +216,37 @@ const SellerCreateListing = ({ navigation, route }) => {
               </View>
             </View>
             <View style={{ padding: 10 }}></View>
-            <View style={{ alignitems: 'center', justifycontent: 'center' }}>
-              <DropDownPicker
-                style={{
-                  backgroundColor: '#E7E0EC',
-                  borderColor: '#00000000',
-                  borderTopEndRadius: 5,
-                  borderTopStartRadius: 5,
-                  borderRadius: 0,
-                  width: '73%',
-                  alignItems: 'center',
-                }}
-                dropDownContainerStyle={{
-                  backgroundColor: '#decceb',
-                  borderColor: '#00000000',
-                  borderTopColor: 'black',
-                  width: '73%',
-                }}
-                open={open}
-                value={category_text}
-                items={items}
-                setOpen={setOpen}
-                setValue={setCategory}
-                setItems={setItems}
-                placeholder={'Choose a Category'}
-              />
+            <View>
+              <View>
+                <DropDownPicker
+                  style={{
+                    backgroundColor: '#E7E0EC',
+                    borderColor: '#00000000',
+                    borderTopEndRadius: 5,
+                    borderTopStartRadius: 5,
+                    borderRadius: 0,
+                    width: '73%',
+                    alignItems: 'center',
+                  }}
+                  dropDownContainerStyle={{
+                    backgroundColor: '#decceb',
+                    borderColor: '#00000000',
+                    borderTopColor: 'black',
+                    width: '73%',
+                  }}
+                  open={open}
+                  value={category_text}
+                  items={items}
+                  setOpen={setOpen}
+                  setValue={setCategory}
+                  setItems={setItems}
+                  placeholder={'Choose a Category'}
+                />
+              </View>
+              <View style={styles.discountrow}>
+                <Text style={styles.discounttext}>Discount Price</Text>
+                <Text style={styles.discounttext}>{discount_calc}</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -232,16 +259,23 @@ const SellerCreateListing = ({ navigation, route }) => {
           title="Submit"
           color="#eb6b34"
           onPress={() => {
+            const price_discounted = (
+              parseFloat(price_text) *
+              (1 - parseFloat(discount_text) / 100)
+            ).toFixed(2);
+
+            console.log(price_discounted);
             if (
               name_text.length == 0 ||
               desc_text.length == 0 ||
-              price_text.length == 0
+              price_text.length == 0 ||
+              discount_text == 0
             ) {
               alert('Please Input an Item');
               return;
             } else {
               try {
-                price_text = parseFloat(price_text).toFixed(2);
+                // price_text = parseFloat(price_text).toFixed(2);
               } catch (e) {
                 price_text = '00.00';
               }
@@ -255,7 +289,8 @@ const SellerCreateListing = ({ navigation, route }) => {
               body: JSON.stringify({
                 name_text: name_text,
                 desc_text: desc_text,
-                price_text: price_text,
+                price_text: price_discounted,
+                msrp: price_text,
                 user_id: userdata.user_id,
                 img_select: img_select,
                 category_text: category_text,
@@ -280,7 +315,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'teal',
     justifyContent: 'top',
-    padding: 20,
+    padding: 25,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
   },
   titleText: {
     fontSize: 30,
@@ -305,11 +346,30 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 'bold',
   },
-  centeredView: {
+  pricerow: {
+    justifyContent: 'left',
+
+    flexDirection: 'row',
+  },
+  price: {
+    flex: 1,
+    margin: 5,
+  },
+  discount: {
+    flex: 1,
+    margin: 5,
+  },
+  discountrow: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
+  },
+  discounttext: {
+    margin: 5,
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#eb6b34',
+    textDecorationLine: 'underline',
   },
   modalView: {
     margin: 20,

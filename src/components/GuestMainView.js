@@ -90,6 +90,10 @@ const GuestMainView = ({ navigation, route }) => {
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>{itemName}</Text>
             <Text style={styles.modalTitle}>{itemLocation}</Text>
+            <Text style={itemDuration > 10 ? styles.explong : styles.expshort}>
+              {itemDuration} Days Remaining!
+            </Text>
+
             <View style={{ padding: 10 }}></View>
             <Image
               source={images[itemImage]}
@@ -136,6 +140,7 @@ const GuestMainView = ({ navigation, route }) => {
       <FlatList
         data={data}
         keyExtractor={({ itemID }) => itemID}
+        ListFooterComponent={<View style={{ padding: 25 }}></View>}
         renderItem={({ item }) => {
           return (
             <Pressable
@@ -261,6 +266,24 @@ const styles = StyleSheet.create({
   button: {
     color: '#f194ff',
     backgroundColor: '#f194ff',
+  },
+  explong: {
+    textAlign: 'center',
+    // flexBasis: 120,
+
+    textDecorationStyle: 'solid',
+    fontWeight: 'bold',
+    color: 'green',
+    fontSize: 20,
+  },
+  expshort: {
+    textAlign: 'center',
+    // flexBasis: 120,
+
+    textDecorationStyle: 'solid',
+    fontWeight: 'bold',
+    color: 'red',
+    fontSize: 20,
   },
 });
 

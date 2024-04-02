@@ -32,6 +32,7 @@ const ItemsList = () => {
           <FlatList
             data={data}
             keyExtractor={({ itemID }) => itemID}
+            ListFooterComponent={<View style={{ padding: 25 }}></View>}
             renderItem={({ item }) => (
               <Text>
                 {item.name}: {item.description}
