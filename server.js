@@ -411,7 +411,7 @@ app.get('/reservations/:username', async (req, res) => {
   try {
     const { username } = req.params;
 
-    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status, I.location FROM 
+    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status, I.location, I.expiration, I.category FROM 
     items I JOIN 
     reserved R JOIN users U ON U.userID = R.buyerID
     ON I.itemid = R.itemID
@@ -444,7 +444,7 @@ app.get('/listing/:username', async (req, res) => {
   try {
     const { username } = req.params;
 
-    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status FROM 
+    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status, I.expiration, I.location, I.category FROM 
     items I JOIN 
     listing L JOIN users U ON U.userID = L.sellerID
     ON I.itemid = L.itemID

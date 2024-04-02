@@ -27,6 +27,7 @@ const GuestMainView = ({ navigation, route }) => {
   const [itemPrice, setItemPrice] = useState(0);
   const [itemID, setItemID] = useState(0);
   const [itemLocation, setItemLocation] = useState('');
+  const [itemDuration, setDuration] = useState(0);
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -139,12 +140,16 @@ const GuestMainView = ({ navigation, route }) => {
           return (
             <Pressable
               onPress={() => {
+                const exp = new Date(item.expiration);
+                const cur = new Date();
+
                 setItemName(item.name);
                 setItemImage(item.img);
                 setItemID(item.itemID);
                 setItemDescription(item.description);
                 setItemPrice(item.price);
                 setItemLocation(item.location);
+                setDuration(parseInt((exp - cur) / 86400000));
                 setModalVisible(true);
               }}
             >

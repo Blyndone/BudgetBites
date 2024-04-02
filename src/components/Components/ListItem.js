@@ -2,12 +2,19 @@ import { Pressable, Text, StyleSheet, View, Image } from 'react-native';
 import images from '../../../assets/testimages/ImageIndex';
 
 const ListItem = ({ item }) => {
+  const exp = new Date(item.expiration);
+  const cur = new Date();
+  const duration = parseInt((exp - cur) / 86400000);
   return (
     <View
       style={item.status === 'Available' ? styles.item : styles.itemreserved}
     >
       <View style={styles.imgview}>
         <Image source={images[item.img]} style={styles.img} />
+
+        <Text style={duration > 10 ? styles.explong : styles.expshort}>
+          {duration} Days!
+        </Text>
       </View>
       <View style={styles.titleview}>
         <Text style={styles.title}>{item.name}</Text>
@@ -91,6 +98,23 @@ const styles = StyleSheet.create({
   img: {
     width: 50,
     height: 50,
+  },
+  explong: {
+    textAlign: 'center',
+    // flexBasis: 120,
+    flexGrow: 1,
+
+    textDecorationStyle: 'solid',
+    fontWeight: 'bold',
+    color: 'green',
+  },
+  expshort: {
+    textAlign: 'center',
+    // flexBasis: 120,
+    flexGrow: 1,
+    textDecorationStyle: 'solid',
+    fontWeight: 'bold',
+    color: 'red',
   },
   title: {
     textAlign: 'left',
