@@ -77,20 +77,35 @@ connection.query(
 app.post('/additem', async (req, res) => {
   console.log('AddItems');
   try {
-    const { name_text, desc_text, price_text, user_id, img_select } = req.body;
+    const {
+      name_text,
+      desc_text,
+      price_text,
+      user_id,
+      img_select,
+      category_text,
+    } = req.body;
     const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     const [{ insertId }] = await connection.promise().query(
       `INSERT INTO items (name, description, category, price, count, expiration, location, status, img, listeddate)
           VALUES  
-          (?,?, 'CATEGORY', ?, 1, '2024-12-31', 'LOCATION', 'Available', ?, '2024-01-01');
+          (?,?, ?, ?, 1, '2024-12-31', 'LOCATION', 'Available', ?, '2024-01-01');
           
         INSERT INTO listing (itemID, sellerID, createDate)
           VALUES  
           ((SELECT LAST_INSERT_ID()),?,?)
           
           `,
-      [name_text, desc_text, price_text, img_select, user_id, date],
+      [
+        name_text,
+        desc_text,
+        category_text,
+        price_text,
+        img_select,
+        user_id,
+        date,
+      ],
     );
     // .query(
     //   `INSERT INTO listing (itemID, sellerID, createDate)

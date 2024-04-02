@@ -9,6 +9,7 @@ import { REACT_APP_ADDRESS } from '@env';
 import Auth from '../Persist';
 import ProfileButton from '../Components/ProfleButton';
 import images from '../../../assets/testimages/ImageIndex';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const Separator = () => <View style={styles.separator} />;
 const SellerCreateListing = ({ navigation, route }) => {
@@ -16,6 +17,7 @@ const SellerCreateListing = ({ navigation, route }) => {
   // USER AUTH AND PAGE TYPE
   const pagetype = 'seller';
   const [userdata, setUserData] = React.useState('');
+
   useEffect(() => {
     Auth(route.params.data.user_name).then((resp) => {
       try {
@@ -51,7 +53,15 @@ const SellerCreateListing = ({ navigation, route }) => {
   var [desc_text, setDescription] = React.useState('');
   var [price_text, setPrice] = React.useState('');
   var [img_select, setImage] = React.useState(1);
-
+  const [open, setOpen] = useState(false);
+  const [category_text, setCategory] = useState(null);
+  const [items, setItems] = useState([
+    { label: 'Beef', value: 'Beef' },
+    { label: 'Poultry', value: 'Poultry' },
+    { label: 'Fish', value: 'Fish' },
+    { label: 'Veggies', value: 'Veggies' },
+    { label: 'Dairy', value: 'Dairy' },
+  ]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const SingleImage = ({ image, size }) => {
@@ -161,16 +171,44 @@ const SellerCreateListing = ({ navigation, route }) => {
             keyboardType="number-pad"
             maxLength={10}
           />
-          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <SingleImage image={img_select} size={80}></SingleImage>
-            <View style={{ padding: 20 }}></View>
+
+          <View style={{ flexDirection: 'row' }}>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Button
-                mode="contained"
-                title="Select an Image"
-                color="#eb6b34"
-                onPress={() => setModalVisible(!modalVisible)}
-              ></Button>
+              <SingleImage image={img_select} size={80}></SingleImage>
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Button
+                  mode="contained"
+                  title="Select an Image"
+                  color="#eb6b34"
+                  onPress={() => setModalVisible(!modalVisible)}
+                ></Button>
+              </View>
+            </View>
+            <View style={{ padding: 10 }}></View>
+            <View style={{ alignitems: 'center', justifycontent: 'center' }}>
+              <DropDownPicker
+                style={{
+                  backgroundColor: '#E7E0EC',
+                  borderColor: '#00000000',
+                  borderTopEndRadius: 5,
+                  borderTopStartRadius: 5,
+                  borderRadius: 0,
+                  width: '73%',
+                  alignItems: 'center',
+                }}
+                dropDownContainerStyle={{
+                  backgroundColor: '#decceb',
+                  borderColor: '#00000000',
+                  borderTopColor: 'black',
+                }}
+                open={open}
+                value={category_text}
+                items={items}
+                setOpen={setOpen}
+                setValue={setCategory}
+                setItems={setItems}
+                placeholder={'Choose a Category'}
+              />
             </View>
           </View>
         </View>
@@ -180,8 +218,8 @@ const SellerCreateListing = ({ navigation, route }) => {
         <Separator />
         <Button
           mode="contained"
-          title="List"
-          buttonColor="#eb6b34"
+          title="Submit"
+          color="#eb6b34"
           onPress={() => {
             if (
               name_text.length == 0 ||
@@ -209,6 +247,7 @@ const SellerCreateListing = ({ navigation, route }) => {
                 price_text: price_text,
                 user_id: userdata.user_id,
                 img_select: img_select,
+                category_text: category_text,
               }),
             });
 
@@ -217,10 +256,7 @@ const SellerCreateListing = ({ navigation, route }) => {
               params: { userdata },
             });
           }}
-        >
-          {' '}
-          Submit{' '}
-        </Button>
+        ></Button>
 
         <Separator />
       </View>
