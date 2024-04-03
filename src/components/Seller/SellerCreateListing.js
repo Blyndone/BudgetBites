@@ -58,6 +58,7 @@ const SellerCreateListing = ({ navigation, route }) => {
   const [items, setItems] = useState([
     { label: 'Beef', value: 'Beef' },
     { label: 'Poultry', value: 'Poultry' },
+    { label: 'Pork', value: 'Pork' },
     { label: 'Fish', value: 'Fish' },
     { label: 'Veggies', value: 'Veggies' },
     { label: 'Dairy', value: 'Dairy' },

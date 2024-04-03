@@ -34,15 +34,24 @@ const GuestMainView = ({ navigation, route }) => {
   const [searchQuery, setSearchQuery] = React.useState('');
   // Search config
   // ==================
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+  const [isNear, setIsNear] = React.useState(false);
+  const [isSoon, setIsSoon] = React.useState(false);
 
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  const onToggleNear = () => {
+    setIsNear(!isNear);
+  };
+  const onToggleSoon = () => {
+    setIsSoon(!isSoon);
+  };
+
   const [open, setOpen] = useState(false);
+
   const [category_text, setCategory] = useState(null);
   const [items, setItems] = useState([
     { label: 'All', value: 'All' },
     { label: 'Beef', value: 'Beef' },
     { label: 'Poultry', value: 'Poultry' },
+    { label: 'Pork', value: 'Pork' },
     { label: 'Fish', value: 'Fish' },
     { label: 'Veggies', value: 'Veggies' },
     { label: 'Dairy', value: 'Dairy' },
@@ -63,9 +72,10 @@ const GuestMainView = ({ navigation, route }) => {
       const json = await response.json();
       console.log(searchQuery);
       console.log(searchQuery.length);
+      let results = Object.values(json.items);
 
       if (!(searchQuery.length === 0)) {
-        let results = Object.values(json.items).filter(
+        results = results.filter(
           (item) =>
             String(item.name)
               .toLowerCase()
@@ -74,67 +84,59 @@ const GuestMainView = ({ navigation, route }) => {
               .toLowerCase()
               .includes(searchQuery.toLowerCase()),
         );
-        setData(results);
-      } else {
-        setData(json.items);
       }
+
+      if (isSoon) {
+        results = filterSoon(results);
+      }
+      if (isNear) {
+        console.log('NEAR');
+      }
+
+      setData(results);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
   };
+  const filterSoon = (results) => {
+    const cur = new Date();
+    results = results.filter((item) => {
+      const exp = new Date(item.expiration);
+      return parseInt((exp - cur) / 86400000) < 10;
+    });
+    return results;
+  };
+
+  const filterNear = (results) => {
+    return results;
+  };
 
   useEffect(() => {
     GetItems();
   }, []);
+  useEffect(() => {
+    GetItems();
+  }, [isNear]);
+
+  useEffect(() => {
+    GetItems();
+  }, [isSoon]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalTitle}>{itemName}</Text>
-            <Text style={styles.modalTitle}>{itemLocation}</Text>
-            <Text style={itemDuration > 10 ? styles.explong : styles.expshort}>
-              {itemDuration + 1} Days Remaining!
-            </Text>
-
-            <View style={{ padding: 10 }}></View>
-            <Image
-              source={images[itemImage]}
-              style={{
-                width: 150,
-                height: 150,
-              }}
-            />
-            <View style={{ padding: 10 }}></View>
-            <Text style={styles.modalText}>{itemDescripton}</Text>
-            <View style={{ padding: 10 }}></View>
-            <Text style={styles.modalPrice}>${itemPrice}</Text>
-            <View style={{ padding: 10 }}></View>
-            <View style={{ flexDirection: 'row' }}>
-              <Button
-                mode="contained"
-                title="Close"
-                buttonColor="#eb6b34"
-                labelStyle={{ fontSize: 16, color: 'black' }}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                Close
-              </Button>
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <ItemModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        itemName={itemName}
+        itemImage={itemImage}
+        itemDescripton={itemDescripton}
+        itemPrice={itemPrice}
+        itemID={itemID}
+        itemLocation={itemLocation}
+        itemDuration={itemDuration}
+      />
 
       <Text
         style={{
@@ -153,25 +155,28 @@ const GuestMainView = ({ navigation, route }) => {
         onIconPress={GetItems}
         onSubmitEditing={GetItems}
         icon="magnify"
+        contain
+        style={{
+          height: 38,
+          borderColor: 'teal',
+          borderWidth: 1,
+          backgroundColor: 'white',
+          margin: 6,
+        }}
+        inputStyle={{
+          minHeight: 0, // Add this
+        }}
       />
       <View style={styles.searchconfigcontainer}>
-        <View>
-          <Switch
-            color="#eb6b34"
-            value={isSwitchOn}
-            onValueChange={onToggleSwitch}
-          />
-          <Text>Near Me Only</Text>
+        <View style={styles.searchconfigswitch}>
+          <Switch color="#eb6b34" value={isNear} onValueChange={onToggleNear} />
+          <Text style={styles.searchconfigtext}>Nearby Me</Text>
         </View>
-        <View>
-          <Switch
-            color="#eb6b34"
-            value={isSwitchOn}
-            onValueChange={onToggleSwitch}
-          />
-          <Text>Ending Soon</Text>
+        <View style={styles.searchconfigswitch}>
+          <Switch color="#eb6b34" value={isSoon} onValueChange={onToggleSoon} />
+          <Text style={styles.searchconfigtext}>Expiring Soon</Text>
         </View>
-        <View>
+        <View style={styles.searchconfigdropdown}>
           <DropDownPicker
             style={{
               backgroundColor: '#E7E0EC',
@@ -179,17 +184,11 @@ const GuestMainView = ({ navigation, route }) => {
               borderTopEndRadius: 5,
               borderTopStartRadius: 5,
               borderRadius: 0,
-              width: 110,
-              height: 45,
-
-              alignItems: 'center',
-              margin: 5,
             }}
             dropDownContainerStyle={{
               backgroundColor: '#decceb',
               borderColor: '#00000000',
               borderTopColor: 'black',
-              width: 100,
             }}
             open={open}
             value={category_text}
@@ -355,8 +354,83 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 45,
+
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+  },
+  searchconfigswitch: {
+    flex: 0.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  searchconfigtext: {
+    fontWeight: 'bold',
+  },
+  searchconfigdropdown: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 30,
   },
 });
+
+const ItemModal = ({
+  modalVisible,
+  setModalVisible,
+  itemName,
+  itemImage,
+  itemDescripton,
+  itemPrice,
+  itemID,
+  itemLocation,
+  itemDuration,
+}) => {
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        Alert.alert('Modal has been closed.');
+        setModalVisible(!modalVisible);
+      }}
+    >
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Text style={styles.modalTitle}>{itemName}</Text>
+          <Text style={styles.modalTitle}>{itemLocation}</Text>
+          <Text style={itemDuration > 10 ? styles.explong : styles.expshort}>
+            {itemDuration + 1} Days Remaining!
+          </Text>
+
+          <View style={{ padding: 10 }}></View>
+          <Image
+            source={images[itemImage]}
+            style={{
+              width: 150,
+              height: 150,
+            }}
+          />
+          <View style={{ padding: 10 }}></View>
+          <Text style={styles.modalText}>{itemDescripton}</Text>
+          <View style={{ padding: 10 }}></View>
+          <Text style={styles.modalPrice}>${itemPrice}</Text>
+          <View style={{ padding: 10 }}></View>
+          <View style={{ flexDirection: 'row' }}>
+            <Button
+              mode="contained"
+              title="Close"
+              buttonColor="#eb6b34"
+              labelStyle={{ fontSize: 16, color: 'black' }}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              Close
+            </Button>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+};
 
 export default GuestMainView;
