@@ -81,6 +81,8 @@ const Login = ({ navigation }) => {
             value={pass_text}
             onChangeText={(pass_text) => setTextPass(pass_text)}
             style={styles.textinput}
+            textContentType="password"
+            secureTextEntry={true}
           />
         </View>
       </View>
