@@ -124,7 +124,9 @@ const SellerMainView = ({ navigation, route }) => {
                 buttonColor="#eb6b34"
                 labelStyle={{ fontSize: 16, color: 'black' }}
                 onPress={() => setModalVisible(!modalVisible)}
-              >Close</Button>
+              >
+                Close
+              </Button>
               <View style={{ padding: 10 }}></View>
               <Button
                 mode="contained"
@@ -132,7 +134,9 @@ const SellerMainView = ({ navigation, route }) => {
                 buttonColor="#eb6b34"
                 labelStyle={{ fontSize: 16, color: 'black' }}
                 onPress={() => setModalVisible(!modalVisible)}
-              >Delete Listing</Button>
+              >
+                Delete Listing
+              </Button>
             </View>
           </View>
         </View>

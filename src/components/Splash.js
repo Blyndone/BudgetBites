@@ -4,7 +4,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text } from 'react-native-paper';
 
-const Separator = () => <View style={styles.separator} />;
 const Splash = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
@@ -17,39 +16,39 @@ const Splash = ({ navigation }) => {
       />
       <Text style={styles.titleText}>Welcome to Budget Bites!</Text>
       <View>
-        <Separator />
-        <Button
-          mode="contained"
-          title="Login"
-          buttonColor="#eb6b34"
-          labelStyle={{ fontSize: 16, color: 'black' }}
-          onPress={() => navigation.navigate('Login')}
-        >
-          {' '}
-          Login{' '}
-        </Button>
-
-        <Separator />
-        <Button
-          mode="contained"
-          title="CreateAccount"
-          buttonColor="#eb6b34"
-          labelStyle={{ fontSize: 16, color: 'black' }}
-          onPress={() => navigation.navigate('Account Creation')}
-        >
-          Create Account
-        </Button>
-        <Separator />
-        <Button
-          mode="contained"
-          title="Guest Login"
-          buttonColor="#eb6b34"
-          labelStyle={{ fontSize: 16, color: 'black' }}
-          onPress={() => navigation.navigate('Guest Main View')}
-        >
-          Guest Login
-        </Button>
-        <Separator />
+        <View style={styles.buttoncontainer}>
+          <Button
+            mode="contained"
+            title="Login"
+            buttonColor="#eb6b34"
+            labelStyle={{ fontSize: 16, color: 'black' }}
+            onPress={() => navigation.navigate('Login')}
+          >
+            Login
+          </Button>
+        </View>
+        <View style={styles.buttoncontainer}>
+          <Button
+            mode="contained"
+            title="CreateAccount"
+            buttonColor="#eb6b34"
+            labelStyle={{ fontSize: 16, color: 'black' }}
+            onPress={() => navigation.navigate('Account Creation')}
+          >
+            Create Account
+          </Button>
+        </View>
+        <View style={styles.buttoncontainer}>
+          <Button
+            mode="contained"
+            title="Guest Login"
+            buttonColor="#eb6b34"
+            labelStyle={{ fontSize: 16, color: 'black' }}
+            onPress={() => navigation.navigate('Guest Main View')}
+          >
+            Guest Login
+          </Button>
+        </View>
         {/* <Button
           mode="contained"
           title="Create Listing"
@@ -58,7 +57,6 @@ const Splash = ({ navigation }) => {
         >
           Create Listing
         </Button> */}
-        <Separator />
       </View>
     </SafeAreaView>
   );
@@ -71,6 +69,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  buttoncontainer: { margin: 10 },
   titleText: {
     fontSize: 50,
     textAlign: 'center',

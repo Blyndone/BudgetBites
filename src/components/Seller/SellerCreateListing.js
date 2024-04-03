@@ -12,7 +12,6 @@ import images from '../../../assets/testimages/ImageIndex';
 import DropDownPicker from 'react-native-dropdown-picker';
 // import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 
-const Separator = () => <View style={styles.separator} />;
 const SellerCreateListing = ({ navigation, route }) => {
   //=========================
   // USER AUTH AND PAGE TYPE
@@ -143,12 +142,12 @@ const SellerCreateListing = ({ navigation, route }) => {
           </View>
         </View>
       </Modal>
-      <ScrollView>
-        <View style={styles.textinput}>
+      <ScrollView style={{ flex: 1 }}>
+        <View style={styles.textcontainer}>
           <View>
             <Text style={styles.titleText}>Food Listing</Text>
           </View>
-          <Separator />
+
           <View>
             <Text style={styles.bodytext}>
               Create a new food listing.
@@ -262,6 +261,7 @@ const SellerCreateListing = ({ navigation, route }) => {
                       width: '70%',
                       alignItems: 'center',
                       margin: 5,
+                      height: 45,
                     }}
                     dropDownContainerStyle={{
                       backgroundColor: '#decceb',
@@ -276,6 +276,7 @@ const SellerCreateListing = ({ navigation, route }) => {
                     setValue={setCategory}
                     setItems={setItems}
                     listMode="SCROLLVIEW"
+                    dropDownDirection="TOP"
                     placeholder={'Choose a Category'}
                   />
                 </View>
@@ -372,17 +373,19 @@ const styles = StyleSheet.create({
     color: '#f194ff',
     backgroundColor: '#f194ff',
   },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
+
   textinput: {
+    margin: 10,
+    height: 45,
+  },
+  textcontainer: {
     margin: 5,
+    flex: 1,
   },
   bodytext: {
     fontSize: 15,
     fontWeight: 'bold',
+    margin: 10,
   },
   pricerow: {
     justifyContent: 'left',
@@ -392,10 +395,12 @@ const styles = StyleSheet.create({
   price: {
     flex: 1,
     margin: 5,
+    height: 45,
   },
   discount: {
     flex: 1,
     margin: 5,
+    height: 45,
   },
   discountrow: {
     flex: 1,

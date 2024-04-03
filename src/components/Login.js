@@ -32,9 +32,23 @@ const Login = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.form}>
+      <View
+        style={{
+          alignContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Image
+          source={require('../../assets/BB-logo.png')}
+          style={{
+            width: 200,
+            height: 200,
+          }}
+        />
+      </View>
       <View style={styles.textinput}>
         <Text style={styles.titleText}>Login</Text>
-        <Separator />
+
         <Text style={styles.bodytext}>
           Enter details to login.
           {'\n'}
@@ -88,80 +102,90 @@ const Login = ({ navigation }) => {
       </View>
 
       <View>
-        <Separator />
-        <Button
-          mode="contained"
-          title="List"
-          buttonColor="#eb6b34"
-          labelStyle={{ fontSize: 18, color: 'black' }}
-          onPress={() => {
-            try {
-              const myHeaders = new Headers();
-              myHeaders.append('Content-Type', 'application/json');
+        <View style={styles.buttoncontainer}>
+          <Button
+            mode="contained"
+            title="List"
+            buttonColor="#eb6b34"
+            labelStyle={{ fontSize: 18, color: 'black' }}
+            onPress={() => {
+              try {
+                const myHeaders = new Headers();
+                myHeaders.append('Content-Type', 'application/json');
 
-              const raw = JSON.stringify({
-                username: user_text,
-                password: pass_text,
-              });
+                const raw = JSON.stringify({
+                  username: user_text,
+                  password: pass_text,
+                });
 
-              const requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow',
-              };
+                const requestOptions = {
+                  method: 'POST',
+                  headers: myHeaders,
+                  body: raw,
+                  redirect: 'follow',
+                };
 
-              fetch(`${REACT_APP_ADDRESS}/authenticate`, requestOptions)
-                .then((response) => {
-                  res = response;
-                  return response.text();
-                })
-                .then((response) => {
-                  console.log(res.status);
-                  if (res.status == 500) {
-                    alert('USER NOT FOUND');
+                fetch(`${REACT_APP_ADDRESS}/authenticate`, requestOptions)
+                  .then((response) => {
+                    res = response;
+                    return response.text();
+                  })
+                  .then((response) => {
                     console.log(res.status);
-                    return;
-                  } else if (res.status == 401) {
-                    alert('INVALID PASSWORD');
-                    console.log(res.status);
-                    return;
-                  } else {
-                    // console.log(response);
-                    const token = JSON.parse(response).token;
-                    const data = JSON.parse(response).data;
-                    // console.log(data);
-                    // console.log(user_text, token);
-                    save(user_text, token);
-                    if (data.user_type == 'seller') {
-                      navigation.navigate({
-                        name: 'Seller Main View',
-                        params: { data },
-                      });
-                    } else if (data.user_type == 'buyer') {
-                      navigation.navigate({
-                        name: 'Buyer Main View',
-                        params: { data },
-                      });
+                    if (res.status == 500) {
+                      alert('USER NOT FOUND');
+                      console.log(res.status);
+                      return;
+                    } else if (res.status == 401) {
+                      alert('INVALID PASSWORD');
+                      console.log(res.status);
+                      return;
                     } else {
-                      navigation.navigate({
-                        name: 'Guest Main View',
-                        params: { data },
-                      });
+                      // console.log(response);
+                      const token = JSON.parse(response).token;
+                      const data = JSON.parse(response).data;
+                      // console.log(data);
+                      // console.log(user_text, token);
+                      save(user_text, token);
+                      if (data.user_type == 'seller') {
+                        navigation.navigate({
+                          name: 'Seller Main View',
+                          params: { data },
+                        });
+                      } else if (data.user_type == 'buyer') {
+                        navigation.navigate({
+                          name: 'Buyer Main View',
+                          params: { data },
+                        });
+                      } else {
+                        navigation.navigate({
+                          name: 'Guest Main View',
+                          params: { data },
+                        });
+                      }
                     }
-                  }
-                })
+                  })
 
-                .catch((error) => console.error(error));
-            } catch (e) {
-              console.log(e);
-            }
-          }}
-        >
-          Submit
-        </Button>
-
-        <Separator />
+                  .catch((error) => console.error(error));
+              } catch (e) {
+                console.log(e);
+              }
+            }}
+          >
+            Submit
+          </Button>
+        </View>
+        <View style={styles.buttoncontainer}>
+          <Button
+            mode="contained"
+            title="CreateAccount"
+            buttonColor="#eb6b34"
+            labelStyle={{ fontSize: 16, color: 'black' }}
+            onPress={() => navigation.navigate('Account Creation')}
+          >
+            Create Account
+          </Button>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -184,6 +208,9 @@ const styles = StyleSheet.create({
   button: {
     color: '#f194ff',
     backgroundColor: '#f194ff',
+  },
+  buttoncontainer: {
+    margin: 10,
   },
   separator: {
     marginVertical: 8,
