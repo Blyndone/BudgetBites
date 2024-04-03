@@ -29,6 +29,7 @@ const GuestMainView = ({ navigation, route }) => {
   const [itemDuration, setDuration] = useState(0);
 
   const [isLoading, setLoading] = useState(true);
+  const [saveddata, setSavedData] = useState('');
   const [data, setData] = useState([]);
 
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -46,9 +47,9 @@ const GuestMainView = ({ navigation, route }) => {
 
   const [open, setOpen] = useState(false);
 
-  const [category_text, setCategory] = useState(null);
+  const [category_text, setCategory] = useState('Any');
   const [items, setItems] = useState([
-    { label: 'All', value: 'All' },
+    { label: 'Any', value: 'Any' },
     { label: 'Beef', value: 'Beef' },
     { label: 'Poultry', value: 'Poultry' },
     { label: 'Pork', value: 'Pork' },
@@ -68,11 +69,15 @@ const GuestMainView = ({ navigation, route }) => {
 
   const GetItems = async () => {
     try {
-      const response = await fetch(`${REACT_APP_ADDRESS}/items`);
-      const json = await response.json();
-      console.log(searchQuery);
-      console.log(searchQuery.length);
-      let results = Object.values(json.items);
+      let results;
+      if (saveddata.length == 0) {
+        const response = await fetch(`${REACT_APP_ADDRESS}/items`);
+        const json = await response.json();
+        results = Object.values(json.items);
+        setSavedData(results);
+      } else {
+        results = saveddata;
+      }
 
       if (!(searchQuery.length === 0)) {
         results = results.filter(
@@ -92,6 +97,9 @@ const GuestMainView = ({ navigation, route }) => {
       if (isNear) {
         console.log('NEAR');
       }
+      if (category_text != 'Any') {
+        results = filterCategory(results);
+      }
 
       setData(results);
     } catch (error) {
@@ -100,6 +108,7 @@ const GuestMainView = ({ navigation, route }) => {
       setLoading(false);
     }
   };
+
   const filterSoon = (results) => {
     const cur = new Date();
     results = results.filter((item) => {
@@ -110,6 +119,11 @@ const GuestMainView = ({ navigation, route }) => {
   };
 
   const filterNear = (results) => {
+    return results;
+  };
+
+  const filterCategory = (results) => {
+    results = results.filter((item) => category_text == item.category);
     return results;
   };
 
@@ -199,6 +213,9 @@ const GuestMainView = ({ navigation, route }) => {
             listMode="SCROLLVIEW"
             dropDownDirection="BOTTOM"
             placeholder={'Category'}
+            onChangeValue={(value) => {
+              GetItems();
+            }}
           />
         </View>
       </View>
