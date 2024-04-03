@@ -120,12 +120,26 @@ const SellerMainView = ({ navigation, route }) => {
             <View style={{ flexDirection: 'row' }}>
               <Button
                 mode="contained"
-                title="Close"
+                title="Delete Reservation"
                 buttonColor="#eb6b34"
                 labelStyle={{ fontSize: 16, color: 'black' }}
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => {
+                  fetch(`${REACT_APP_ADDRESS}/reservation/${itemID}`, {
+                    method: 'DELETE',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      buyerID: userdata.user_id,
+                      itemID: itemID,
+                    }),
+                  }).then(() => {
+                    GetItems();
+                  });
+                  setModalVisible(!modalVisible);
+                }}
               >
-                Close
+                Delete Reservation
               </Button>
               <View style={{ padding: 10 }}></View>
               <Button
@@ -133,9 +147,35 @@ const SellerMainView = ({ navigation, route }) => {
                 title="Delete Listing"
                 buttonColor="#eb6b34"
                 labelStyle={{ fontSize: 16, color: 'black' }}
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => {
+                  fetch(`${REACT_APP_ADDRESS}/items/${itemID}`, {
+                    method: 'DELETE',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      buyerID: userdata.user_id,
+                      itemID: itemID,
+                    }),
+                  }).then(() => {
+                    GetItems();
+                  });
+                  setModalVisible(!modalVisible);
+                }}
               >
                 Delete Listing
+              </Button>
+            </View>
+            <View style={{ padding: 5 }}></View>
+            <View>
+              <Button
+                mode="contained"
+                title="Close"
+                buttonColor="#eb6b34"
+                labelStyle={{ fontSize: 16, color: 'black' }}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                Close
               </Button>
             </View>
           </View>
