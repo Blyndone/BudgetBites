@@ -1,13 +1,15 @@
 import { Pressable, Text, StyleSheet, View, Image } from 'react-native';
 import images from '../../../assets/testimages/ImageIndex';
+import { Surface } from 'react-native-paper';
 
 const ListItem = ({ item }) => {
   const exp = new Date(item.expiration);
   const cur = new Date();
   const duration = parseInt((exp - cur) / 86400000);
   return (
-    <View
+    <Surface
       style={item.status === 'Available' ? styles.item : styles.itemreserved}
+      elevation={4}
     >
       <View style={styles.imgview}>
         <Image source={images[item.img]} style={styles.img} />
@@ -41,7 +43,7 @@ const ListItem = ({ item }) => {
           <Text style={styles.price}>${item.price}</Text>
         </View>
       </View>
-    </View>
+    </Surface>
   );
 };
 

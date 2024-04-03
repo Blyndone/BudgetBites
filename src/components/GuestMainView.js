@@ -12,12 +12,12 @@ import {
 } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
-import { Searchbar, Icon, Button } from 'react-native-paper';
+import { Searchbar, Icon, Button, Switch } from 'react-native-paper';
 import images from '../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
 import * as SecureStore from 'expo-secure-store';
 import ListItem from './Components/ListItem.js';
-
+import DropDownPicker from 'react-native-dropdown-picker';
 const GuestMainView = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [itemName, setItemName] = useState(0);
@@ -32,7 +32,22 @@ const GuestMainView = ({ navigation, route }) => {
   const [data, setData] = useState([]);
 
   const [searchQuery, setSearchQuery] = React.useState('');
+  // Search config
+  // ==================
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
 
+  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  const [open, setOpen] = useState(false);
+  const [category_text, setCategory] = useState(null);
+  const [items, setItems] = useState([
+    { label: 'All', value: 'All' },
+    { label: 'Beef', value: 'Beef' },
+    { label: 'Poultry', value: 'Poultry' },
+    { label: 'Fish', value: 'Fish' },
+    { label: 'Veggies', value: 'Veggies' },
+    { label: 'Dairy', value: 'Dairy' },
+  ]);
+  // ============
   async function getValueFor(key) {
     let result = await SecureStore.getItemAsync(key);
     if (result) {
@@ -139,6 +154,55 @@ const GuestMainView = ({ navigation, route }) => {
         onSubmitEditing={GetItems}
         icon="magnify"
       />
+      <View style={styles.searchconfigcontainer}>
+        <View>
+          <Switch
+            color="#eb6b34"
+            value={isSwitchOn}
+            onValueChange={onToggleSwitch}
+          />
+          <Text>Near Me Only</Text>
+        </View>
+        <View>
+          <Switch
+            color="#eb6b34"
+            value={isSwitchOn}
+            onValueChange={onToggleSwitch}
+          />
+          <Text>Ending Soon</Text>
+        </View>
+        <View>
+          <DropDownPicker
+            style={{
+              backgroundColor: '#E7E0EC',
+              borderColor: '#00000000',
+              borderTopEndRadius: 5,
+              borderTopStartRadius: 5,
+              borderRadius: 0,
+              width: 110,
+              height: 45,
+
+              alignItems: 'center',
+              margin: 5,
+            }}
+            dropDownContainerStyle={{
+              backgroundColor: '#decceb',
+              borderColor: '#00000000',
+              borderTopColor: 'black',
+              width: 100,
+            }}
+            open={open}
+            value={category_text}
+            items={items}
+            setOpen={setOpen}
+            setValue={setCategory}
+            setItems={setItems}
+            listMode="SCROLLVIEW"
+            dropDownDirection="BOTTOM"
+            placeholder={'Category'}
+          />
+        </View>
+      </View>
       <FlatList
         data={data}
         keyExtractor={({ itemID }) => itemID}
@@ -286,6 +350,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'red',
     fontSize: 20,
+  },
+  searchconfigcontainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 45,
   },
 });
 
