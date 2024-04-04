@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
-import { Searchbar, Icon, Button } from 'react-native-paper';
+import { Searchbar, Icon, Button, Surface, Checkbox } from 'react-native-paper';
 import images from '../../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '.././Persist';
@@ -66,6 +66,9 @@ const SellerMainView = ({ navigation, route }) => {
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+
+  const [checked, setChecked] = React.useState({});
+  const [showDeleteCheckbox, setShowCheckbox] = React.useState(false);
 
   const GetItems = async () => {
     try {
@@ -181,7 +184,6 @@ const SellerMainView = ({ navigation, route }) => {
           </View>
         </View>
       </Modal>
-
       <Text
         style={{
           fontWeight: 'bold',
@@ -192,34 +194,55 @@ const SellerMainView = ({ navigation, route }) => {
         {' '}
         SELLER List of Items
       </Text>
-
       <FlatList
         data={data}
         keyExtractor={({ itemID }) => itemID}
         ListFooterComponent={<View style={{ padding: 25 }}></View>}
         renderItem={({ item }) => {
+          const ID = item.itemID;
           return (
-            <Pressable
-              onPress={() => {
-                const exp = new Date(item.expiration);
-                const cur = new Date();
-                setItemName(item.name);
-                setItemImage(item.img);
-                setItemID(item.itemID);
-                setItemDescription(item.description);
-                setItemPrice(item.price);
-                setDuration(parseInt((exp - cur) / 86400000));
+            <View>
+              {showDeleteCheckbox ? (
+                <View style={styles.checkbox}>
+                  <Checkbox
+                    color="black"
+                    uncheckedColor="black"
+                    backgroundColor="#eb6b34"
+                    status={checked[ID] ? 'checked' : 'unchecked'}
+                    onPress={() => {
+                      setChecked({
+                        ...checked,
+                        [ID]: !checked[ID],
+                      });
+                      console.log(checked);
+                      console.log(checked[ID]);
+                    }}
+                  />
+                </View>
+              ) : (
+                <View></View>
+              )}
+              <Pressable
+                onPress={() => {
+                  const exp = new Date(item.expiration);
+                  const cur = new Date();
+                  setItemName(item.name);
+                  setItemImage(item.img);
+                  setItemID(item.itemID);
+                  setItemDescription(item.description);
+                  setItemPrice(item.price);
+                  setDuration(parseInt((exp - cur) / 86400000));
 
-                setModalVisible(true);
-              }}
-            >
-              <ListItem item={item} />
-            </Pressable>
+                  setModalVisible(true);
+                }}
+              >
+                <ListItem item={item} />
+              </Pressable>
+            </View>
           );
         }}
       />
-
-      <View style={[styles.bottomContaier]}>
+      <Surface elevation={5} style={[styles.bottomContaier]}>
         <Button
           mode="contained"
           title="Create Listing"
@@ -234,7 +257,21 @@ const SellerMainView = ({ navigation, route }) => {
         >
           Create Listing
         </Button>
-      </View>
+      </Surface>
+      <Surface elevation={5} style={[styles.bottomContaierLeft]}>
+        <Button
+          mode="contained"
+          title="Mass Delete"
+          buttonColor="#eb6b34"
+          labelStyle={{ fontSize: 16, color: 'black' }}
+          onPress={() => {
+            setShowCheckbox(!showDeleteCheckbox);
+            console.log('Mass Delete');
+          }}
+        >
+          Mass Delete
+        </Button>
+      </Surface>
     </SafeAreaView>
   );
 };
@@ -330,6 +367,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     right: 10,
+    borderRadius: 20,
+  },
+  bottomContaierLeft: {
+    position: 'absolute',
+    bottom: 10,
+    left: 10,
+    borderRadius: 20,
+  },
+  checkbox: {
+    position: 'absolute',
+    top: 38,
+    borderRadius: 20,
+    zIndex: 1,
   },
   explong: {
     textAlign: 'center',

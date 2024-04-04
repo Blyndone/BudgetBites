@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
-import { Searchbar, Icon, Button } from 'react-native-paper';
+import { Searchbar, Icon, Button, Surface } from 'react-native-paper';
 import images from '../../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
 import { useFocusEffect } from '@react-navigation/native';
@@ -223,7 +223,7 @@ const BuyerMainView = ({ navigation, route }) => {
         }}
       />
 
-      <View style={[styles.bottomContaier]}>
+      <Surface elevation={5} style={[styles.bottomContaier]}>
         <Button
           mode="contained"
           title="My Reservations"
@@ -239,7 +239,7 @@ const BuyerMainView = ({ navigation, route }) => {
         >
           My Reservations
         </Button>
-      </View>
+      </Surface>
     </SafeAreaView>
   );
 };
