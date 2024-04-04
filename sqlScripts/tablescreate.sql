@@ -52,3 +52,19 @@ CREATE TABLE `reserved` (
     FOREIGN KEY (`itemID`) REFERENCES items(`itemID`),
     PRIMARY KEY (`reservationID`)
 );
+
+CREATE TABLE `locations` (
+    `locationID` INT NOT NULL AUTO_INCREMENT,
+    `sellerID` INT NOT NULL,
+    `name` VARCHAR(255),
+    `address` VARCHAR(255),
+    `city` VARCHAR(100),
+    `state` VARCHAR(100),
+    `zip` VARCHAR(20),
+    `phone_number` VARCHAR(20),
+    `email` VARCHAR(255),
+    `website` VARCHAR(255),
+    FOREIGN KEY (`sellerID`) REFERENCES users(`userID`),
+    PRIMARY KEY (`locationID`)
+);
+

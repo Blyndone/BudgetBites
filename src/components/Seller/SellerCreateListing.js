@@ -160,16 +160,6 @@ const SellerCreateListing = ({ navigation, route }) => {
               >
                 Close
               </Button>
-              <View style={{ padding: 10 }}></View>
-              <Button
-                mode="contained"
-                title="Delete Listing"
-                buttonColor="#eb6b34"
-                labelStyle={{ fontSize: 16, color: 'black' }}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                Delete Listing
-              </Button>
             </View>
           </View>
         </View>

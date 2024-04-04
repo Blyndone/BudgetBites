@@ -1,3 +1,7 @@
+-- Drop the users table
+DROP TABLE IF EXISTS `locations`;
+DROP TABLE IF EXISTS `location`;
+
 -- Drop the reserved table
 DROP TABLE IF EXISTS `reserved`;
 
