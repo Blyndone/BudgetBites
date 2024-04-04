@@ -28,13 +28,9 @@ const GuestMainView = ({ navigation, route }) => {
   const [itemLocation, setItemLocation] = useState('');
   const [itemDuration, setDuration] = useState(0);
 
-  const [isLoading, setLoading] = useState(true);
-  const [saveddata, setSavedData] = useState('');
-  const [data, setData] = useState([]);
-
-  const [searchQuery, setSearchQuery] = React.useState('');
   // Search config
   // ==================
+  const [searchQuery, setSearchQuery] = React.useState('');
   const [isNear, setIsNear] = React.useState(false);
   const [isSoon, setIsSoon] = React.useState(false);
 
@@ -58,14 +54,11 @@ const GuestMainView = ({ navigation, route }) => {
     { label: 'Dairy', value: 'Dairy' },
   ]);
   // ============
-  async function getValueFor(key) {
-    let result = await SecureStore.getItemAsync(key);
-    if (result) {
-      alert("🔐 Here's your value 🔐 \n" + result);
-    } else {
-      alert('No values stored under that key.');
-    }
-  }
+
+  //=============
+  //Get Items Block
+  const [saveddata, setSavedData] = useState('');
+  const [data, setData] = useState([]);
 
   const GetItems = async () => {
     try {
@@ -104,8 +97,6 @@ const GuestMainView = ({ navigation, route }) => {
       setData(results);
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -123,13 +114,12 @@ const GuestMainView = ({ navigation, route }) => {
   };
 
   const filterCategory = (results) => {
-    results = results.filter((item) => category_text == item.category);
+    results = results.filter((item) => {
+      return category_text == item.category;
+    });
     return results;
   };
 
-  useEffect(() => {
-    GetItems();
-  }, []);
   useEffect(() => {
     GetItems();
   }, [isNear]);
@@ -137,6 +127,12 @@ const GuestMainView = ({ navigation, route }) => {
   useEffect(() => {
     GetItems();
   }, [isSoon]);
+
+  //================
+
+  useEffect(() => {
+    GetItems();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
