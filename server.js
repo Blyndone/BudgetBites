@@ -244,6 +244,58 @@ app.post('/adduser', async (req, res) => {
 });
 
 //==================
+// Add New Location
+//==================
+
+app.post('/location', async (req, res) => {
+  console.log('addLocation');
+  console.log(req.body);
+
+  try {
+    // const { id } = req.params;
+    const {
+      userID,
+      locationName,
+      locationAddress,
+      locationCity,
+      locationState,
+      locationZip,
+      locationPhone,
+      locationEmail,
+      locationWebsite,
+    } = req.body;
+
+    query = `INSERT INTO locations (sellerID, name, address, city, state, zip, phone_number, email, website)
+VALUES 
+(?,?,?,?,?,?,?,?,?)
+`;
+
+    const [{ insertId }] = await connection
+      .promise()
+      .query(query, [
+        userID,
+        locationName,
+        locationAddress,
+        locationCity,
+        locationState,
+        locationZip,
+        locationPhone,
+        locationEmail,
+        locationWebsite,
+      ]);
+    res.status(200).json({
+      message: 'location Created',
+      user_id: insertId,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: err,
+    });
+  }
+});
+
+//==================
 // Authentication
 // Input Form:
 // username:

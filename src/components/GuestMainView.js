@@ -20,13 +20,16 @@ import ListItem from './Components/ListItem.js';
 import DropDownPicker from 'react-native-dropdown-picker';
 const GuestMainView = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [itemName, setItemName] = useState(0);
-  const [itemDescripton, setItemDescription] = useState(0);
-  const [itemImage, setItemImage] = useState(0);
-  const [itemPrice, setItemPrice] = useState(0);
-  const [itemID, setItemID] = useState(0);
-  const [itemLocation, setItemLocation] = useState('');
-  const [itemDuration, setDuration] = useState(0);
+
+  const [itemData, setItemData] = useState({
+    itemName: '',
+    itemDescripton: '',
+    itemImage: '',
+    itemPrice: '',
+    itemID: '',
+    itemLocation: '',
+    itemDuration: '',
+  });
 
   // Search config
   // ==================
@@ -139,13 +142,7 @@ const GuestMainView = ({ navigation, route }) => {
       <ItemModal
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-        itemName={itemName}
-        itemImage={itemImage}
-        itemDescripton={itemDescripton}
-        itemPrice={itemPrice}
-        itemID={itemID}
-        itemLocation={itemLocation}
-        itemDuration={itemDuration}
+        itemData={itemData}
       />
 
       <Text
@@ -225,14 +222,16 @@ const GuestMainView = ({ navigation, route }) => {
               onPress={() => {
                 const exp = new Date(item.expiration);
                 const cur = new Date();
+                setItemData({
+                  itemName: item.name,
+                  itemDescripton: item.description,
+                  itemImage: item.img,
+                  itemPrice: item.price,
+                  itemID: item.itemID,
+                  itemLocation: item.location,
+                  itemDuration: parseInt((exp - cur) / 86400000),
+                });
 
-                setItemName(item.name);
-                setItemImage(item.img);
-                setItemID(item.itemID);
-                setItemDescription(item.description);
-                setItemPrice(item.price);
-                setItemLocation(item.location);
-                setDuration(parseInt((exp - cur) / 86400000));
                 setModalVisible(true);
               }}
             >
@@ -387,17 +386,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ItemModal = ({
-  modalVisible,
-  setModalVisible,
-  itemName,
-  itemImage,
-  itemDescripton,
-  itemPrice,
-  itemID,
-  itemLocation,
-  itemDuration,
-}) => {
+const ItemModal = ({ modalVisible, setModalVisible, itemData }) => {
   return (
     <Modal
       animationType="slide"
@@ -410,24 +399,28 @@ const ItemModal = ({
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text style={styles.modalTitle}>{itemName}</Text>
-          <Text style={styles.modalTitle}>{itemLocation}</Text>
-          <Text style={itemDuration > 10 ? styles.explong : styles.expshort}>
-            {itemDuration + 1} Days Remaining!
+          <Text style={styles.modalTitle}>{itemData.itemName}</Text>
+          <Text style={styles.modalTitle}>{itemData.itemLocation}</Text>
+          <Text
+            style={
+              itemData.itemDuration > 10 ? styles.explong : styles.expshort
+            }
+          >
+            {itemData.itemDuration + 1} Days Remaining!
           </Text>
 
           <View style={{ padding: 10 }}></View>
           <Image
-            source={images[itemImage]}
+            source={images[itemData.itemImage]}
             style={{
               width: 150,
               height: 150,
             }}
           />
           <View style={{ padding: 10 }}></View>
-          <Text style={styles.modalText}>{itemDescripton}</Text>
+          <Text style={styles.modalText}>{itemData.itemDescripton}</Text>
           <View style={{ padding: 10 }}></View>
-          <Text style={styles.modalPrice}>${itemPrice}</Text>
+          <Text style={styles.modalPrice}>${itemData.itemPrice}</Text>
           <View style={{ padding: 10 }}></View>
           <View style={{ flexDirection: 'row' }}>
             <Button

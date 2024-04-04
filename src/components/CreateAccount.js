@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -15,18 +16,29 @@ import * as SecureStore from 'expo-secure-store';
 
 const Separator = () => <View style={styles.separator} />;
 const CreateAccount = ({ navigation, route }) => {
-  const [name_text, setTextName] = React.useState('');
-  const [email_text, setTextEmail] = React.useState('');
-  const [phone_text, setTextPhone] = React.useState('');
-  const [zip_text, setTextZip] = React.useState('');
-  const [user_text, setTextUser] = React.useState('');
-  const [pass_text, setTextPass] = React.useState('');
-  const [pass_text_verify, setTextPassVerify] = React.useState('');
-  const [usertype_text, setUserType] = React.useState('customer');
-  const [userdata, setUserData] = React.useState({
+  const [name_text, setTextName] = useState('');
+  const [email_text, setTextEmail] = useState('');
+  const [phone_text, setTextPhone] = useState('');
+  const [zip_text, setTextZip] = useState('');
+  const [user_text, setTextUser] = useState('');
+  const [pass_text, setTextPass] = useState('');
+  const [pass_text_verify, setTextPassVerify] = useState('');
+  const [usertype_text, setUserType] = useState('customer');
+  const [userdata, setUserData] = useState({
     user_name: '',
     user_type: '',
     user_id: '',
+  });
+
+  const [locationData, setLocationData] = useState({
+    locationName: '',
+    locationAddresss: '',
+    locationCity: '',
+    locationState: '',
+    locationZip: '',
+    locationPhone: '',
+    locationEmail: '',
+    locationWebsite: '',
   });
 
   let errormessage = '';
@@ -62,6 +74,16 @@ const CreateAccount = ({ navigation, route }) => {
       });
       const res = await response.json();
       console.log(res.user_id);
+      if (usertype_text == 'seller') {
+        const locResponse = await fetch(`${REACT_APP_ADDRESS}/location`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ...locationData, userID: res.user_id }),
+        });
+      }
+
       AuthNav();
       return res.user_id;
     } catch (err) {
@@ -152,6 +174,7 @@ const CreateAccount = ({ navigation, route }) => {
             <View style={styles.textinput}>
               <TextInput
                 label="User Name"
+                dense="true"
                 value={user_text}
                 style={styles.textinput}
                 onChangeText={(user_text) => setTextUser(user_text)}
@@ -160,6 +183,7 @@ const CreateAccount = ({ navigation, route }) => {
             <View style={styles.textinput}>
               <TextInput
                 label="Password"
+                dense="true"
                 value={pass_text}
                 onChangeText={(pass_text) => setTextPass(pass_text)}
                 style={styles.textinput}
@@ -170,6 +194,7 @@ const CreateAccount = ({ navigation, route }) => {
             <View style={styles.textinput}>
               <TextInput
                 label="Retype Password"
+                dense="true"
                 value={pass_text_verify}
                 onChangeText={(pass_text_verify) =>
                   setTextPassVerify(pass_text_verify)
@@ -182,6 +207,7 @@ const CreateAccount = ({ navigation, route }) => {
             <View style={styles.textinput}>
               <TextInput
                 label="Name"
+                dense="true"
                 value={name_text}
                 onChangeText={(name_text) => setTextName(name_text)}
                 style={styles.textinput}
@@ -190,6 +216,7 @@ const CreateAccount = ({ navigation, route }) => {
             <View style={styles.textinput}>
               <TextInput
                 label="Email"
+                dense="true"
                 value={email_text}
                 onChangeText={(email_text) => setTextEmail(email_text)}
                 style={styles.textinput}
@@ -198,6 +225,7 @@ const CreateAccount = ({ navigation, route }) => {
             <View style={styles.textinput}>
               <TextInput
                 label="Phone Number"
+                dense="true"
                 value={phone_text}
                 onChangeText={(phone_text) => setTextPhone(phone_text)}
                 style={styles.textinput}
@@ -209,6 +237,7 @@ const CreateAccount = ({ navigation, route }) => {
             <View style={styles.textinput}>
               <TextInput
                 label="Zip Code"
+                dense="true"
                 value={zip_text}
                 onChangeText={(zip_text) => setTextZip(zip_text)}
                 style={styles.textinput}
@@ -220,7 +249,9 @@ const CreateAccount = ({ navigation, route }) => {
           <View style={styles.radiobutton}>
             <View>
               <RadioButton.Group
-                onValueChange={(usertype_text) => setUserType(usertype_text)}
+                onValueChange={(usertype_text) => {
+                  setUserType(usertype_text);
+                }}
                 value={usertype_text}
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -237,6 +268,113 @@ const CreateAccount = ({ navigation, route }) => {
         </View>
 
         <View>
+          <View>
+            {usertype_text == 'seller' ? (
+              <View>
+                <View>
+                  <Text style={styles.titleText}>Business Information</Text>
+
+                  <Text style={styles.bodytext}>
+                    Please input your Business Location information below.
+                  </Text>
+                </View>
+                <View style={styles.textinput}>
+                  <TextInput
+                    label="Business Name"
+                    dense="true"
+                    value={locationData.locationName}
+                    onChangeText={(val) =>
+                      setLocationData({ ...locationData, locationName: val })
+                    }
+                    style={styles.textinput}
+                  />
+                </View>
+                <View style={styles.textinput}>
+                  <TextInput
+                    label="Address"
+                    dense="true"
+                    value={locationData.locationAddress}
+                    onChangeText={(val) =>
+                      setLocationData({ ...locationData, locationAddress: val })
+                    }
+                    style={styles.textinput}
+                  />
+                </View>
+                <View style={styles.textinput}>
+                  <TextInput
+                    label="City"
+                    dense="true"
+                    value={locationData.locationCity}
+                    onChangeText={(val) =>
+                      setLocationData({ ...locationData, locationCity: val })
+                    }
+                    style={styles.textinput}
+                  />
+                </View>
+                <View style={styles.textinput}>
+                  <TextInput
+                    label="Location State"
+                    dense="true"
+                    value={locationData.locationState}
+                    onChangeText={(val) =>
+                      setLocationData({ ...locationData, locationState: val })
+                    }
+                    style={styles.textinput}
+                  />
+                </View>
+                <View style={styles.textinput}>
+                  <TextInput
+                    label="Zip Code"
+                    dense="true"
+                    value={locationData.locationZip}
+                    onChangeText={(val) =>
+                      setLocationData({ ...locationData, locationZip: val })
+                    }
+                    style={styles.textinput}
+                    keyboardType="number-pad"
+                    maxLength={5}
+                  />
+                </View>
+                <View style={styles.textinput}>
+                  <TextInput
+                    label="Phone Number"
+                    dense="true"
+                    value={locationData.locationPhone}
+                    onChangeText={(val) =>
+                      setLocationData({ ...locationData, locationPhone: val })
+                    }
+                    style={styles.textinput}
+                    textContentType="telephoneNumber"
+                    keyboardType="number-pad"
+                    maxLength={10}
+                  />
+                </View>
+                <View style={styles.textinput}>
+                  <TextInput
+                    label="Email"
+                    dense="true"
+                    value={locationData.locationEmail}
+                    onChangeText={(val) =>
+                      setLocationData({ ...locationData, locationEmail: val })
+                    }
+                    style={styles.textinput}
+                  />
+                </View>
+                <View style={styles.textinput}>
+                  <TextInput
+                    label="Website"
+                    value={locationData.locationWebsite}
+                    onChangeText={(val) =>
+                      setLocationData({ ...locationData, locationWebsite: val })
+                    }
+                    style={styles.textinput}
+                  />
+                </View>
+              </View>
+            ) : (
+              <View></View>
+            )}
+          </View>
           <View style={styles.buttoncontainer}>
             <Button
               mode="contained"
@@ -310,7 +448,7 @@ const styles = StyleSheet.create({
   buttoncontainer: {
     margin: 5,
   },
-  textinput: { margin: 2, height: 45 },
+  textinput: { margin: 2, height: 42 },
   bodytext: {
     fontSize: 15,
     fontWeight: 'bold',
