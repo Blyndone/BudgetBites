@@ -213,6 +213,16 @@ app.post('/adduser', async (req, res) => {
       joindate_text,
     } = req.body;
 
+    // Check for duplicate user
+    const [existingUsers] = await connection.promise().query(
+      'SELECT * FROM users WHERE username = ? OR email = ?',
+      [user_text, email_text]
+    );
+
+    if (existingUsers.length > 0) {
+      return res.status(409).json({ message: 'User already exists' });
+    }
+
     const hashedpass = await bcrypt.hash(pass_text, saltRounds);
     console.log({ user_text, password: hashedpass });
 
@@ -231,6 +241,7 @@ app.post('/adduser', async (req, res) => {
         joindate_text,
       ],
     );
+
     res.status(200).json({
       message: 'User Created',
       user_id: insertId,
