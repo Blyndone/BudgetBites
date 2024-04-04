@@ -203,42 +203,49 @@ app.post('/adduser', async (req, res) => {
   try {
     // const { id } = req.params;
     const {
-      user_text,
-      pass_text,
-      name_text,
-      email_text,
-      phone_text,
-      zip_text,
-      usertype_text,
-      joindate_text,
+      username, 
+      password, 
+      name,     
+      email,    
+      phone,    
+      zip,      
+      usertype, 
+      joindate, 
     } = req.body;
 
     // Check for duplicate user
     const [existingUsers] = await connection.promise().query(
       'SELECT * FROM users WHERE username = ? OR email = ?',
-      [user_text, email_text]
+      [username, email]
     );
 
     if (existingUsers.length > 0) {
       return res.status(409).json({ message: 'User already exists' });
     }
 
-    const hashedpass = await bcrypt.hash(pass_text, saltRounds);
-    console.log({ user_text, password: hashedpass });
+    // Check if password is provided and not empty
+    if (typeof password === 'undefined' || password === '') {
+      console.error('Password is undefined or empty');
+      return res.status(400).json({ message: 'Password is required' });
+    }
+
+    // Hashing the password
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    console.log({ username, password: hashedPassword });
 
     const [{ insertId }] = await connection.promise().query(
       `INSERT INTO users (username, password, name, email, phone, zip, usertype, joindate)
           VALUES  
-          (?,?,?,?,?,?,?,?)`,
+          (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        user_text,
-        hashedpass,
-        name_text,
-        email_text,
-        phone_text,
-        zip_text,
-        usertype_text,
-        joindate_text,
+        username,
+        hashedPassword,
+        name,
+        email,
+        phone,
+        zip,
+        usertype,
+        joindate,
       ],
     );
 

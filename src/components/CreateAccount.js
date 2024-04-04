@@ -382,21 +382,38 @@ const CreateAccount = ({ navigation, route }) => {
               buttonColor="#eb6b34"
               labelStyle={{ fontSize: 18, color: 'black' }}
               onPress={() => {
-                //NEED INPUT CLEANING AND PASSWORD HASHING
+                
                 errormessage = '';
-
-                if (user_text.length <= 5) {
-                  errormessage +=
-                    'User name must be longer than 5 characters.\n';
+              
+                const trimmedUserText = user_text.trim();
+                const trimmedEmailText = email_text.trim();
+              
+                if (trimmedUserText.length <= 5) {
+                  errormessage += 'User name must be longer than 5 characters.\n';
                 }
-                if (pass_text != pass_text_verify) {
+                if (pass_text !== pass_text_verify) {
                   errormessage += 'Password must match\n';
                 }
-                if (errormessage.length != 0) {
-                  ErrorAlert();
+              
+                // Add input cleaning checks here, using the trimmed values
+                const emailRegex = /\S+@\S+\.\S+/;
+                if (!emailRegex.test(trimmedEmailText)) {
+                  errormessage += 'Email format is invalid.\n';
+                }
+              
+                // If there's an error, show it and stop the function
+                if (errormessage.length !== 0) {
+                  ErrorAlert(errormessage);
                   return;
                 }
-                SubmitAccount();
+              
+                // If everything is okay, proceed to submit the account
+                SubmitAccount({
+                  username: trimmedUserText, 
+                  password: pass_text, 
+                  email: trimmedEmailText,
+                  
+                });
               }}
             >
               Submit
