@@ -480,11 +480,11 @@ app.get('/reservations/:username', async (req, res) => {
     `;
 
     const data = await connection.promise().query(query, [username]);
-    console.log(data);
+    // console.log(data);
     res.status(200).json({
       items: data[0],
     });
-    console.log(data);
+    // console.log(data);
   } catch (err) {
     res.status(500).json({
       message: err,
@@ -513,11 +513,11 @@ app.get('/listing/:username', async (req, res) => {
     `;
 
     const data = await connection.promise().query(query, [username]);
-    console.log(data);
+    // console.log(data);
     res.status(200).json({
       items: data[0],
     });
-    console.log(data);
+    // console.log(data);
   } catch (err) {
     res.status(500).json({
       message: err,
@@ -758,14 +758,27 @@ app.patch('/updatereservation/:itemID', async (req, res) => {
 app.delete('/items/:itemid', async (req, res) => {
   console.log('delete item');
 
+  // var userIds = ['3', '4', "4'6dsd"],
+  //   result = userIds
+  //     .map(function (a) {
+  //       return "'" + a.replace("'", "''") + "'";
+  //     })
+  //     .join();
+
+  // console.log(result);
+
   try {
-    const itemID = req.params.itemid;
+    console.log(req.params.itemid);
+    const itemID = [req.params.itemid];
+
+    itemlist = String(itemID).split(',');
+
     console.log('Attempting to delete item with ID:', itemID);
 
     // Check if the item exists
     const [itemExists] = await connection
       .promise()
-      .query('SELECT * FROM items WHERE itemID = ?', [itemID]);
+      .query('SELECT * FROM items WHERE itemID IN (?)', [itemlist]);
     if (itemExists.length === 0) {
       console.log('Item not found with ID:', itemID);
       return res.status(404).json({ message: 'Item not found' });
@@ -774,17 +787,17 @@ app.delete('/items/:itemid', async (req, res) => {
     // If the item exists, delete any reservations referencing the item
     await connection
       .promise()
-      .query('DELETE FROM reserved WHERE itemID = ?', [itemID]);
+      .query('DELETE FROM reserved WHERE itemID IN (?)', [itemlist]);
 
     // Delete any listings referencing the item
     await connection
       .promise()
-      .query('DELETE FROM listing WHERE itemID = ?', [itemID]);
+      .query('DELETE FROM listing WHERE itemID IN (?)', [itemlist]);
 
     // Finally, delete the item
     await connection
       .promise()
-      .query('DELETE FROM items WHERE itemID = ?', [itemID]);
+      .query('DELETE FROM items WHERE itemID IN (?)', [itemlist]);
 
     console.log('Item with ID:', itemID, 'has been deleted successfully.');
     res.status(200).json({ message: 'Item deleted successfully' });

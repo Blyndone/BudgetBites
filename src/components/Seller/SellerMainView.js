@@ -191,12 +191,11 @@ const SellerMainView = ({ navigation, route }) => {
           color: 'black',
         }}
       >
-        {' '}
         SELLER List of Items
       </Text>
       <FlatList
         data={data}
-        keyExtractor={({ itemID }) => itemID}
+        // keyExtractor={(item) => item.itemID}
         ListFooterComponent={<View style={{ padding: 25 }}></View>}
         renderItem={({ item }) => {
           const ID = item.itemID;
@@ -214,8 +213,6 @@ const SellerMainView = ({ navigation, route }) => {
                         ...checked,
                         [ID]: !checked[ID],
                       });
-                      console.log(checked);
-                      console.log(checked[ID]);
                     }}
                   />
                 </View>
@@ -266,10 +263,38 @@ const SellerMainView = ({ navigation, route }) => {
           labelStyle={{ fontSize: 16, color: 'black' }}
           onPress={() => {
             setShowCheckbox(!showDeleteCheckbox);
-            console.log('Mass Delete');
+            if (showDeleteCheckbox) {
+              var keys = Object.keys(checked);
+
+              var filtered = keys.filter(function (key) {
+                return checked[key];
+              });
+
+              console.log(filtered);
+
+              fetch(`${REACT_APP_ADDRESS}/items/${filtered}`, {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  buyerID: userdata.user_id,
+                  itemID: itemID,
+                }),
+              }).then(() => {
+                console.log(checked);
+                setChecked({});
+                GetItems();
+              });
+            }
           }}
         >
-          Mass Delete
+          Mass Delete{' '}
+          {showDeleteCheckbox
+            ? '(' +
+              Object.values(checked).reduce((a, item) => a + item, 0) +
+              ')'
+            : ''}
         </Button>
       </Surface>
     </SafeAreaView>
