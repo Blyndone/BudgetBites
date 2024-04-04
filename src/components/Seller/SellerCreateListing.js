@@ -4,7 +4,13 @@ import { Modal, FlatList, Pressable, ScrollView } from 'react-native';
 import { View, StyleSheet, SafeAreaView, Image, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Text, TextInput, Button, RadioButton } from 'react-native-paper';
+import {
+  Text,
+  TextInput,
+  Button,
+  RadioButton,
+  IconButton,
+} from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '../Persist';
 import ProfileButton from '../Components/ProfleButton';
@@ -66,6 +72,9 @@ const SellerCreateListing = ({ navigation, route }) => {
   const [expiration_text, setExpiration] = useState('');
   const [discount_text, setDiscount] = useState('');
   const [discount_calc, setDiscountCalc] = useState('');
+  const [imageindexes, setImageIndex] = useState([
+    2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+  ]);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -94,11 +103,33 @@ const SellerCreateListing = ({ navigation, route }) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalTitle}>Select an Icon!</Text>
-            <View style={{ padding: 10 }}></View>
+            <View style={[styles.modaltitlebar]}>
+              <IconButton
+                icon="arrow-left-bold"
+                iconColor={imageindexes[0] > 5 ? 'black' : '#00000000'}
+                size={30}
+                onPress={() => {
+                  if (imageindexes[0] > 5) {
+                    setImageIndex(imageindexes.map((index) => index - 16));
+                  }
+                }}
+              />
+              <Text style={styles.modalTitle}>Select an Icon!</Text>
+              <IconButton
+                icon="arrow-right-bold"
+                iconColor={imageindexes[0] < 80 ? 'black' : '#00000000'}
+                size={30}
+                onPress={() => {
+                  if (imageindexes[0] < 80) {
+                    setImageIndex(imageindexes.map((index) => index + 16));
+                  }
+                }}
+              />
+            </View>
+
             <View style={{ flex: 1 }}>
               <FlatList
-                data={[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]}
+                data={imageindexes}
                 // style={[styles.itemContainer]}
                 numColumns={4}
                 columnWrapperStyle={styles.row}
@@ -437,6 +468,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
     fontFamily: 'Helvetica',
+    flex: 0.8,
   },
   modalText: {
     fontSize: 15,
@@ -460,6 +492,10 @@ const styles = StyleSheet.create({
   row: {
     flex: 1,
     justifyContent: 'space-around',
+  },
+  modaltitlebar: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
