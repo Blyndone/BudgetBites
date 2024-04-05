@@ -9,16 +9,21 @@ import {
   Image,
   FlatList,
   StatusBar,
+  Linking,
+  TouchableOpacity,
+  Platform,
 } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
-import { Searchbar, Icon, Button, Surface } from 'react-native-paper';
+import { Searchbar, Icon, Button, Surface, Switch } from 'react-native-paper';
 import images from '../../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
 import { useFocusEffect } from '@react-navigation/native';
 import Auth from '.././Persist';
 import ProfileButton from '../Components/ProfleButton.js';
 import ListItem from '../Components/ListItem.js';
+
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const BuyerMainView = ({ navigation, route }) => {
   //=========================
@@ -29,21 +34,22 @@ const BuyerMainView = ({ navigation, route }) => {
     Auth(route.params.data.user_name).then((resp) => {
       try {
         r = JSON.parse(resp);
-        if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
-          navigation.navigate('Splash');
-        }
+        // REENABLE
+        // if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
+        //   navigation.navigate('Splash');
+        // }
         // console.log(r.status);
         // console.log(resp);
       } catch (err) {
         console.log(err);
       }
     });
-
     setUserData({
       user_name: route.params.data.user_name,
       user_type: route.params.data.user_type,
       user_id: route.params.data.user_id,
     });
+    console.log(userdata);
     navigation.setOptions({
       headerRight: () => (
         <ProfileButton
@@ -59,31 +65,79 @@ const BuyerMainView = ({ navigation, route }) => {
   }, []);
   //=========================
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [itemName, setItemName] = useState(0);
-  const [itemDescripton, setItemDescription] = useState(0);
-  const [itemImage, setItemImage] = useState(0);
-  const [itemPrice, setItemPrice] = useState(0);
+  const [itemModalVisible, setItemModalVisible] = useState(false);
+  const [locationModalVisible, setLocationModalVisible] = useState(false);
 
-  const [itemID, setItemID] = useState(0);
-  const [itemLocation, setItemLocation] = useState('');
-  const [itemDuration, setDuration] = useState(0);
-  const [isLoading, setLoading] = useState(true);
+  const [itemData, setItemData] = useState({
+    itemName: '',
+    itemDescripton: '',
+    itemImage: '',
+    itemPrice: '',
+    itemID: '',
+    itemLocation: '',
+    itemDuration: '',
+  });
+
+  const [locationData, setLocationData] = useState([
+    {
+      name: '',
+      address: '',
+      city: '',
+      state: '',
+      zip: '',
+      phone_number: '',
+      email: '',
+      website: '',
+    },
+  ]);
+
+  // Search config
+  // ==================
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [isNear, setIsNear] = React.useState(false);
+  const [isSoon, setIsSoon] = React.useState(false);
+
+  const onToggleNear = () => {
+    setIsNear(!isNear);
+  };
+  const onToggleSoon = () => {
+    setIsSoon(!isSoon);
+  };
+
+  const [open, setOpen] = useState(false);
+
+  const [category_text, setCategory] = useState('Any');
+  const [items, setItems] = useState([
+    { label: 'Any', value: 'Any' },
+    { label: 'Beef', value: 'Beef' },
+    { label: 'Poultry', value: 'Poultry' },
+    { label: 'Pork', value: 'Pork' },
+    { label: 'Fish', value: 'Fish' },
+    { label: 'Veggies', value: 'Veggies' },
+    { label: 'Dairy', value: 'Dairy' },
+  ]);
+
+  // ============
+
+  //=============
+  //Get Items Block
+  const [saveddata, setSavedData] = useState('');
   const [data, setData] = useState([]);
 
-  const [itemstatus, setItemStatus] = useState(0);
-
-  const [searchQuery, setSearchQuery] = React.useState('');
-
-  const GetItems = async () => {
+  const GetItems = async (refresh = false) => {
     try {
-      const response = await fetch(`${REACT_APP_ADDRESS}/items`);
-      const json = await response.json();
-      console.log(searchQuery);
-      console.log(searchQuery.length);
+      let results;
+      if (saveddata.length == 0 || refresh == true) {
+        const response = await fetch(`${REACT_APP_ADDRESS}/items`);
+        const json = await response.json();
+        results = Object.values(json.items);
+        setSavedData(results);
+      } else {
+        results = saveddata;
+      }
 
       if (!(searchQuery.length === 0)) {
-        let results = Object.values(json.items).filter(
+        results = results.filter(
           (item) =>
             String(item.name)
               .toLowerCase()
@@ -92,16 +146,65 @@ const BuyerMainView = ({ navigation, route }) => {
               .toLowerCase()
               .includes(searchQuery.toLowerCase()),
         );
-        setData(results);
-      } else {
-        setData(json.items);
       }
+
+      if (isSoon) {
+        results = filterSoon(results);
+      }
+      if (isNear) {
+        console.log('NEAR');
+      }
+      if (category_text != 'Any') {
+        results = filterCategory(results);
+      }
+
+      setData(results);
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
+
+  const GetLocation = async (itemID) => {
+    const response = await fetch(`${REACT_APP_ADDRESS}/location/${itemID}`);
+    const json = await response.json();
+    results = Object.values(json.items);
+    setLocationData(results);
+  };
+
+  const filterSoon = (results) => {
+    const cur = new Date();
+    results = results.filter((item) => {
+      const exp = new Date(item.expiration);
+      return parseInt((exp - cur) / 86400000) < 10;
+    });
+    return results;
+  };
+
+  const filterNear = (results) => {
+    return results;
+  };
+
+  const filterCategory = (results) => {
+    results = results.filter((item) => {
+      return category_text == item.category;
+    });
+    return results;
+  };
+
+  useEffect(() => {
+    GetItems();
+  }, [isNear]);
+
+  useEffect(() => {
+    GetItems();
+  }, [isSoon]);
+
+  //================
+
+  useEffect(() => {
+    GetItems();
+  }, []);
+
   useFocusEffect(
     React.useCallback(() => {
       GetItems();
@@ -110,99 +213,24 @@ const BuyerMainView = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalTitle}>{itemName}</Text>
-            <Text style={styles.modalTitle}>{itemLocation}</Text>
-            <Text style={itemDuration > 10 ? styles.explong : styles.expshort}>
-              {itemDuration} Days Remaining!
-            </Text>
-
-            <View style={{ padding: 10 }}></View>
-            <Image
-              source={images[itemImage]}
-              style={{
-                width: 150,
-                height: 150,
-              }}
-            />
-            <View style={{ padding: 10 }}></View>
-            <Text style={styles.modalText}>{itemDescripton}</Text>
-            <View style={{ padding: 10 }}></View>
-            <Text style={styles.modalPrice}>${itemPrice}</Text>
-            <View style={{ padding: 10 }}></View>
-            <View style={{ flexDirection: 'row' }}>
-              <Button
-                mode="contained"
-                title="Close"
-                buttonColor="#eb6b34"
-                labelStyle={{ fontSize: 16, color: 'black' }}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                Close
-              </Button>
-              <View style={{ padding: 10 }}></View>
-              {itemstatus === 'Available' ? (
-                <Button
-                  mode="contained"
-                  title="Reserve"
-                  buttonColor="#eb6b34"
-                  labelStyle={{ fontSize: 16, color: 'black' }}
-                  onPress={() => {
-                    fetch(`${REACT_APP_ADDRESS}/reservation`, {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({
-                        buyerID: userdata.user_id,
-                        itemID: itemID,
-                      }),
-                    }).then(() => {
-                      GetItems();
-                    });
-                    setModalVisible(!modalVisible);
-                  }}
-                >
-                  Reserve
-                </Button>
-              ) : (
-                <Button
-                  mode="contained"
-                  title="Reserve"
-                  buttonColor="#eb6b34"
-                  labelStyle={{ fontSize: 16, color: 'black' }}
-                  onPress={() => {
-                    fetch(`${REACT_APP_ADDRESS}/reservation/` + itemID, {
-                      method: 'DELETE',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({
-                        itemID: itemID,
-                      }),
-                    }).then(() => {
-                      GetItems();
-                    });
-                    setModalVisible(!modalVisible);
-                  }}
-                >
-                  Cancel Reservation
-                </Button>
-              )}
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <ItemModal
+        itemModalVisible={itemModalVisible}
+        setItemModalVisible={setItemModalVisible}
+        itemData={itemData}
+        setLocationModalVisible={setLocationModalVisible}
+        locationModalVisible={locationModalVisible}
+        locationData={locationData}
+        userdata={userdata}
+        GetItems={GetItems}
+      />
+      <LocationModal
+        itemModalVisible={itemModalVisible}
+        setModalVisible={setItemModalVisible}
+        locationData={locationData[0]}
+        setLocationModalVisible={setLocationModalVisible}
+        locationModalVisible={locationModalVisible}
+        itemData={itemData}
+      />
 
       <Searchbar
         placeholder="Search"
@@ -211,7 +239,58 @@ const BuyerMainView = ({ navigation, route }) => {
         onIconPress={GetItems}
         onSubmitEditing={GetItems}
         icon="magnify"
+        contain
+        style={{
+          height: 38,
+          borderColor: 'teal',
+          borderWidth: 1,
+          backgroundColor: 'white',
+          margin: 6,
+        }}
+        inputStyle={{
+          minHeight: 0, // Add this
+        }}
       />
+      <View style={styles.searchconfigcontainer}>
+        <View style={styles.searchconfigswitch}>
+          <Text style={styles.searchconfigtext}>Nearby Me</Text>
+          <Switch color="#eb6b34" value={isNear} onValueChange={onToggleNear} />
+        </View>
+        <View style={styles.searchconfigswitch}>
+          <Text style={styles.searchconfigtext}>Expiring Soon</Text>
+          <Switch color="#eb6b34" value={isSoon} onValueChange={onToggleSoon} />
+        </View>
+        <View style={styles.searchconfigdropdown}>
+          <DropDownPicker
+            style={{
+              backgroundColor: 'white',
+              borderColor: '#00000000',
+              borderTopEndRadius: 5,
+              borderTopStartRadius: 5,
+              minHeight: 35,
+
+              borderRadius: 0,
+            }}
+            dropDownContainerStyle={{
+              backgroundColor: '#fff6e6',
+              borderColor: '#00000000',
+              borderTopColor: 'black',
+            }}
+            open={open}
+            value={category_text}
+            items={items}
+            setOpen={setOpen}
+            setValue={setCategory}
+            setItems={setItems}
+            listMode="SCROLLVIEW"
+            dropDownDirection="BOTTOM"
+            placeholder={'Category'}
+            onChangeValue={(value) => {
+              GetItems();
+            }}
+          />
+        </View>
+      </View>
       <FlatList
         data={data}
         keyExtractor={({ itemID }) => itemID}
@@ -223,16 +302,19 @@ const BuyerMainView = ({ navigation, route }) => {
                 const exp = new Date(item.expiration);
                 const cur = new Date();
 
-                setItemName(item.name);
-                setItemImage(item.img);
-                setItemID(item.itemID);
-                setItemDescription(item.description);
-                setItemPrice(item.price);
-                setItemLocation(item.location);
-                setDuration(parseInt((exp - cur) / 86400000));
-                setItemStatus(item.status);
+                setItemData({
+                  itemName: item.name,
+                  itemDescripton: item.description,
+                  itemImage: item.img,
+                  itemPrice: item.price,
+                  itemID: item.itemID,
+                  itemLocation: item.location,
+                  itemDuration: parseInt((exp - cur) / 86400000),
+                  status: item.status,
+                });
 
-                setModalVisible(true);
+                GetLocation(item.itemID);
+                setItemModalVisible(true);
               }}
             >
               <ListItem item={item} />
@@ -322,9 +404,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 22,
   },
-  modalView: {
+  itemmodalView: {
     margin: 20,
     backgroundColor: 'mediumturquoise',
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  locationmodalView: {
+    margin: 20,
+    backgroundColor: '#fca503',
     borderRadius: 20,
     padding: 20,
     alignItems: 'center',
@@ -367,6 +464,7 @@ const styles = StyleSheet.create({
     bottom: 10,
     right: 10,
   },
+
   explong: {
     textAlign: 'center',
     // flexBasis: 120,
@@ -385,7 +483,260 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 20,
   },
-  bottomButton: {},
+  searchconfigcontainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 30,
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    marginVertical: 8,
+  },
+  searchconfigswitch: {
+    flex: 0.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  searchconfigtext: {
+    fontWeight: '900',
+    fontSize: 14,
+  },
+  searchconfigdropdown: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  locationdetails: {},
+  locationdetailstext: {
+    textAlign: 'left',
+    fontWeight: '700',
+    fontSize: 15,
+  },
+  locationphonetext: {
+    textAlign: 'left',
+    fontWeight: '700',
+    fontSize: 15,
+    textDecorationLine: 'underline',
+    fontWeight: 'bold',
+  },
 });
+
+const ItemModal = ({
+  itemModalVisible,
+  setItemModalVisible,
+  itemData,
+  setLocationModalVisible,
+  locationModalVisible,
+  locationData,
+  GetItems,
+  userdata,
+}) => {
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={itemModalVisible}
+      onRequestClose={() => {
+        Alert.alert('Modal has been closed.');
+        setItemModalVisible(!itemModalVisible);
+      }}
+    >
+      <View style={styles.centeredView}>
+        <View style={styles.itemmodalView}>
+          <Text style={styles.modalTitle}>{itemData.itemName}</Text>
+          <Text
+            style={itemData.duration > 10 ? styles.explong : styles.expshort}
+          >
+            {itemData.itemDuration} Days Remaining!
+          </Text>
+
+          <View style={{ padding: 10 }}></View>
+          <Image
+            source={images[itemData.itemImage]}
+            style={{
+              width: 150,
+              height: 150,
+            }}
+          />
+          <View style={{ padding: 10 }}></View>
+          <Text style={styles.modalText}>{itemData.itemDescripton}</Text>
+          <View style={{ padding: 10 }}></View>
+          <Text style={styles.modalPrice}>${itemData.itemPrice}</Text>
+          <View style={{ padding: 10 }}></View>
+          <View style={{ flexDirection: 'row' }}>
+            <Button
+              mode="contained"
+              title="Close"
+              buttonColor="#eb6b34"
+              labelStyle={{ fontSize: 16, color: 'black' }}
+              onPress={() => setItemModalVisible(!itemModalVisible)}
+            >
+              Close
+            </Button>
+            <View style={{ padding: 10 }}></View>
+            {itemData.status === 'Available' ? (
+              <Button
+                mode="contained"
+                title="Reserve"
+                buttonColor="#eb6b34"
+                labelStyle={{ fontSize: 16, color: 'black' }}
+                onPress={() => {
+                  fetch(`${REACT_APP_ADDRESS}/reservation`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      buyerID: userdata.user_id,
+                      itemID: itemData.itemID,
+                    }),
+                  }).then(() => {
+                    GetItems((refresh = true));
+                  });
+                  setItemModalVisible(!itemModalVisible);
+                }}
+              >
+                Reserve
+              </Button>
+            ) : (
+              <Button
+                mode="contained"
+                title="Reserve"
+                buttonColor="#eb6b34"
+                labelStyle={{ fontSize: 16, color: 'black' }}
+                onPress={() => {
+                  fetch(`${REACT_APP_ADDRESS}/reservation/` + itemData.itemID, {
+                    method: 'DELETE',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      itemID: itemData.itemID,
+                    }),
+                  }).then(() => {
+                    GetItems((refresh = true));
+                  });
+                  setItemModalVisible(!itemModalVisible);
+                }}
+              >
+                Cancel Reservation
+              </Button>
+            )}
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+const LocationModal = ({
+  locationModalVisible,
+  setLocationModalVisible,
+  locationData: locationData,
+  itemData,
+}) => {
+  if (!locationData) {
+    console.log(locationData);
+    console.log(itemData);
+    return;
+  }
+  return (
+    <Modal
+      // animationType="fade"
+      transparent={true}
+      animationType="fade"
+      visible={locationModalVisible}
+      onRequestClose={() => {
+        Alert.alert('Modal has been closed.');
+        setModalVisible(!locationModalVisible);
+      }}
+    >
+      <View style={styles.centeredView}>
+        <View style={styles.locationmodalView}>
+          <Text style={styles.modalTitle}>
+            {locationData.name} {'\n'}
+          </Text>
+
+          <View style={styles.locationdetails}>
+            <View>
+              <Text style={styles.locationdetailstext}>{'Address: '}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  adr =
+                    'http://maps.google.com/?q=' +
+                    locationData.address +
+                    '+' +
+                    locationData.city +
+                    '+' +
+                    locationData.state +
+                    '+' +
+                    locationData.zip;
+                  Linking.openURL(adr);
+                }}
+              >
+                <Text style={styles.locationphonetext}>
+                  {locationData.address} {'\n'}
+                  {locationData.city}, {locationData.state} {locationData.zip}{' '}
+                  {'\n'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View>
+              <Text style={styles.locationdetailstext}>{'Phone: '}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  this.dialCall(locationData.phone_number);
+                }}
+              >
+                <Text style={styles.locationphonetext}>
+                  {locationData.phone_number}
+                  {'\n'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Text style={styles.locationdetailstext}>Website:</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL(locationData.website);
+                }}
+              >
+                <Text style={styles.locationphonetext}>
+                  {locationData.website}
+                  {'\n'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.locationdetailstext}>
+              Email: {'\n'}
+              {locationData.email}
+            </Text>
+          </View>
+          <View style={{ padding: 10 }}></View>
+          <View style={{ flexDirection: 'row' }}>
+            <Button
+              mode="contained"
+              title="Close"
+              buttonColor="#eb6b34"
+              labelStyle={{ fontSize: 16, color: 'black' }}
+              onPress={() => setLocationModalVisible(!locationModalVisible)}
+            >
+              Close
+            </Button>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+dialCall = (number) => {
+  let phoneNumber = '';
+  if (Platform.OS === 'android') {
+    phoneNumber = `tel:${number}`;
+  } else {
+    phoneNumber = `telprompt:${number}`;
+  }
+  Linking.openURL(phoneNumber);
+};
 
 export default BuyerMainView;

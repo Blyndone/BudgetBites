@@ -627,4 +627,5 @@ dialCall = (number) => {
   }
   Linking.openURL(phoneNumber);
 };
+
 export default GuestMainView;
