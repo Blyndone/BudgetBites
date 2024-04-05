@@ -3,15 +3,17 @@ import images from '../../../assets/testimages/ImageIndex';
 import { Surface } from 'react-native-paper';
 import { memo } from 'react';
 
-export const ListItem = memo(function ListItem({ item }) {
+export const ListItem = memo(function ListItem({ item, overlay = false }) {
   const exp = new Date(item.expiration);
   const cur = new Date();
   const duration = parseInt((exp - cur) / 86400000);
+
+  let bgStyle = item.status === 'Available' ? styles.item : styles.itemreserved;
+  if (overlay) {
+    bgStyle = styles.pendingdelete;
+  }
   return (
-    <Surface
-      style={item.status === 'Available' ? styles.item : styles.itemreserved}
-      elevation={4}
-    >
+    <Surface style={bgStyle} elevation={4}>
       {item.status != 'Available' ? (
         <View
           style={{
@@ -95,6 +97,20 @@ const styles = StyleSheet.create({
     // justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: '#fc7f03',
+    borderWidth: 2.5,
+    borderRadius: 20,
+  },
+  pendingdelete: {
+    flex: 1,
+    padding: 5,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    height: 100,
+    width: 360,
+    flexDirection: 'row',
+    // justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: '#93856c',
     borderWidth: 2.5,
     borderRadius: 20,
   },

@@ -222,6 +222,7 @@ const SellerMainView = ({ navigation, route }) => {
                     backgroundColor="#eb6b34"
                     status={checked[ID] ? 'checked' : 'unchecked'}
                     onPress={() => {
+                      pending = true;
                       setChecked({
                         ...checked,
                         [ID]: !checked[ID],
@@ -247,7 +248,7 @@ const SellerMainView = ({ navigation, route }) => {
                   setModalVisible(true);
                 }}
               >
-                <ListItem item={item} />
+                <ListItem item={item} overlay={checked[ID]} />
               </Pressable>
             </View>
           );
