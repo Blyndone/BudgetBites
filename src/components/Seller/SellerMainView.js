@@ -274,7 +274,7 @@ const SellerMainView = ({ navigation, route }) => {
         <Button
           mode="contained"
           title="Mass Delete"
-          buttonColor="#eb6b34"
+          buttonColor={showDeleteCheckbox ? '#ff2200' : '#eb6b34'}
           labelStyle={{ fontSize: 16, color: 'black' }}
           onPress={() => {
             setShowCheckbox(!showDeleteCheckbox);

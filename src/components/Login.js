@@ -6,6 +6,7 @@ import {
   Image,
   Alert,
   ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -39,7 +40,11 @@ const Login = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.form}>
-      <ScrollView>
+      <ScrollView
+        keyboardShouldPersistTaps="never"
+        scrollEnabled={false}
+        showsVerticalScrollIndicator={false}
+      >
         <View
           style={{
             alignContent: 'center',
@@ -49,11 +54,13 @@ const Login = ({ navigation }) => {
           <Image
             source={require('../../assets/BB-logo.png')}
             style={{
-              width: 250,
-              height: 250,
+              width: 350,
+              height: 350,
             }}
           />
         </View>
+      </ScrollView>
+      <KeyboardAvoidingView behavior="padding">
         <View style={styles.textinput}>
           <Text style={styles.titleText}>Login</Text>
 
@@ -64,27 +71,7 @@ const Login = ({ navigation }) => {
             {'\n'}
             Buyer: User: customer | Pass: customer
           </Text>
-          <View>
-            {/* AUTH TEST */}
-            {/* <Button
-            mode="contained"
-            title="List"
-            buttonColor="#eb6b34"
-            onPress={() => {
-              Auth(user_text).then((resp) => {
-                try {
-                  r = JSON.parse(resp);
-                  console.log(r.status);
-                  console.log(resp);
-                } catch (err) {
-                  console.log(err);
-                }
-              });
-            }}
-            >
-            auth
-          </Button> */}
-          </View>
+          <View></View>
 
           <View
             style={{
@@ -181,7 +168,7 @@ const Login = ({ navigation }) => {
                 }
               }}
             >
-              Submit
+              Login
             </Button>
           </View>
           <View style={styles.buttoncontainer}>
@@ -196,7 +183,7 @@ const Login = ({ navigation }) => {
             </Button>
           </View>
         </View>
-      </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

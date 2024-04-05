@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Modal, FlatList, Pressable, ScrollView } from 'react-native';
+import {
+  Modal,
+  FlatList,
+  Pressable,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native';
 import { View, StyleSheet, SafeAreaView, Image, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -58,7 +64,7 @@ const SellerCreateListing = ({ navigation, route }) => {
   var [name_text, setName] = React.useState('');
   var [desc_text, setDescription] = React.useState('');
   var [price_text, setPrice] = React.useState('');
-  var [img_select, setImage] = React.useState(1);
+  var [img_select, setImage] = React.useState('1');
   const [open, setOpen] = useState(false);
   const [category_text, setCategory] = useState(null);
   const [items, setItems] = useState([
@@ -93,296 +99,306 @@ const SellerCreateListing = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView style={styles.form}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={[styles.modaltitlebar]}>
-              <IconButton
-                icon="arrow-left-bold"
-                iconColor={imageindexes[0] > 5 ? 'black' : '#00000000'}
-                size={30}
-                onPress={() => {
-                  if (imageindexes[0] > 5) {
-                    setImageIndex(imageindexes.map((index) => index - 16));
-                  }
-                }}
-              />
-              <Text style={styles.modalTitle}>Select an Icon!</Text>
-              <IconButton
-                icon="arrow-right-bold"
-                iconColor={imageindexes[0] < 80 ? 'black' : '#00000000'}
-                size={30}
-                onPress={() => {
-                  if (imageindexes[0] < 80) {
-                    setImageIndex(imageindexes.map((index) => index + 16));
-                  }
-                }}
-              />
-            </View>
-
-            <View style={{ flex: 1 }}>
-              <FlatList
-                data={imageindexes}
-                // style={[styles.itemContainer]}
-                numColumns={4}
-                columnWrapperStyle={styles.row}
-                // keyExtractor={({ imgID }) => imgID}
-                renderItem={({ item }) => {
-                  return (
-                    <Pressable
-                      onPress={() => {
-                        setModalVisible(false);
-                        setImage(item, 60);
-                      }}
-                    >
-                      {/* <Text>img:{item}</Text> */}
-                      <SingleImage image={item} size={60}></SingleImage>
-                    </Pressable>
-                  );
-                }}
-              />
-            </View>
-
-            <View style={{ flexDirection: 'row' }}>
-              <Button
-                mode="contained"
-                title="Close"
-                buttonColor="#eb6b34"
-                labelStyle={{ fontSize: 16, color: 'black' }}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                Close
-              </Button>
-            </View>
-          </View>
-        </View>
-      </Modal>
-      <ScrollView style={{ flex: 1 }}>
-        <View style={styles.textcontainer}>
-          <View>
-            <Text style={styles.titleText}>Food Listing</Text>
-          </View>
-
-          <View>
-            <Text style={styles.bodytext}>
-              Create a new food listing.
-              {'\n'}
-              {'\n'}
-              Input the item name, a short description, and the price below!
-              {'\n'}
-            </Text>
-          </View>
-          <View>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+      <SafeAreaView style={styles.form}>
+        <ScrollView style={styles.form2}>
+          <View style={styles.textcontainer}>
             <View>
-              <TextInput
-                label="Item Name"
-                value={name_text}
-                onChangeText={(name_text) => setName(name_text)}
-                style={styles.textinput}
-              />
+              <Text style={styles.titleText}>Food Listing</Text>
             </View>
+
             <View>
-              <TextInput
-                label="Description"
-                value={desc_text}
-                onChangeText={(desc_text) => setDescription(desc_text)}
-                style={styles.textinput}
-              />
+              <Text style={styles.bodytext}>
+                Create a new food listing.
+                {'\n'}
+                {'\n'}
+                Input the item name, a short description, and the price below!
+              </Text>
             </View>
+          </View>
 
-            <View style={[styles.pricerow]}>
-              <TextInput
-                label="Price"
-                value={price_text}
-                onChangeText={(price_text) => {
-                  setPrice(price_text);
+          <View style={styles.textcontainer}>
+            <View>
+              <View style={[styles.pricerow]}>
+                <TextInput
+                  label="Item Name"
+                  value={name_text}
+                  onChangeText={(name_text) => setName(name_text)}
+                  style={styles.textinput}
+                />
+              </View>
+              <View style={[styles.pricerow]}>
+                <TextInput
+                  label="Description"
+                  value={desc_text}
+                  onChangeText={(desc_text) => setDescription(desc_text)}
+                  style={styles.textinput}
+                />
+              </View>
 
-                  if (price_text == 0 || discount_text == 0) {
-                    setDiscountCalc('');
-                  } else {
-                    setDiscountCalc(
-                      (
-                        parseFloat(price_text) *
-                        (1 - parseFloat(discount_text) / 100)
-                      ).toFixed(2),
-                    );
+              <View style={[styles.pricerow]}>
+                <TextInput
+                  label="Price"
+                  value={price_text}
+                  onChangeText={(price_text) => {
+                    setPrice(price_text);
+
+                    if (price_text == 0 || discount_text == 0) {
+                      setDiscountCalc('');
+                    } else {
+                      setDiscountCalc(
+                        (
+                          parseFloat(price_text) *
+                          (1 - parseFloat(discount_text) / 100)
+                        ).toFixed(2),
+                      );
+                    }
+                    2;
+                  }}
+                  style={styles.price}
+                  keyboardType="number-pad"
+                  maxLength={10}
+                />
+                <TextInput
+                  label="Discount %"
+                  value={discount_text}
+                  onChangeText={(discount_text) => {
+                    setDiscount(discount_text);
+                    if (price_text == 0 || discount_text == 0) {
+                      setDiscountCalc('');
+                    } else {
+                      setDiscountCalc(
+                        (
+                          parseFloat(price_text) *
+                          (1 - parseFloat(discount_text) / 100)
+                        ).toFixed(2),
+                      );
+                    }
+                  }}
+                  style={styles.discount}
+                  keyboardType="number-pad"
+                  maxLength={10}
+                />
+              </View>
+              <View style={[styles.pricerow]}>
+                <TextInput
+                  label="# of Days Until Expiration"
+                  value={expiration_text}
+                  style={styles.textinput}
+                  onChangeText={(expiration_text) =>
+                    setExpiration(expiration_text)
                   }
-                  2;
-                }}
-                style={styles.price}
-                keyboardType="number-pad"
-                maxLength={10}
-              />
-              <TextInput
-                label="Discount %"
-                value={discount_text}
-                onChangeText={(discount_text) => {
-                  setDiscount(discount_text);
-                  if (price_text == 0 || discount_text == 0) {
-                    setDiscountCalc('');
-                  } else {
-                    setDiscountCalc(
-                      (
-                        parseFloat(price_text) *
-                        (1 - parseFloat(discount_text) / 100)
-                      ).toFixed(2),
-                    );
-                  }
-                }}
-                style={styles.discount}
-                keyboardType="number-pad"
-                maxLength={10}
-              />
-            </View>
-            <View style={[styles.pricerow]}>
-              <TextInput
-                label="# of Days Until Expiration"
-                value={expiration_text}
-                style={styles.textinput}
-                onChangeText={(expiration_text) =>
-                  setExpiration(expiration_text)
-                }
-                keyboardType="number-pad"
-              />
-              <TextInput
-                label="Count"
-                value={count}
-                style={styles.textinput}
-                onChangeText={(count) => setCount(count)}
-                keyboardType="number-pad"
-              />
-            </View>
+                  keyboardType="number-pad"
+                />
+                <TextInput
+                  label="Count"
+                  value={count}
+                  style={styles.textinput}
+                  onChangeText={(count) => setCount(count)}
+                  keyboardType="number-pad"
+                />
+              </View>
 
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <SingleImage image={img_select} size={80}></SingleImage>
+              <View style={{ flexDirection: 'row' }}>
                 <View
                   style={{ justifyContent: 'center', alignItems: 'center' }}
                 >
-                  <Button
-                    mode="contained"
-                    title="Select an Image"
-                    buttonColor="#eb6b34"
-                    labelStyle={{ fontSize: 15 }}
-                    onPress={() => setModalVisible(!modalVisible)}
+                  <Pressable onPress={() => setModalVisible(!modalVisible)}>
+                    <SingleImage image={img_select} size={80}></SingleImage>
+                  </Pressable>
+                  <View
+                    style={{ justifyContent: 'center', alignItems: 'center' }}
                   >
-                    Select an Image
-                  </Button>
+                    <Button
+                      mode="contained"
+                      title="Select an Image"
+                      buttonColor="#eb6b34"
+                      labelStyle={{ fontSize: 15 }}
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      Select an Image
+                    </Button>
+                  </View>
                 </View>
-              </View>
-              <View style={{ padding: 10 }}></View>
-              <View>
+                <View style={{ padding: 10 }}></View>
                 <View>
-                  <DropDownPicker
-                    style={{
-                      backgroundColor: '#E7E0EC',
-                      borderColor: '#00000000',
-                      borderTopEndRadius: 5,
-                      borderTopStartRadius: 5,
-                      borderRadius: 0,
-                      width: '70%',
-                      alignItems: 'center',
-                      margin: 5,
-                      height: 45,
-                    }}
-                    dropDownContainerStyle={{
-                      backgroundColor: '#decceb',
-                      borderColor: '#00000000',
-                      borderTopColor: 'black',
-                      width: '73%',
-                    }}
-                    open={open}
-                    value={category_text}
-                    items={items}
-                    setOpen={setOpen}
-                    setValue={setCategory}
-                    setItems={setItems}
-                    listMode="SCROLLVIEW"
-                    dropDownDirection="TOP"
-                    placeholder={'Choose a Category'}
-                  />
-                </View>
-                <View style={styles.discountrow}>
-                  <Text style={styles.discounttext}>Discount Price</Text>
-                  <Text style={styles.discounttext}>{discount_calc}</Text>
+                  <View>
+                    <DropDownPicker
+                      style={{
+                        backgroundColor: '#E7E0EC',
+                        borderColor: '#00000000',
+                        borderTopEndRadius: 5,
+                        borderTopStartRadius: 5,
+                        borderRadius: 0,
+                        width: '70%',
+                        alignItems: 'center',
+                        margin: 5,
+                        height: 45,
+                      }}
+                      dropDownContainerStyle={{
+                        backgroundColor: '#decceb',
+                        borderColor: '#00000000',
+                        borderTopColor: 'black',
+                        width: '73%',
+                      }}
+                      open={open}
+                      value={category_text}
+                      items={items}
+                      setOpen={setOpen}
+                      setValue={setCategory}
+                      setItems={setItems}
+                      listMode="SCROLLVIEW"
+                      dropDownDirection="TOP"
+                      placeholder={'Choose a Category'}
+                    />
+                  </View>
+                  <View style={styles.discountrow}>
+                    <Text style={styles.discounttext}>Discount Price</Text>
+                    <Text style={styles.discounttext}>{discount_calc}</Text>
+                  </View>
                 </View>
               </View>
             </View>
           </View>
-        </View>
 
-        <View>
-          <Button
-            mode="contained"
-            title="Submit"
-            buttonColor="#eb6b34"
-            labelStyle={{ fontSize: 20 }}
-            onPress={() => {
-              const price_discounted = (
-                parseFloat(price_text) *
-                (1 - parseFloat(discount_text) / 100)
-              ).toFixed(2);
+          <View style={{ flex: 1 }}>
+            <Button
+              mode="contained"
+              title="Submit"
+              buttonColor="#eb6b34"
+              labelStyle={{ fontSize: 20 }}
+              onPress={() => {
+                const price_discounted = (
+                  parseFloat(price_text) *
+                  (1 - parseFloat(discount_text) / 100)
+                ).toFixed(2);
 
-              console.log(price_discounted);
-              if (
-                name_text.length == 0 ||
-                desc_text.length == 0 ||
-                price_text.length == 0 ||
-                discount_text == 0
-              ) {
-                alert('Please Input an Item');
-                return;
-              } else {
-                try {
-                  // price_text = parseFloat(price_text).toFixed(2);
-                } catch (e) {
-                  price_text = '00.00';
+                console.log(price_discounted);
+                if (
+                  name_text.length == 0 ||
+                  desc_text.length == 0 ||
+                  price_text.length == 0 ||
+                  discount_text == 0
+                ) {
+                  alert('Please Input an Item');
+                  return;
+                } else {
+                  try {
+                    // price_text = parseFloat(price_text).toFixed(2);
+                  } catch (e) {
+                    price_text = '00.00';
+                  }
                 }
-              }
 
-              fetch(`${REACT_APP_ADDRESS}/additem`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  name_text: name_text,
-                  desc_text: desc_text,
-                  price_text: price_discounted,
-                  msrp: price_text,
-                  user_id: userdata.user_id,
-                  img_select: img_select,
-                  category_text: category_text,
-                  expiration_text: expiration_text,
-                  count: count,
-                }),
-              });
+                fetch(`${REACT_APP_ADDRESS}/additem`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    name_text: name_text,
+                    desc_text: desc_text,
+                    price_text: price_discounted,
+                    msrp: price_text,
+                    user_id: userdata.user_id,
+                    img_select: img_select,
+                    category_text: category_text,
+                    expiration_text: expiration_text,
+                    count: count,
+                  }),
+                });
 
-              navigation.navigate({
-                name: 'Seller Main View',
-                params: { userdata },
-              });
+                navigation.navigate({
+                  name: 'Seller Main View',
+                  params: { userdata },
+                });
+              }}
+            >
+              Submit
+            </Button>
+          </View>
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
             }}
           >
-            Submit
-          </Button>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <View style={[styles.modaltitlebar]}>
+                  <IconButton
+                    icon="arrow-left-bold"
+                    iconColor={imageindexes[0] > 5 ? 'black' : '#00000000'}
+                    size={30}
+                    onPress={() => {
+                      if (imageindexes[0] > 5) {
+                        setImageIndex(imageindexes.map((index) => index - 16));
+                      }
+                    }}
+                  />
+                  <Text style={styles.modalTitle}>Select an Icon!</Text>
+                  <IconButton
+                    icon="arrow-right-bold"
+                    iconColor={imageindexes[0] < 80 ? 'black' : '#00000000'}
+                    size={30}
+                    onPress={() => {
+                      if (imageindexes[0] < 80) {
+                        setImageIndex(imageindexes.map((index) => index + 16));
+                      }
+                    }}
+                  />
+                </View>
+
+                <View style={{ flex: 1 }}>
+                  <FlatList
+                    data={imageindexes}
+                    // style={[styles.itemContainer]}
+                    numColumns={4}
+                    columnWrapperStyle={styles.row}
+                    // keyExtractor={({ imgID }) => imgID}
+                    renderItem={({ item }) => {
+                      return (
+                        <Pressable
+                          onPress={() => {
+                            setModalVisible(false);
+                            setImage(item, 60);
+                          }}
+                        >
+                          {/* <Text>img:{item}</Text> */}
+                          <SingleImage image={item} size={60}></SingleImage>
+                        </Pressable>
+                      );
+                    }}
+                  />
+                </View>
+                <View style={{ margin: 10 }}>
+                  <Button
+                    mode="contained"
+                    title="Close"
+                    buttonColor="#eb6b34"
+                    labelStyle={{ fontSize: 16, color: 'black' }}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    Close
+                  </Button>
+                </View>
+              </View>
+            </View>
+          </Modal>
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   form: {
     flex: 1,
+  },
+  form2: {
     backgroundColor: 'teal',
 
     padding: 25,
@@ -420,6 +436,11 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   pricerow: {
+    justifyContent: 'left',
+
+    flexDirection: 'row',
+  },
+  namerow: {
     justifyContent: 'left',
 
     flexDirection: 'row',
