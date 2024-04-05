@@ -563,6 +563,20 @@ const ItemModal = ({
           <View style={{ padding: 10 }}></View>
           <Text style={styles.modalPrice}>${itemData.itemPrice}</Text>
           <View style={{ padding: 10 }}></View>
+          <View>
+            <Button
+              mode="contained"
+              title="Close"
+              buttonColor="#eb6b34"
+              labelStyle={{ fontSize: 16, color: 'black' }}
+              onPress={() => {
+                setLocationModalVisible(!locationModalVisible);
+              }}
+            >
+              Location Information
+            </Button>
+          </View>
+          <View style={{ padding: 10 }}></View>
           <View style={{ flexDirection: 'row' }}>
             <Button
               mode="contained"
