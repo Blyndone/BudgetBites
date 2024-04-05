@@ -17,7 +17,6 @@ VALUES
     ('GardeningGuru', 'greenpass', 'Gardening Guru', 'gardener@example.com', 1234567894, 12349, 'seller', '2022-06-12'),
     ('TravelExplorer', 'travelpass', 'Travel Explorer', 'traveler@example.com', 1234567895, 12340, 'buyer', '2022-07-18'),
     ('Bookworm', 'bookpass', 'Bookworm', 'reader@example.com', 1234567896, 12341, 'buyer', '2022-08-25'),
-   
     ('PetLover', 'petpass', 'Pet Lover', 'petlover@example.com', 1234567898, 12343, 'buyer', '2022-10-15');
 
 
@@ -59,13 +58,27 @@ VALUES
 INSERT INTO listing (itemID, sellerID, createDate)
 VALUES
     (1, 1, '2022-01-10'),
-    (2, 1, '2022-02-25'),
-    -- (3, 1, '2022-03-20'),
-    -- (4, 1, '2022-03-20'),
-    (5, 1, '2022-03-20'),
-    (6, 1, '2022-03-20'),
-    (7, 1, '2022-03-20'),
-    (11, 1, '2022-03-20');
+    (2, 2, '2022-02-25'),
+    (3, 3, '2022-02-25'),
+    (4, 2, '2022-02-25'),
+    (5, 4, '2022-02-25'),
+    (6, 3, '2022-02-25'),
+    (7, 1, '2022-02-25'),
+    (8, 1, '2022-02-25'),
+    (9, 2, '2022-02-25'),
+    (10, 3, '2022-02-25'),
+    (11, 1, '2022-02-25'),
+    (12, 2, '2022-02-25'),
+    (13, 3, '2022-02-25'),
+    (14, 1, '2022-02-25'),
+    (15, 1, '2022-02-25'),
+    (16, 1, '2022-02-25'), 
+    (17, 1, '2022-02-25'),    
+    (18, 1, '2022-02-25'),
+    (19, 1, '2022-02-25'),
+    (20, 1, '2022-02-25'),
+    (21, 1, '2022-02-25');
+    
 
 
 
@@ -87,12 +100,12 @@ VALUES
 INSERT INTO `locations` (`sellerID`, `name`, `address`, `city`, `state`, `zip`, `phone_number`, `email`, `website`)
 VALUES 
 
-    (1, 'Fresh Produce Market', '456 Elm St', 'Smallville', 'Anystate', '54321', '555-987-6543', 'freshproduce@example.com', 'http://www.freshproducemarket.com');
-    -- (456, 'Healthy Bites Cafe', '789 Oak St', 'Metropolis', 'Anystate', '67890', '555-555-5555', 'healthybites@example.com', 'http://www.healthybitescafe.com'),
-    -- (789, 'Tasty Tacos', '321 Maple St', 'Big City', 'Anystate', '13579', '555-222-3333', 'tastytacos@example.com', 'http://www.tastytacos.com'),
-    -- (782, 'Pizza Paradise', '654 Pine St', 'Village', 'Anystate', '97531', '555-888-9999', 'pizzaparadise@example.com', 'http://www.pizzaparadise.com'),
-    -- (123, 'Bakery Delights', '987 Cedar St', 'Hometown', 'Anystate', '24680', '555-444-3333', 'bakerydelights@example.com', 'http://www.bakerydelights.com'),
-    -- (454, 'Sushi Haven', '741 Birch St', 'Townsville', 'Anystate', '36912', '555-111-2222', 'sushihaven@example.com', 'http://www.sushihaven.com'),
-    -- (787, 'Burger Joint', '852 Walnut St', 'Metroville', 'Anystate', '75319', '555-666-7777', 'burgerjoint@example.com', 'http://www.burgerjoint.com'),
-    -- (122, 'Ice Cream Parlor', '369 Oak St', 'Riverside', 'Anystate', '86420', '555-999-0000', 'icecreamparlor@example.com', 'http://www.icecreamparlor.com'),
-    -- (458, 'Vegetarian Delights', '147 Cherry St', 'Hilltop', 'Anystate', '25874', '555-123-9876', 'vegetariandelights@example.com', 'http://www.vegetariandelights.com');
+    (1, 'Fresh Produce Market', '456 Elm St', 'Smallville', 'Anystate', '54321', '555-987-6543', 'freshproduce@example.com', 'http://www.freshproducemarket.com'),
+    (2, 'Healthy Bites Cafe', '789 Oak St', 'Metropolis', 'Anystate', '67890', '555-555-5555', 'healthybites@example.com', 'http://www.healthybitescafe.com'),
+    (3, 'Tasty Tacos', '321 Maple St', 'Big City', 'Anystate', '13579', '555-222-3333', 'tastytacos@example.com', 'http://www.tastytacos.com'),
+    (4, 'Pizza Paradise', '654 Pine St', 'Village', 'Anystate', '97531', '555-888-9999', 'pizzaparadise@example.com', 'http://www.pizzaparadise.com'),
+    (5, 'Bakery Delights', '987 Cedar St', 'Hometown', 'Anystate', '24680', '555-444-3333', 'bakerydelights@example.com', 'http://www.bakerydelights.com'),
+    (6, 'Sushi Haven', '741 Birch St', 'Townsville', 'Anystate', '36912', '555-111-2222', 'sushihaven@example.com', 'http://www.sushihaven.com'),
+    (7, 'Burger Joint', '852 Walnut St', 'Metroville', 'Anystate', '75319', '555-666-7777', 'burgerjoint@example.com', 'http://www.burgerjoint.com'),
+    (8, 'Ice Cream Parlor', '369 Oak St', 'Riverside', 'Anystate', '86420', '555-999-0000', 'icecreamparlor@example.com', 'http://www.icecreamparlor.com'),
+    (9, 'Vegetarian Delights', '147 Cherry St', 'Hilltop', 'Anystate', '25874', '555-123-9876', 'vegetariandelights@example.com', 'http://www.vegetariandelights.com');

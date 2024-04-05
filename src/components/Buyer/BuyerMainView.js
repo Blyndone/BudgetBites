@@ -223,7 +223,7 @@ const BuyerMainView = ({ navigation, route }) => {
         }}
       />
 
-      <Surface elevation={5} style={[styles.bottomContaier]}>
+      <View elevation={5} style={[styles.bottomContaier]}>
         <Button
           mode="contained"
           title="My Reservations"
@@ -239,7 +239,7 @@ const BuyerMainView = ({ navigation, route }) => {
         >
           My Reservations
         </Button>
-      </Surface>
+      </View>
     </SafeAreaView>
   );
 };

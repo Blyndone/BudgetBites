@@ -12,6 +12,23 @@ export const ListItem = memo(function ListItem({ item }) {
       style={item.status === 'Available' ? styles.item : styles.itemreserved}
       elevation={4}
     >
+      {item.status != 'Available' ? (
+        <View
+          style={{
+            position: 'absolute',
+            right: 115,
+            alignItems: 'center',
+            zIndex: 1,
+          }}
+        >
+          <Image
+            source={require('../../../assets/Reserved.png')}
+            style={{ resizeMode: 'contain', height: 150, width: 150 }}
+          />
+        </View>
+      ) : (
+        ''
+      )}
       <View style={styles.imgview}>
         <Image source={images[item.img]} style={styles.img} />
 
@@ -41,7 +58,7 @@ export const ListItem = memo(function ListItem({ item }) {
         <View>
           <View style={{ padding: 8 }}></View>
           <Text style={styles.price}> Price</Text>
-          <Text style={styles.price}>${item.price}</Text>
+          <Text style={styles.price}>{item.price}</Text>
         </View>
       </View>
     </Surface>
@@ -59,7 +76,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     // justifyContent: 'flex-end',
     // alignItems: 'center',
-    borderWidth: 4,
+    borderWidth: 2.5,
+    borderRadius: 20,
     backgroundColor: '#fca503',
   },
   itemreserved: {
@@ -72,8 +90,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     // justifyContent: 'flex-end',
     alignItems: 'center',
-    borderWidth: 5,
-    backgroundColor: '#fc6f03',
+    backgroundColor: '#fc7f03',
+    borderWidth: 2.5,
+    borderRadius: 20,
   },
   imgview: {
     flex: 0.5,

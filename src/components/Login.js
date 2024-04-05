@@ -41,8 +41,8 @@ const Login = ({ navigation }) => {
         <Image
           source={require('../../assets/BB-logo.png')}
           style={{
-            width: 200,
-            height: 200,
+            width: 250,
+            height: 250,
           }}
         />
       </View>

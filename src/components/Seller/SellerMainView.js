@@ -63,6 +63,7 @@ const SellerMainView = ({ navigation, route }) => {
   const [itemPrice, setItemPrice] = useState(0);
   const [itemID, setItemID] = useState(0);
   const [itemDuration, setDuration] = useState(0);
+  const [itemstatus, setItemStatus] = useState(0);
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -105,7 +106,7 @@ const SellerMainView = ({ navigation, route }) => {
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>{itemName}</Text>
             <Text style={itemDuration > 10 ? styles.explong : styles.expshort}>
-              {itemDuration + 1} Days Remaining!
+              {itemDuration + 1} Days Remaining!{' '}
             </Text>
             <View style={{ padding: 10 }}></View>
             <Image
@@ -121,53 +122,65 @@ const SellerMainView = ({ navigation, route }) => {
             <Text style={styles.modalPrice}>${itemPrice}</Text>
             <View style={{ padding: 10 }}></View>
             <View style={{ flexDirection: 'row' }}>
-              <Button
-                mode="contained"
-                title="Delete Reservation"
-                buttonColor="#eb6b34"
-                labelStyle={{ fontSize: 16, color: 'black' }}
-                onPress={() => {
-                  fetch(`${REACT_APP_ADDRESS}/reservation/${itemID}`, {
-                    method: 'DELETE',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                      buyerID: userdata.user_id,
-                      itemID: itemID,
-                    }),
-                  }).then(() => {
-                    GetItems();
-                  });
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                Delete Reservation
-              </Button>
-              <View style={{ padding: 10 }}></View>
-              <Button
-                mode="contained"
-                title="Delete Listing"
-                buttonColor="#eb6b34"
-                labelStyle={{ fontSize: 16, color: 'black' }}
-                onPress={() => {
-                  fetch(`${REACT_APP_ADDRESS}/items/${itemID}`, {
-                    method: 'DELETE',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                      buyerID: userdata.user_id,
-                      itemID: itemID,
-                    }),
-                  }).then(() => {
-                    GetItems();
-                  });
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                Delete Listing
-              </Button>
+              {itemstatus != 'Available' ? (
+                <View>
+                  <Button
+                    mode="contained"
+                    title="Delete Reservation"
+                    buttonColor="#eb6b34"
+                    labelStyle={{ fontSize: 16, color: 'black' }}
+                    onPress={() => {
+                      fetch(`${REACT_APP_ADDRESS}/reservation/${itemID}`, {
+                        method: 'DELETE',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                          buyerID: userdata.user_id,
+                          itemID: itemID,
+                        }),
+                      }).then(() => {
+                        GetItems();
+                      });
+                      setModalVisible(!modalVisible);
+                    }}
+                  >
+                    Delete Reservation
+                  </Button>
+                </View>
+              ) : (
+                ''
+              )}
+              {itemstatus != 'Available' ? (
+                <View style={{ padding: 10 }}></View>
+              ) : (
+                ''
+              )}
+              <View>
+                <Button
+                  mode="contained"
+                  title="Delete Listing"
+                  buttonColor="#eb6b34"
+                  labelStyle={{ fontSize: 16, color: 'black' }}
+                  onPress={() => {
+                    fetch(`${REACT_APP_ADDRESS}/items/${itemID}`, {
+                      method: 'DELETE',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        buyerID: userdata.user_id,
+                        itemID: itemID,
+                      }),
+                    }).then(() => {
+                      GetItems();
+                    });
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  Delete Listing
+                </Button>
+              </View>
             </View>
             <View style={{ padding: 5 }}></View>
             <View>
@@ -229,6 +242,7 @@ const SellerMainView = ({ navigation, route }) => {
                   setItemDescription(item.description);
                   setItemPrice(item.price);
                   setDuration(parseInt((exp - cur) / 86400000));
+                  setItemStatus(item.status);
 
                   setModalVisible(true);
                 }}

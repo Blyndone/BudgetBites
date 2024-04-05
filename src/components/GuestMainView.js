@@ -494,28 +494,31 @@ const ItemModal = ({
           <View style={{ padding: 10 }}></View>
           <Text style={styles.modalPrice}>${itemData.itemPrice}</Text>
           <View style={{ padding: 10 }}></View>
-          <View style={{ flexDirection: 'row' }}>
-            <Button
-              mode="contained"
-              title="Close"
-              buttonColor="#eb6b34"
-              labelStyle={{ fontSize: 16, color: 'black' }}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              Close
-            </Button>
-            <Button
-              mode="contained"
-              title="Close"
-              buttonColor="#eb6b34"
-              labelStyle={{ fontSize: 16, color: 'black' }}
-              onPress={() => {
-                console.log('llll', locationData);
-                setLocationModalVisible(!locationModalVisible);
-              }}
-            >
-              Location
-            </Button>
+          <View>
+            <View>
+              <Button
+                mode="contained"
+                title="Close"
+                buttonColor="#eb6b34"
+                labelStyle={{ fontSize: 16, color: 'black' }}
+                onPress={() => {
+                  setLocationModalVisible(!locationModalVisible);
+                }}
+              >
+                Location Information
+              </Button>
+            </View>
+            <View style={{ margin: 5 }}>
+              <Button
+                mode="contained"
+                title="Close"
+                buttonColor="#eb6b34"
+                labelStyle={{ fontSize: 16, color: 'black' }}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                Close
+              </Button>
+            </View>
           </View>
         </View>
       </View>
@@ -528,10 +531,17 @@ const LocationModal = ({
   locationData: locationData,
   itemData,
 }) => {
+  if (!locationData) {
+    console.log(locationData);
+    console.log(itemData);
+    return;
+  }
+  console.log(locationData);
   return (
     <Modal
       // animationType="fade"
       transparent={true}
+      animationType="fade"
       visible={locationModalVisible}
       onRequestClose={() => {
         Alert.alert('Modal has been closed.');
@@ -540,7 +550,9 @@ const LocationModal = ({
     >
       <View style={styles.centeredView}>
         <View style={styles.locationmodalView}>
-          <Text style={styles.modalTitle}>{locationData.name}</Text>
+          <Text style={styles.modalTitle}>
+            {locationData.name} {'\n'}
+          </Text>
 
           <View style={styles.locationdetails}>
             <View>
