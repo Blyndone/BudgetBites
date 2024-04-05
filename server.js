@@ -87,38 +87,41 @@ app.post('/additem', async (req, res) => {
       category_text,
       msrp,
       expiration_text,
+      count,
     } = req.body;
     var tmpdate = new Date();
     var duration = parseInt(expiration_text);
     tmpdate.setTime(tmpdate.getTime() + duration * 86400000);
     const expdate = tmpdate.toISOString().slice(0, 19).replace('T', ' ');
     const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
-    const [{ insertId }] = await connection.promise().query(
-      `INSERT INTO items (name, description, category, msrp, price, count, expiration, location, status, img, listeddate)
-          VALUES  
-          (?,?, ?, ?, ?, 1, ?, (SELECT locationname FROM users WHERE userID = ?), 'Available', ?, ?);
-          
+    let insertId = '';
+    for (let index = 0; index < count; index++) {
+      [{ insertId }] = await connection.promise().query(
+        `INSERT INTO items (name, description, category, msrp, price, count, expiration, location, status, img, listeddate)
+        VALUES  
+        (?,?, ?, ?, ?, 1, ?, (SELECT locationname FROM users WHERE userID = ?), 'Available', ?, ?);
+        
         INSERT INTO listing (itemID, sellerID, createDate)
-          VALUES  
-          ((SELECT LAST_INSERT_ID()),?,?)
-          
-          `,
-      [
-        name_text,
-        desc_text,
-        category_text,
-        msrp,
-        price_text,
-        expdate,
-        user_id,
-        img_select,
-        date,
-        user_id,
-        date,
-      ],
-    );
-    // .query(
+        VALUES  
+        ((SELECT LAST_INSERT_ID()),?,?)
+        
+        `,
+        [
+          name_text,
+          desc_text,
+          category_text,
+          msrp,
+          price_text,
+          expdate,
+          user_id,
+          img_select,
+          date,
+          user_id,
+          date,
+        ],
+      );
+      // .query(
+    }
     //   `INSERT INTO listing (itemID, sellerID, createDate)
     //     VALUES
     //     (?,?,?)`,
@@ -202,22 +205,16 @@ app.post('/adduser', async (req, res) => {
 
   try {
     // const { id } = req.params;
-    const {
-      username, 
-      password, 
-      name,     
-      email,    
-      phone,    
-      zip,      
-      usertype, 
-      joindate, 
-    } = req.body;
+    const { username, password, name, email, phone, zip, usertype, joindate } =
+      req.body;
 
     // Check for duplicate user
-    const [existingUsers] = await connection.promise().query(
-      'SELECT * FROM users WHERE username = ? OR email = ?',
-      [username, email]
-    );
+    const [existingUsers] = await connection
+      .promise()
+      .query('SELECT * FROM users WHERE username = ? OR email = ?', [
+        username,
+        email,
+      ]);
 
     if (existingUsers.length > 0) {
       return res.status(409).json({ message: 'User already exists' });
@@ -237,16 +234,7 @@ app.post('/adduser', async (req, res) => {
       `INSERT INTO users (username, password, name, email, phone, zip, usertype, joindate)
           VALUES  
           (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        username,
-        hashedPassword,
-        name,
-        email,
-        phone,
-        zip,
-        usertype,
-        joindate,
-      ],
+      [username, hashedPassword, name, email, phone, zip, usertype, joindate],
     );
 
     res.status(200).json({
@@ -458,6 +446,37 @@ app.get('/getitems/:itemID', async (req, res) => {
     const data = await connection
       .promise()
       .query(`SELECT *  from items where itemID = ?`, [itemID]);
+    res.status(200).json({
+      items: data[0],
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err,
+    });
+  }
+});
+
+//==================
+// Get Location By Item Id
+// Input Form:
+// itemID: itemID
+//==================
+app.get('/location/:itemID', async (req, res) => {
+  console.log('get location by id');
+  try {
+    const { itemID } = req.params;
+    query = `SELECT 
+    Loc.name, Loc.address, Loc.city, Loc.state, Loc.zip, Loc.phone_number, Loc.email, Loc.website
+    
+    FROM
+    (((listing L JOIN users U ON L.sellerID = U.userID)
+    JOIN items I ON I.itemID = L.itemID)
+    JOIN locations Loc ON Loc.sellerID = U.userID)
+     
+    
+    where I.itemID = ?`;
+
+    const data = await connection.promise().query(query, [itemID]);
     res.status(200).json({
       items: data[0],
     });

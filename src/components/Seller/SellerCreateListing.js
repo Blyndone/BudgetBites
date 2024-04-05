@@ -72,6 +72,7 @@ const SellerCreateListing = ({ navigation, route }) => {
   const [expiration_text, setExpiration] = useState('');
   const [discount_text, setDiscount] = useState('');
   const [discount_calc, setDiscountCalc] = useState('');
+  const [count, setCount] = useState(1);
   const [imageindexes, setImageIndex] = useState([
     2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
   ]);
@@ -241,7 +242,7 @@ const SellerCreateListing = ({ navigation, route }) => {
                 maxLength={10}
               />
             </View>
-            <View>
+            <View style={[styles.pricerow]}>
               <TextInput
                 label="# of Days Until Expiration"
                 value={expiration_text}
@@ -249,6 +250,13 @@ const SellerCreateListing = ({ navigation, route }) => {
                 onChangeText={(expiration_text) =>
                   setExpiration(expiration_text)
                 }
+                keyboardType="number-pad"
+              />
+              <TextInput
+                label="Count"
+                value={count}
+                style={styles.textinput}
+                onChangeText={(count) => setCount(count)}
                 keyboardType="number-pad"
               />
             </View>
@@ -354,6 +362,7 @@ const SellerCreateListing = ({ navigation, route }) => {
                   img_select: img_select,
                   category_text: category_text,
                   expiration_text: expiration_text,
+                  count: count,
                 }),
               });
 
@@ -399,6 +408,7 @@ const styles = StyleSheet.create({
   textinput: {
     margin: 10,
     height: 45,
+    flex: 1,
   },
   textcontainer: {
     margin: 5,

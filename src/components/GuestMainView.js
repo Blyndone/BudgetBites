@@ -9,6 +9,9 @@ import {
   Image,
   FlatList,
   StatusBar,
+  Linking,
+  TouchableOpacity,
+  Platform,
 } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
@@ -19,7 +22,8 @@ import * as SecureStore from 'expo-secure-store';
 import ListItem from './Components/ListItem.js';
 import DropDownPicker from 'react-native-dropdown-picker';
 const GuestMainView = ({ navigation, route }) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [itemModalVisible, setItemModalVisible] = useState(false);
+  const [locationModalVisible, setLocationModalVisible] = useState(false);
 
   const [itemData, setItemData] = useState({
     itemName: '',
@@ -30,6 +34,19 @@ const GuestMainView = ({ navigation, route }) => {
     itemLocation: '',
     itemDuration: '',
   });
+
+  const [locationData, setLocationData] = useState([
+    {
+      name: '',
+      address: '',
+      city: '',
+      state: '',
+      zip: '',
+      phone_number: '',
+      email: '',
+      website: '',
+    },
+  ]);
 
   // Search config
   // ==================
@@ -56,6 +73,7 @@ const GuestMainView = ({ navigation, route }) => {
     { label: 'Veggies', value: 'Veggies' },
     { label: 'Dairy', value: 'Dairy' },
   ]);
+
   // ============
 
   //=============
@@ -103,6 +121,14 @@ const GuestMainView = ({ navigation, route }) => {
     }
   };
 
+  const GetLocation = async (itemID) => {
+    const response = await fetch(`${REACT_APP_ADDRESS}/location/${itemID}`);
+    const json = await response.json();
+    results = Object.values(json.items);
+    console.log(results);
+    setLocationData(results);
+  };
+
   const filterSoon = (results) => {
     const cur = new Date();
     results = results.filter((item) => {
@@ -140,8 +166,19 @@ const GuestMainView = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ItemModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
+        modalVisible={itemModalVisible}
+        setModalVisible={setItemModalVisible}
+        itemData={itemData}
+        setLocationModalVisible={setLocationModalVisible}
+        locationModalVisible={locationModalVisible}
+        locationData={locationData}
+      />
+      <LocationModal
+        modalVisible={itemModalVisible}
+        setModalVisible={setItemModalVisible}
+        locationData={locationData[0]}
+        setLocationModalVisible={setLocationModalVisible}
+        locationModalVisible={locationModalVisible}
         itemData={itemData}
       />
 
@@ -222,6 +259,7 @@ const GuestMainView = ({ navigation, route }) => {
               onPress={() => {
                 const exp = new Date(item.expiration);
                 const cur = new Date();
+
                 setItemData({
                   itemName: item.name,
                   itemDescripton: item.description,
@@ -231,8 +269,8 @@ const GuestMainView = ({ navigation, route }) => {
                   itemLocation: item.location,
                   itemDuration: parseInt((exp - cur) / 86400000),
                 });
-
-                setModalVisible(true);
+                GetLocation(item.itemID);
+                setItemModalVisible(true);
               }}
             >
               <ListItem item={item} />
@@ -304,9 +342,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 22,
   },
-  modalView: {
+  itemmodalView: {
     margin: 20,
     backgroundColor: 'mediumturquoise',
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  locationmodalView: {
+    margin: 20,
+    backgroundColor: '#fca503',
     borderRadius: 20,
     padding: 20,
     alignItems: 'center',
@@ -384,9 +437,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 30,
   },
+  locationdetails: {},
+  locationdetailstext: {
+    textAlign: 'left',
+    fontWeight: '700',
+    fontSize: 15,
+  },
+  locationphonetext: {
+    textAlign: 'left',
+    fontWeight: '700',
+    fontSize: 15,
+    textDecorationLine: 'underline',
+    fontWeight: 'bold',
+  },
 });
 
-const ItemModal = ({ modalVisible, setModalVisible, itemData }) => {
+const ItemModal = ({
+  modalVisible,
+  setModalVisible,
+  itemData,
+  setLocationModalVisible,
+  locationModalVisible,
+  locationData,
+}) => {
   return (
     <Modal
       animationType="slide"
@@ -398,9 +471,8 @@ const ItemModal = ({ modalVisible, setModalVisible, itemData }) => {
       }}
     >
       <View style={styles.centeredView}>
-        <View style={styles.modalView}>
+        <View style={styles.itemmodalView}>
           <Text style={styles.modalTitle}>{itemData.itemName}</Text>
-          <Text style={styles.modalTitle}>{itemData.itemLocation}</Text>
           <Text
             style={
               itemData.itemDuration > 10 ? styles.explong : styles.expshort
@@ -432,11 +504,124 @@ const ItemModal = ({ modalVisible, setModalVisible, itemData }) => {
             >
               Close
             </Button>
+            <Button
+              mode="contained"
+              title="Close"
+              buttonColor="#eb6b34"
+              labelStyle={{ fontSize: 16, color: 'black' }}
+              onPress={() => {
+                console.log('llll', locationData);
+                setLocationModalVisible(!locationModalVisible);
+              }}
+            >
+              Location
+            </Button>
           </View>
         </View>
       </View>
     </Modal>
   );
 };
+const LocationModal = ({
+  locationModalVisible,
+  setLocationModalVisible,
+  locationData: locationData,
+  itemData,
+}) => {
+  return (
+    <Modal
+      // animationType="fade"
+      transparent={true}
+      visible={locationModalVisible}
+      onRequestClose={() => {
+        Alert.alert('Modal has been closed.');
+        setModalVisible(!locationModalVisible);
+      }}
+    >
+      <View style={styles.centeredView}>
+        <View style={styles.locationmodalView}>
+          <Text style={styles.modalTitle}>{locationData.name}</Text>
 
+          <View style={styles.locationdetails}>
+            <View>
+              <Text style={styles.locationdetailstext}>{'Address: '}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  adr =
+                    'http://maps.google.com/?q=' +
+                    locationData.address +
+                    '+' +
+                    locationData.city +
+                    '+' +
+                    locationData.state +
+                    '+' +
+                    locationData.zip;
+                  Linking.openURL(adr);
+                }}
+              >
+                <Text style={styles.locationphonetext}>
+                  {locationData.address} {'\n'}
+                  {locationData.city}, {locationData.state} {locationData.zip}{' '}
+                  {'\n'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View>
+              <Text style={styles.locationdetailstext}>{'Phone: '}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  this.dialCall(locationData.phone_number);
+                }}
+              >
+                <Text style={styles.locationphonetext}>
+                  {locationData.phone_number}
+                  {'\n'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <Text style={styles.locationdetailstext}>Website:</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL(locationData.website);
+                }}
+              >
+                <Text style={styles.locationphonetext}>
+                  {locationData.website}
+                  {'\n'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.locationdetailstext}>
+              Email: {'\n'}
+              {locationData.email}
+            </Text>
+          </View>
+          <View style={{ padding: 10 }}></View>
+          <View style={{ flexDirection: 'row' }}>
+            <Button
+              mode="contained"
+              title="Close"
+              buttonColor="#eb6b34"
+              labelStyle={{ fontSize: 16, color: 'black' }}
+              onPress={() => setLocationModalVisible(!locationModalVisible)}
+            >
+              Close
+            </Button>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+dialCall = (number) => {
+  let phoneNumber = '';
+  if (Platform.OS === 'android') {
+    phoneNumber = `tel:${number}`;
+  } else {
+    phoneNumber = `telprompt:${number}`;
+  }
+  Linking.openURL(phoneNumber);
+};
 export default GuestMainView;

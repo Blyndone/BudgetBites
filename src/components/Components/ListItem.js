@@ -1,8 +1,9 @@
 import { Pressable, Text, StyleSheet, View, Image } from 'react-native';
 import images from '../../../assets/testimages/ImageIndex';
 import { Surface } from 'react-native-paper';
+import { memo } from 'react';
 
-const ListItem = ({ item }) => {
+export const ListItem = memo(function ListItem({ item }) {
   const exp = new Date(item.expiration);
   const cur = new Date();
   const duration = parseInt((exp - cur) / 86400000);
@@ -45,7 +46,7 @@ const ListItem = ({ item }) => {
       </View>
     </Surface>
   );
-};
+});
 
 const styles = StyleSheet.create({
   item: {
@@ -165,4 +166,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListItem;
+export default memo(ListItem);
+// export default ListItem;
