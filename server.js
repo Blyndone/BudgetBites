@@ -97,9 +97,9 @@ app.post('/additem', async (req, res) => {
     let insertId = '';
     for (let index = 0; index < count; index++) {
       [{ insertId }] = await connection.promise().query(
-        `INSERT INTO items (name, description, category, msrp, price, count, expiration, location, status, img, listeddate)
+        `INSERT INTO items (name, description, category, msrp, price, expiration, location, zip, status, img, listeddate)
         VALUES  
-        (?,?, ?, ?, ?, 1, ?, (SELECT locationname FROM users WHERE userID = ?), 'Available', ?, ?);
+        (?,?, ?, ?, ?, ?, (select L.name from locations L join users U ON U.userID = l.sellerID where U.userID = ?), (select L.zip from locations L join users U ON U.userID = l.sellerID where U.userID = ?), 'Available', ?, ?);
         
         INSERT INTO listing (itemID, sellerID, createDate)
         VALUES  
@@ -113,6 +113,7 @@ app.post('/additem', async (req, res) => {
           msrp,
           price_text,
           expdate,
+          user_id,
           user_id,
           img_select,
           date,
@@ -146,7 +147,6 @@ app.post('/additem', async (req, res) => {
 // description: description_text
 // category:
 // price:
-// count:
 // expiration:
 // location:
 // status:
@@ -336,6 +336,7 @@ app.post('/authenticate', async (req, res) => {
             user_name: data[0].username,
             user_type: data[0].usertype,
             user_id: data[0].userID,
+            user_zip: data[0].zip,
           },
         });
       }
@@ -509,7 +510,7 @@ app.get('/reservations/:username', async (req, res) => {
   try {
     const { username } = req.params;
 
-    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status, I.location, I.expiration, I.category FROM 
+    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status, I.location, I.expiration, I.category, I.msrp FROM 
     items I JOIN 
     reserved R JOIN users U ON U.userID = R.buyerID
     ON I.itemid = R.itemID
@@ -665,7 +666,6 @@ app.patch('/updateitemstatus/:itemID', async (req, res) => {
 // description:
 // category:
 // price:
-// count:
 // expiration:
 // location:
 // status:
@@ -683,7 +683,6 @@ app.patch('/updateitem/:itemID', async (req, res) => {
       description,
       category,
       price,
-      count,
       expiration,
       location,
       status,
@@ -693,13 +692,13 @@ app.patch('/updateitem/:itemID', async (req, res) => {
     const update = await connection
       .promise()
       .query(
-        'UPDATE items SET name = ?, description = ?, category = ?, price = ?, count = ?, expiration = ?, location = ?, status = ?, img = ?, listeddate = ? WHERE itemID = ?',
+        'UPDATE items SET name = ?, description = ?, category = ?, price = ?,  expiration = ?, location = ?, status = ?, img = ?, listeddate = ? WHERE itemID = ?',
         [
           name,
           description,
           category,
           price,
-          count,
+
           expiration,
           location,
           status,

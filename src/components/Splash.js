@@ -48,6 +48,25 @@ const Splash = ({ navigation }) => {
           >
             Guest Login
           </Button>
+        </View>
+        <View style={styles.buttoncontainer}>
+          <Button
+            mode="contained"
+            title="Guest Login"
+            buttonColor="#eb6b34"
+            labelStyle={{ fontSize: 16, color: 'black' }}
+            onPress={() => {
+              data = { user_id: 1, user_name: 'customer', user_zip: 12345 };
+              navigation.navigate({
+                name: 'Buyer Main View',
+                params: { data },
+              });
+            }}
+          >
+            customer
+          </Button>
+        </View>
+        <View style={styles.buttoncontainer}>
           <Button
             mode="contained"
             title="Guest Login"
@@ -56,12 +75,12 @@ const Splash = ({ navigation }) => {
             onPress={() => {
               data = { user_id: 1, user_name: 'customer' };
               navigation.navigate({
-                name: 'Buyer Main View',
+                name: 'Seller Main View',
                 params: { data },
               });
             }}
           >
-            customer
+            Seller
           </Button>
         </View>
         {/* <Button

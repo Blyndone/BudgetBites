@@ -48,8 +48,9 @@ const BuyerMainView = ({ navigation, route }) => {
       user_name: route.params.data.user_name,
       user_type: route.params.data.user_type,
       user_id: route.params.data.user_id,
+      user_zip: route.params.data.user_zip,
     });
-    console.log(userdata);
+
     navigation.setOptions({
       headerRight: () => (
         <ProfileButton
@@ -152,7 +153,7 @@ const BuyerMainView = ({ navigation, route }) => {
         results = filterSoon(results);
       }
       if (isNear) {
-        console.log('NEAR');
+        results = filterNear(results);
       }
       if (category_text != 'Any') {
         results = filterCategory(results);
@@ -181,6 +182,7 @@ const BuyerMainView = ({ navigation, route }) => {
   };
 
   const filterNear = (results) => {
+    results = results.filter((item) => item.zip == userdata.user_zip);
     return results;
   };
 

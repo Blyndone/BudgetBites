@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { View, StyleSheet, SafeAreaView, Image, Alert } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  Alert,
+  ScrollView,
+} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
@@ -32,33 +39,34 @@ const Login = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.form}>
-      <View
-        style={{
-          alignContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Image
-          source={require('../../assets/BB-logo.png')}
+      <ScrollView>
+        <View
           style={{
-            width: 250,
-            height: 250,
+            alignContent: 'center',
+            alignItems: 'center',
           }}
-        />
-      </View>
-      <View style={styles.textinput}>
-        <Text style={styles.titleText}>Login</Text>
+        >
+          <Image
+            source={require('../../assets/BB-logo.png')}
+            style={{
+              width: 250,
+              height: 250,
+            }}
+          />
+        </View>
+        <View style={styles.textinput}>
+          <Text style={styles.titleText}>Login</Text>
 
-        <Text style={styles.bodytext}>
-          Enter details to login.
-          {'\n'}
-          Seller: User: seller | Pass: seller
-          {'\n'}
-          Buyer: User: customer | Pass: customer
-        </Text>
-        <View>
-          {/* AUTH TEST */}
-          {/* <Button
+          <Text style={styles.bodytext}>
+            Enter details to login.
+            {'\n'}
+            Seller: User: seller | Pass: seller
+            {'\n'}
+            Buyer: User: customer | Pass: customer
+          </Text>
+          <View>
+            {/* AUTH TEST */}
+            {/* <Button
             mode="contained"
             title="List"
             buttonColor="#eb6b34"
@@ -73,120 +81,122 @@ const Login = ({ navigation }) => {
                 }
               });
             }}
-          >
+            >
             auth
           </Button> */}
-        </View>
+          </View>
 
-        <View
-          style={{
-            padding: 10,
-          }}
-        >
-          <TextInput
-            label="User Name"
-            value={user_text}
-            onChangeText={(user_text) => setTextUser(user_text)}
-            style={styles.textinput}
-          />
-
-          <TextInput
-            label="Password"
-            value={pass_text}
-            onChangeText={(pass_text) => setTextPass(pass_text)}
-            style={styles.textinput}
-            textContentType="password"
-            secureTextEntry={true}
-          />
-        </View>
-      </View>
-
-      <View>
-        <View style={styles.buttoncontainer}>
-          <Button
-            mode="contained"
-            title="List"
-            buttonColor="#eb6b34"
-            labelStyle={{ fontSize: 18, color: 'black' }}
-            onPress={() => {
-              try {
-                const myHeaders = new Headers();
-                myHeaders.append('Content-Type', 'application/json');
-
-                const raw = JSON.stringify({
-                  username: user_text,
-                  password: pass_text,
-                });
-
-                const requestOptions = {
-                  method: 'POST',
-                  headers: myHeaders,
-                  body: raw,
-                  redirect: 'follow',
-                };
-
-                fetch(`${REACT_APP_ADDRESS}/authenticate`, requestOptions)
-                  .then((response) => {
-                    res = response;
-                    return response.text();
-                  })
-                  .then((response) => {
-                    console.log(res.status);
-                    if (res.status == 500) {
-                      alert('USER NOT FOUND');
-                      console.log(res.status);
-                      return;
-                    } else if (res.status == 401) {
-                      alert('INVALID PASSWORD');
-                      console.log(res.status);
-                      return;
-                    } else {
-                      // console.log(response);
-                      const token = JSON.parse(response).token;
-                      const data = JSON.parse(response).data;
-                      // console.log(data);
-                      // console.log(user_text, token);
-                      save(user_text, token);
-                      if (data.user_type == 'seller') {
-                        navigation.navigate({
-                          name: 'Seller Main View',
-                          params: { data },
-                        });
-                      } else if (data.user_type == 'buyer') {
-                        navigation.navigate({
-                          name: 'Buyer Main View',
-                          params: { data },
-                        });
-                      } else {
-                        navigation.navigate({
-                          name: 'Guest Main View',
-                          params: { data },
-                        });
-                      }
-                    }
-                  })
-
-                  .catch((error) => console.error(error));
-              } catch (e) {
-                console.log(e);
-              }
+          <View
+            style={{
+              padding: 10,
             }}
           >
-            Submit
-          </Button>
+            <TextInput
+              label="User Name"
+              value={user_text}
+              onChangeText={(user_text) => setTextUser(user_text)}
+              style={styles.textinput}
+            />
+
+            <TextInput
+              label="Password"
+              value={pass_text}
+              onChangeText={(pass_text) => setTextPass(pass_text)}
+              style={styles.textinput}
+              textContentType="password"
+              secureTextEntry={true}
+            />
+          </View>
         </View>
-        <View style={styles.buttoncontainer}>
-          <Button
-            mode="contained"
-            title="CreateAccount"
-            buttonColor="#eb6b34"
-            labelStyle={{ fontSize: 16, color: 'black' }}
-            onPress={() => navigation.navigate('Account Creation')}
-          >
-            Create Account
-          </Button>
+
+        <View>
+          <View style={styles.buttoncontainer}>
+            <Button
+              mode="contained"
+              title="List"
+              buttonColor="#eb6b34"
+              labelStyle={{ fontSize: 18, color: 'black' }}
+              onPress={() => {
+                try {
+                  const myHeaders = new Headers();
+                  myHeaders.append('Content-Type', 'application/json');
+
+                  const raw = JSON.stringify({
+                    username: user_text,
+                    password: pass_text,
+                  });
+
+                  const requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow',
+                  };
+
+                  fetch(`${REACT_APP_ADDRESS}/authenticate`, requestOptions)
+                    .then((response) => {
+                      res = response;
+                      return response.text();
+                    })
+                    .then((response) => {
+                      console.log(res.status);
+                      if (res.status == 500) {
+                        alert('USER NOT FOUND');
+                        console.log(res.status);
+                        return;
+                      } else if (res.status == 401) {
+                        alert('INVALID PASSWORD');
+                        console.log(res.status);
+                        return;
+                      } else {
+                        // console.log(response);
+                        const token = JSON.parse(response).token;
+                        const data = JSON.parse(response).data;
+                        console.log(data);
+                        // console.log(data);
+                        // console.log(user_text, token);
+                        save(user_text, token);
+                        if (data.user_type == 'seller') {
+                          navigation.navigate({
+                            name: 'Seller Main View',
+                            params: { data },
+                          });
+                        } else if (data.user_type == 'buyer') {
+                          navigation.navigate({
+                            name: 'Buyer Main View',
+                            params: { data },
+                          });
+                        } else {
+                          navigation.navigate({
+                            name: 'Guest Main View',
+                            params: { data },
+                          });
+                        }
+                      }
+                    })
+
+                    .catch((error) => console.error(error));
+                } catch (e) {
+                  console.log(e);
+                }
+              }}
+            >
+              Submit
+            </Button>
+          </View>
+          <View style={styles.buttoncontainer}>
+            <Button
+              mode="contained"
+              title="CreateAccount"
+              buttonColor="#eb6b34"
+              labelStyle={{ fontSize: 16, color: 'black' }}
+              onPress={() => navigation.navigate('Account Creation')}
+            >
+              Create Account
+            </Button>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
