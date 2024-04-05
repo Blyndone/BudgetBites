@@ -125,7 +125,6 @@ const GuestMainView = ({ navigation, route }) => {
     const response = await fetch(`${REACT_APP_ADDRESS}/location/${itemID}`);
     const json = await response.json();
     results = Object.values(json.items);
-    console.log(results);
     setLocationData(results);
   };
 

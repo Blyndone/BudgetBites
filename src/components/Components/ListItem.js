@@ -16,7 +16,11 @@ export const ListItem = memo(function ListItem({ item }) {
         <View
           style={{
             position: 'absolute',
-            right: 115,
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            justifyContent: 'center',
             alignItems: 'center',
             zIndex: 1,
           }}
