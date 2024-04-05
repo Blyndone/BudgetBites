@@ -175,6 +175,7 @@ const styles = StyleSheet.create({
   msrp: {
     textAlign: 'right',
     // flexBasis: 120,
+    fontWeight: '800',
     flexGrow: 1,
 
     textDecorationLine: 'line-through',
@@ -185,7 +186,8 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     // flexBasis: 120,
     flexGrow: 1,
-    fontWeight: 'bold',
+    fontWeight: '800',
+    fontSize: 17,
   },
 });
 

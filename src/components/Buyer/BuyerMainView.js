@@ -71,6 +71,8 @@ const BuyerMainView = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
+  const [itemstatus, setItemStatus] = useState(0);
+
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const GetItems = async () => {
@@ -149,44 +151,58 @@ const BuyerMainView = ({ navigation, route }) => {
                 Close
               </Button>
               <View style={{ padding: 10 }}></View>
-              <Button
-                mode="contained"
-                title="Reserve"
-                buttonColor="#eb6b34"
-                labelStyle={{ fontSize: 16, color: 'black' }}
-                onPress={() => {
-                  fetch(`${REACT_APP_ADDRESS}/reservation`, {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                      buyerID: userdata.user_id,
-                      itemID: itemID,
-                    }),
-                  }).then(() => {
-                    GetItems();
-                  });
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                Reserve
-              </Button>
+              {itemstatus === 'Available' ? (
+                <Button
+                  mode="contained"
+                  title="Reserve"
+                  buttonColor="#eb6b34"
+                  labelStyle={{ fontSize: 16, color: 'black' }}
+                  onPress={() => {
+                    fetch(`${REACT_APP_ADDRESS}/reservation`, {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        buyerID: userdata.user_id,
+                        itemID: itemID,
+                      }),
+                    }).then(() => {
+                      GetItems();
+                    });
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  Reserve
+                </Button>
+              ) : (
+                <Button
+                  mode="contained"
+                  title="Reserve"
+                  buttonColor="#eb6b34"
+                  labelStyle={{ fontSize: 16, color: 'black' }}
+                  onPress={() => {
+                    fetch(`${REACT_APP_ADDRESS}/reservation/` + itemID, {
+                      method: 'DELETE',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        itemID: itemID,
+                      }),
+                    }).then(() => {
+                      GetItems();
+                    });
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  Cancel Reservation
+                </Button>
+              )}
             </View>
           </View>
         </View>
       </Modal>
-
-      <Text
-        style={{
-          fontWeight: 'bold',
-          fontSize: 20,
-          color: 'black',
-        }}
-      >
-        {' '}
-        BUYER List of Items
-      </Text>
 
       <Searchbar
         placeholder="Search"
@@ -214,6 +230,8 @@ const BuyerMainView = ({ navigation, route }) => {
                 setItemPrice(item.price);
                 setItemLocation(item.location);
                 setDuration(parseInt((exp - cur) / 86400000));
+                setItemStatus(item.status);
+
                 setModalVisible(true);
               }}
             >

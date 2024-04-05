@@ -181,16 +181,6 @@ const GuestMainView = ({ navigation, route }) => {
         itemData={itemData}
       />
 
-      <Text
-        style={{
-          fontWeight: 'bold',
-          fontSize: 20,
-          color: 'black',
-        }}
-      >
-        List of Items {route.params?.user}
-      </Text>
-
       <Searchbar
         placeholder="Search"
         onChangeText={setSearchQuery}
@@ -212,24 +202,26 @@ const GuestMainView = ({ navigation, route }) => {
       />
       <View style={styles.searchconfigcontainer}>
         <View style={styles.searchconfigswitch}>
-          <Switch color="#eb6b34" value={isNear} onValueChange={onToggleNear} />
           <Text style={styles.searchconfigtext}>Nearby Me</Text>
+          <Switch color="#eb6b34" value={isNear} onValueChange={onToggleNear} />
         </View>
         <View style={styles.searchconfigswitch}>
-          <Switch color="#eb6b34" value={isSoon} onValueChange={onToggleSoon} />
           <Text style={styles.searchconfigtext}>Expiring Soon</Text>
+          <Switch color="#eb6b34" value={isSoon} onValueChange={onToggleSoon} />
         </View>
         <View style={styles.searchconfigdropdown}>
           <DropDownPicker
             style={{
-              backgroundColor: '#E7E0EC',
+              backgroundColor: 'white',
               borderColor: '#00000000',
               borderTopEndRadius: 5,
               borderTopStartRadius: 5,
+              minHeight: 35,
+
               borderRadius: 0,
             }}
             dropDownContainerStyle={{
-              backgroundColor: '#decceb',
+              backgroundColor: '#fff6e6',
               borderColor: '#00000000',
               borderTopColor: 'black',
             }}
@@ -418,9 +410,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-
+    height: 30,
     paddingVertical: 5,
     paddingHorizontal: 20,
+    marginVertical: 8,
   },
   searchconfigswitch: {
     flex: 0.5,
@@ -428,13 +421,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   searchconfigtext: {
-    fontWeight: 'bold',
+    fontWeight: '900',
+    fontSize: 14,
   },
   searchconfigdropdown: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 30,
   },
   locationdetails: {},
   locationdetailstext: {
@@ -535,7 +528,6 @@ const LocationModal = ({
     console.log(itemData);
     return;
   }
-  console.log(locationData);
   return (
     <Modal
       // animationType="fade"
