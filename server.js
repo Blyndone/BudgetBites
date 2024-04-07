@@ -183,7 +183,7 @@ app.post('/reservation', async (req, res) => {
         VALUES  
         (?,?,?, reservationDate);
         
-        UPDATE items SET itemstatus = "Reserved" WHERE itemID = ?;   
+        UPDATE items SET itemstatus = 'Reserved' WHERE itemID = ?;   
         `,
         [buyerID, itemID, joindate_text, itemID],
       );
@@ -882,7 +882,7 @@ app.delete('/reservation/:itemID', async (req, res) => {
       return res.status(404).json({ message: 'Reservation not found' });
     }
     query =
-      'DELETE FROM reserved WHERE itemID = ?;   UPDATE items SET itemstatus = "Available" WHERE itemID = ? ';
+      "DELETE FROM reserved WHERE itemID = ?;   UPDATE items SET itemstatus = 'Available' WHERE itemID = ? ";
     await connection.promise().query(query, [itemID, itemID]);
     console.log('Deleted reservation with itemID :', itemID);
     res.status(200).json({ message: 'Reservation deleted successfully' });
