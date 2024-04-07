@@ -127,7 +127,6 @@ const CreateAccount = ({ navigation, route }) => {
             console.log(res.status);
             return;
           } else {
-            console.log('XXXX');
             // console.log(response);
             const token = JSON.parse(response).token;
             const data = JSON.parse(response).data;
