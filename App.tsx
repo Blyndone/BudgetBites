@@ -102,6 +102,7 @@ function App(): React.JSX.Element {
             name="Guest Main View"
             component={GuestMainView}
             options={{
+              title: 'Guest Food Listings',
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },
@@ -111,9 +112,11 @@ function App(): React.JSX.Element {
             name="Buyer Main View"
             component={BuyerMainView}
             options={{
+              title: 'Item Listings',
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },
+              headerLeft: () => <View style={{ paddingHorizontal: 17 }}></View>,
               headerRight: () => <BuyerProfileButton />,
             }}
           />
@@ -121,9 +124,12 @@ function App(): React.JSX.Element {
             name="Seller Main View"
             component={SellerMainView}
             options={{
+              title: 'Manage Listings',
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },
+
+              headerLeft: () => <View style={{ paddingHorizontal: 17 }}></View>,
               headerRight: () => <SellerProfileButton />,
             }}
           />
@@ -149,6 +155,7 @@ function App(): React.JSX.Element {
             name="Seller Create Listing"
             component={SellerCreateListing}
             options={{
+              title: 'Add a Food Listing',
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },
@@ -159,6 +166,7 @@ function App(): React.JSX.Element {
             name="Buyer Reservations"
             component={BuyerReservations}
             options={{
+              title: 'Manage Reservations',
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },
@@ -169,6 +177,7 @@ function App(): React.JSX.Element {
             name="Buyer Profile"
             component={BuyerProfile}
             options={{
+              title: 'My Profile',
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },
@@ -179,6 +188,7 @@ function App(): React.JSX.Element {
             name="Seller Profile"
             component={SellerProfile}
             options={{
+              title: 'My Profile',
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },

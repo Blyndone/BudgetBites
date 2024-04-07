@@ -78,6 +78,7 @@ const BuyerMainView = ({ navigation, route }) => {
     itemID: '',
     itemLocation: '',
     itemDuration: '',
+    status: '',
   });
 
   const [locationData, setLocationData] = useState([
@@ -209,7 +210,7 @@ const BuyerMainView = ({ navigation, route }) => {
 
   //================
 
-  useEffect(() => {
+  useEffect((refresh = true) => {
     GetItems();
   }, []);
 
@@ -336,6 +337,7 @@ const BuyerMainView = ({ navigation, route }) => {
                   itemID: item.itemID,
                   itemLocation: item.location,
                   itemDuration: parseInt((exp - cur) / 86400000),
+                  status: item.status,
                 });
                 GetLocation(item.itemID);
                 setItemModalVisible(true);
@@ -614,7 +616,7 @@ const ItemModal = ({
               Close
             </Button>
             <View style={{ padding: 10 }}></View>
-            {itemData.status === 'Available' ? (
+            {itemData.status == 'Available' ? (
               <Button
                 mode="contained"
                 title="Reserve"
@@ -636,7 +638,7 @@ const ItemModal = ({
                   setItemModalVisible(!itemModalVisible);
                 }}
               >
-                Reserve
+                Reserve Item
               </Button>
             ) : (
               <Button
