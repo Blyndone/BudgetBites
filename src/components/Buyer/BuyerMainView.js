@@ -22,6 +22,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Auth from '.././Persist';
 import ProfileButton from '../Components/ProfleButton.js';
 import ListItem from '../Components/ListItem.js';
+import PageSelector from '../Components/PageSelector.js';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -97,6 +98,8 @@ const BuyerMainView = ({ navigation, route }) => {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [isNear, setIsNear] = React.useState(false);
   const [isSoon, setIsSoon] = React.useState(false);
+  const [page, setPage] = React.useState(0);
+  const [pageSize, setPageSize] = React.useState(10);
 
   const onToggleNear = () => {
     setIsNear(!isNear);
@@ -173,6 +176,7 @@ const BuyerMainView = ({ navigation, route }) => {
   };
 
   const filterSoon = (results) => {
+    setPage(0);
     const cur = new Date();
     results = results.filter((item) => {
       const exp = new Date(item.expiration);
@@ -182,11 +186,13 @@ const BuyerMainView = ({ navigation, route }) => {
   };
 
   const filterNear = (results) => {
+    setPage(0);
     results = results.filter((item) => item.zip == userdata.user_zip);
     return results;
   };
 
   const filterCategory = (results) => {
+    setPage(0);
     results = results.filter((item) => {
       return category_text == item.category;
     });
@@ -296,9 +302,27 @@ const BuyerMainView = ({ navigation, route }) => {
       <FlatList
         data={data}
         keyExtractor={({ itemID }) => itemID}
-        ListFooterComponent={<View style={{ padding: 25 }}></View>}
-        renderItem={({ item }) => {
-          return (
+        ListHeaderComponent={
+          <PageSelector
+            page={page}
+            setPage={setPage}
+            numItems={data.length}
+            pageSize={pageSize}
+          />
+        }
+        ListFooterComponent={
+          <View>
+            <PageSelector
+              page={page}
+              setPage={setPage}
+              numItems={data.length}
+              pageSize={pageSize}
+            />
+            <View style={{ padding: 25 }}></View>
+          </View>
+        }
+        renderItem={({ item, index }) => {
+          return index >= pageSize * page && index < pageSize * (page + 1) ? (
             <Pressable
               onPress={() => {
                 const exp = new Date(item.expiration);
@@ -312,15 +336,15 @@ const BuyerMainView = ({ navigation, route }) => {
                   itemID: item.itemID,
                   itemLocation: item.location,
                   itemDuration: parseInt((exp - cur) / 86400000),
-                  status: item.status,
                 });
-
                 GetLocation(item.itemID);
                 setItemModalVisible(true);
               }}
             >
               <ListItem item={item} />
             </Pressable>
+          ) : (
+            <View></View>
           );
         }}
       />
