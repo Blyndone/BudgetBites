@@ -1,4 +1,4 @@
-// import express from 'express';
+reservationDate; // import express from 'express';
 // import * as fs from 'fs';
 require('dotenv').config();
 const express = require('express');
@@ -181,7 +181,7 @@ app.post('/reservation', async (req, res) => {
       const [{ insertId }] = await connection.promise().query(
         `INSERT INTO reserved (buyerID, itemID, itemstatus, reservationDate)
         VALUES  
-        (?,?,"reserved", ?);
+        (?,?,?, reservationDate);
         
         UPDATE items SET itemstatus = "Reserved" WHERE itemID = ?;   
         `,
