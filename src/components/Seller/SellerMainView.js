@@ -256,7 +256,7 @@ const SellerMainView = ({ navigation, route }) => {
                   setItemDescription(item.description);
                   setItemPrice(item.price);
                   setDuration(parseInt((exp - cur) / 86400000));
-                  setItemStatus(item.status);
+                  setItemStatus(item.itemstatus);
 
                   setModalVisible(true);
                 }}

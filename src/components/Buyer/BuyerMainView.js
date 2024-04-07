@@ -80,7 +80,7 @@ const BuyerMainView = ({ navigation, route }) => {
     itemID: '',
     itemLocation: '',
     itemDuration: '',
-    status: '',
+    itemstatus: '',
   });
 
   const [locationData, setLocationData] = useState([
@@ -340,7 +340,7 @@ const BuyerMainView = ({ navigation, route }) => {
                   itemID: item.itemID,
                   itemLocation: item.location,
                   itemDuration: parseInt((exp - cur) / 86400000),
-                  status: item.status,
+                  itemstatus: item.itemstatus,
                 });
                 GetLocation(item.itemID);
                 setItemModalVisible(true);
@@ -630,7 +630,7 @@ const ItemModal = ({
               Close
             </Button>
             <View style={{ padding: 10 }}></View>
-            {itemData.status == 'Available' ? (
+            {itemData.itemstatus == 'Available' ? (
               <Button
                 mode="contained"
                 title="Reserve"

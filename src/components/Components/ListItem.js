@@ -8,13 +8,15 @@ export const ListItem = memo(function ListItem({ item, overlay = false }) {
   const cur = new Date();
   const duration = parseInt((exp - cur) / 86400000);
 
-  let bgStyle = item.status === 'Available' ? styles.item : styles.itemreserved;
+  let bgStyle =
+    item.itemstatus === 'Available' ? styles.item : styles.itemreserved;
   if (overlay) {
     bgStyle = styles.pendingdelete;
   }
   return (
     <Surface style={bgStyle} elevation={4}>
-      {item.status != 'Available' ? (
+      <Text>{item.itemstatus}</Text>
+      {item.itemstatus != 'Available' ? (
         <View
           style={{
             position: 'absolute',
