@@ -96,7 +96,9 @@ const GuestMainView = ({ navigation, route }) => {
       let results;
       if (saveddata.length == 0) {
         const response = await fetch(`${REACT_APP_ADDRESS}/items`);
+
         const json = await response.json();
+
         results = Object.values(json.items);
         setSavedData(results);
       } else {

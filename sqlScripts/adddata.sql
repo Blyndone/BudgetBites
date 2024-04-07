@@ -21,7 +21,7 @@ VALUES
 
 
 -- Insert test data into the items table (food items)
-INSERT INTO `items` (`name`, `description`, `category`, `msrp`, `price`, `expiration`, `location`, `zip`, `status`, `img`, `listeddate`)
+INSERT INTO `items` (`name`, `description`, `category`, `msrp`, `price`, `expiration`, `location`, `zip`, `itemstatus`, `img`, `listeddate`)
 VALUES 
 ('Pasta Carbonara', 'Classic Italian pasta with bacon and eggs', 'Pork', 12.99,12.99,  '2024-04-15', 'Italian Bistro', '12345', 'Available', '2', '2024-03-12'),
 ('Vegetarian Salad', 'Fresh and healthy salad with mixed greens', 'Veggies', 12.99,8.99, '2024-04-20', 'Vegetarian Delight','54321', 'Available', '3', '2024-03-13'),
@@ -83,7 +83,7 @@ VALUES
 
 
 -- -- Insert test data into the reserved table
--- INSERT INTO reserved (buyerID, itemID, reservationDate, status)
+-- INSERT INTO reserved (buyerID, itemID, reservationDate, itemstatus)
 -- VALUES
 --     (1, 2, '2022-02-28', 'reserved'),
 --     (2, 1, '2022-03-05', 'reserved'),

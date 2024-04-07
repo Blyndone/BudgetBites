@@ -105,7 +105,7 @@ app.post('/additem', async (req, res) => {
     let insertId = '';
     for (let index = 0; index < count; index++) {
       [{ insertId }] = await connection.promise().query(
-        `INSERT INTO items (name, description, category, msrp, price, expiration, location, zip, status, img, listeddate)
+        `INSERT INTO items (name, description, category, msrp, price, expiration, location, zip, itemstatus, img, listeddate)
         VALUES  
         (?,?, ?, ?, ?, ?, (select L.name from locations L join users U ON U.userID = l.sellerID where U.userID = ?), (select L.zip from locations L join users U ON U.userID = l.sellerID where U.userID = ?), 'Available', ?, ?);
         
@@ -175,15 +175,15 @@ app.post('/reservation', async (req, res) => {
       (
         await connection
           .promise()
-          .query('SELECT status from items WHERE itemID = ?', [itemID])
-      )[0][0].status == 'Available'
+          .query('SELECT itemstatus from items WHERE itemID = ?', [itemID])
+      )[0][0].itemstatus == 'Available'
     ) {
       const [{ insertId }] = await connection.promise().query(
-        `INSERT INTO reserved (buyerID, itemID, status, reservationDate)
+        `INSERT INTO reserved (buyerID, itemID, itemstatus, reservationDate)
         VALUES  
         (?,?,"reserved", ?);
         
-        UPDATE items SET status = "Reserved" WHERE itemID = ?;   
+        UPDATE items SET itemstatus = "Reserved" WHERE itemID = ?;   
         `,
         [buyerID, itemID, joindate_text, itemID],
       );
@@ -518,7 +518,7 @@ app.get('/reservations/:username', async (req, res) => {
   try {
     const { username } = req.params;
 
-    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status, I.location, I.expiration, I.category, I.msrp FROM 
+    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.itemstatus, I.location, I.expiration, I.category, I.msrp FROM 
     items I JOIN 
     reserved R JOIN users U ON U.userID = R.buyerID
     ON I.itemid = R.itemID
@@ -551,7 +551,7 @@ app.get('/listing/:username', async (req, res) => {
   try {
     const { username } = req.params;
 
-    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.status, I.expiration, I.location, I.category, I.msrp FROM 
+    const query = `SELECT I.itemID, I.name, I.description, I.price, I.img, I.itemstatus, I.expiration, I.location, I.category, I.msrp FROM 
     items I JOIN 
     listing L JOIN users U ON U.userID = L.sellerID
     ON I.itemid = L.itemID
@@ -574,7 +574,7 @@ app.get('/listing/:username', async (req, res) => {
 
 // UPDATE
 // Update user Information
-// Update Item Status
+// Update Item itemstatus
 // Update Item Info
 // Update Reservation Information
 
@@ -653,7 +653,10 @@ app.patch('/updateitemstatus/:itemID', async (req, res) => {
     let status = req.body;
     const update = await connection
       .promise()
-      .query('UPDATE items SET status = ? WHERE itemID = ?', [status, itemID]);
+      .query('UPDATE items SET itemstatus = ? WHERE itemID = ?', [
+        status,
+        itemID,
+      ]);
 
     if (update.affectedRows === 0) {
       return res.status(404).json({ message: 'Item not found' });
@@ -700,7 +703,7 @@ app.patch('/updateitem/:itemID', async (req, res) => {
     const update = await connection
       .promise()
       .query(
-        'UPDATE items SET name = ?, description = ?, category = ?, price = ?,  expiration = ?, location = ?, status = ?, img = ?, listeddate = ? WHERE itemID = ?',
+        'UPDATE items SET name = ?, description = ?, category = ?, price = ?,  expiration = ?, location = ?, itemstatus = ?, img = ?, listeddate = ? WHERE itemID = ?',
         [
           name,
           description,
@@ -744,7 +747,7 @@ app.patch('/updatereservation/:itemID', async (req, res) => {
     let status = req.body;
     const update = await connection
       .promise()
-      .query('UPDATE reserved SET status = ? WHERE reservationID = ?', [
+      .query('UPDATE reserved SET itemstatus = ? WHERE reservationID = ?', [
         status,
         reservationID,
       ]);
@@ -879,7 +882,7 @@ app.delete('/reservation/:itemID', async (req, res) => {
       return res.status(404).json({ message: 'Reservation not found' });
     }
     query =
-      'DELETE FROM reserved WHERE itemID = ?;   UPDATE items SET status = "Available" WHERE itemID = ? ';
+      'DELETE FROM reserved WHERE itemID = ?;   UPDATE items SET itemstatus = "Available" WHERE itemID = ? ';
     await connection.promise().query(query, [itemID, itemID]);
     console.log('Deleted reservation with itemID :', itemID);
     res.status(200).json({ message: 'Reservation deleted successfully' });

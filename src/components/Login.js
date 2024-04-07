@@ -21,6 +21,8 @@ const Login = ({ navigation }) => {
   //=================
   const [userdata, setUserData] = React.useState('');
   useEffect(() => {
+    console.log('GET');
+
     setUserData({
       user_name: 'NAME',
       role: 'Buyer',

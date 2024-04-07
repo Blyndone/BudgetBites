@@ -72,6 +72,8 @@ const SellerMainView = ({ navigation, route }) => {
   const [showDeleteCheckbox, setShowCheckbox] = React.useState(false);
 
   const GetItems = async () => {
+    console.log('GET');
+
     try {
       const response = await fetch(
         `${REACT_APP_ADDRESS}/listing/${route.params.data.user_name}`,

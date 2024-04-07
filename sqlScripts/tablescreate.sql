@@ -23,7 +23,7 @@ CREATE TABLE `items` (
 	`expiration` DATE,
 	`location` VARCHAR(100),
     `zip` INT(5),
-	`status` VARCHAR(20),
+	`itemstatus` VARCHAR(20),
     `img` VARCHAR(255),
     `listeddate` DATE,
 	PRIMARY KEY (`itemID`)
@@ -47,7 +47,7 @@ CREATE TABLE `reserved` (
     `buyerID` INT,
     `itemID` INT,
     `reservationdate` DATE,
-    `status` VARCHAR(50),
+    `itemstatus` VARCHAR(50),
     FOREIGN KEY (`buyerID`) REFERENCES users(`userID`),
     FOREIGN KEY (`itemID`) REFERENCES items(`itemID`),
     PRIMARY KEY (`reservationID`)

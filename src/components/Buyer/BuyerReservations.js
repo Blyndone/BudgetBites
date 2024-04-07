@@ -25,6 +25,8 @@ const BuyerReservations = ({ navigation, route }) => {
   const pagetype = 'buyer';
   const [userdata, setUserData] = React.useState('');
   useEffect(() => {
+    console.log('GET');
+
     Auth(route.params.data.user_name).then((resp) => {
       try {
         r = JSON.parse(resp);
