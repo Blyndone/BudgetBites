@@ -184,13 +184,5 @@ export const images = {
   181: require('./181.png'),
   182: require('./182.png'),
   183: require('./183.png'),
-  184: require('./184.png'),
-  185: require('./185.png'),
-  186: require('./186.png'),
-  187: require('./187.png'),
-  188: require('./188.png'),
-  189: require('./189.png'),
-  190: require('./190.png'),
-  191: require('./191.png'),
 };
 export default images;

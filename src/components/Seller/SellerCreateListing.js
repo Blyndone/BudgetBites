@@ -64,7 +64,7 @@ const SellerCreateListing = ({ navigation, route }) => {
   var [name_text, setName] = React.useState('');
   var [desc_text, setDescription] = React.useState('');
   var [price_text, setPrice] = React.useState('');
-  var [img_select, setImage] = React.useState('1');
+  var [img_select, setImage] = React.useState('0');
   const [open, setOpen] = useState(false);
   const [category_text, setCategory] = useState(null);
   const [items, setItems] = useState([
@@ -80,34 +80,38 @@ const SellerCreateListing = ({ navigation, route }) => {
   const [discount_calc, setDiscountCalc] = useState('');
   const [count, setCount] = useState(1);
   const [imageindexes, setImageIndex] = useState([
-    2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
   ]);
 
   const [modalVisible, setModalVisible] = useState(false);
 
   const SingleImage = ({ image, size }) => {
-    return (
-      <View>
-        <Image
-          source={require('../../../assets/testimages/0.png')}
-          style={{
-            width: size,
-            height: size,
-            position: 'absolute',
-            margin: 2,
-            zIndex: 0,
-          }}
-        />
-        <Image
-          source={images[image]}
-          style={{
-            width: size,
-            height: size,
-            margin: 2,
-          }}
-        />
-      </View>
-    );
+    try {
+      return (
+        <View>
+          <Image
+            source={require('../../../assets/testimages/0.png')}
+            style={{
+              width: size,
+              height: size,
+              position: 'absolute',
+              margin: 2,
+              zIndex: 0,
+            }}
+          />
+          <Image
+            source={images[image]}
+            style={{
+              width: size,
+              height: size,
+              margin: 2,
+            }}
+          />
+        </View>
+      );
+    } catch (err) {
+      return;
+    }
   };
 
   return (
@@ -354,11 +358,11 @@ const SellerCreateListing = ({ navigation, route }) => {
                   <Text style={styles.modalTitle}>Select an Icon!</Text>
                   <IconButton
                     icon="arrow-right-bold"
-                    iconColor={imageindexes[0] < 162 ? 'black' : '#00000000'}
+                    iconColor={imageindexes[0] < 146 ? 'black' : '#00000000'}
                     size={30}
                     onPress={() => {
                       console.log(imageindexes[0]);
-                      if (imageindexes[0] < 162) {
+                      if (imageindexes[0] < 146) {
                         setImageIndex(imageindexes.map((index) => index + 16));
                       }
                     }}
