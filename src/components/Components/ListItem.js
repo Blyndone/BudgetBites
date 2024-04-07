@@ -15,7 +15,7 @@ export const ListItem = memo(function ListItem({ item, overlay = false }) {
   }
   return (
     <Surface style={bgStyle} elevation={4}>
-      <Text>{item.itemstatus}</Text>
+      {/* <Text>{item.itemstatus}</Text> */}
       {item.itemstatus != 'Available' ? (
         <View
           style={{
