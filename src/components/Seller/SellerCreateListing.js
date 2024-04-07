@@ -87,14 +87,26 @@ const SellerCreateListing = ({ navigation, route }) => {
 
   const SingleImage = ({ image, size }) => {
     return (
-      <Image
-        source={images[image]}
-        style={{
-          width: size,
-          height: size,
-          margin: 2,
-        }}
-      />
+      <View>
+        <Image
+          source={require('../../../assets/testimages/0.png')}
+          style={{
+            width: size,
+            height: size,
+            position: 'absolute',
+            margin: 2,
+            zIndex: 0,
+          }}
+        />
+        <Image
+          source={images[image]}
+          style={{
+            width: size,
+            height: size,
+            margin: 2,
+          }}
+        />
+      </View>
     );
   };
 
@@ -342,10 +354,11 @@ const SellerCreateListing = ({ navigation, route }) => {
                   <Text style={styles.modalTitle}>Select an Icon!</Text>
                   <IconButton
                     icon="arrow-right-bold"
-                    iconColor={imageindexes[0] < 80 ? 'black' : '#00000000'}
+                    iconColor={imageindexes[0] < 162 ? 'black' : '#00000000'}
                     size={30}
                     onPress={() => {
-                      if (imageindexes[0] < 80) {
+                      console.log(imageindexes[0]);
+                      if (imageindexes[0] < 162) {
                         setImageIndex(imageindexes.map((index) => index + 16));
                       }
                     }}
@@ -469,7 +482,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    maxHeight: 400,
+    maxHeight: 440,
     backgroundColor: 'mediumturquoise',
     borderRadius: 20,
     padding: 20,

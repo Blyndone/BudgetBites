@@ -579,13 +579,24 @@ const ItemModal = ({
           </Text>
 
           <View style={{ padding: 10 }}></View>
-          <Image
-            source={images[itemData.itemImage]}
-            style={{
-              width: 150,
-              height: 150,
-            }}
-          />
+          <View>
+            <Image
+              source={require('../../../assets/testimages/0.png')}
+              style={{
+                width: 150,
+                height: 150,
+                position: 'absolute',
+                zIndex: 0,
+              }}
+            />
+            <Image
+              source={images[itemData.itemImage]}
+              style={{
+                width: 150,
+                height: 150,
+              }}
+            />
+          </View>
           <View style={{ padding: 10 }}></View>
           <Text style={styles.modalText}>{itemData.itemDescripton}</Text>
           <View style={{ padding: 10 }}></View>

@@ -124,13 +124,24 @@ const BuyerReservations = ({ navigation, route }) => {
               {itemDuration + 1} Days Remaining!
             </Text>
             <View style={{ padding: 10 }}></View>
-            <Image
-              source={images[itemImage]}
-              style={{
-                width: 150,
-                height: 150,
-              }}
-            />
+            <View>
+              <Image
+                source={require('../../../assets/testimages/0.png')}
+                style={{
+                  width: 150,
+                  height: 150,
+                  position: 'absolute',
+                  zIndex: 0,
+                }}
+              />
+              <Image
+                source={images[itemImage]}
+                style={{
+                  width: 150,
+                  height: 150,
+                }}
+              />
+            </View>
             <View style={{ padding: 10 }}></View>
             <Text style={styles.modalText}>{itemDescripton}</Text>
             <View style={{ padding: 10 }}></View>

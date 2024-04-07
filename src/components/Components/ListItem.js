@@ -36,6 +36,10 @@ export const ListItem = memo(function ListItem({ item, overlay = false }) {
         ''
       )}
       <View style={styles.imgview}>
+        <Image
+          source={require('../../../assets/testimages/0.png')}
+          style={styles.underimg}
+        />
         <Image source={images[item.img]} style={styles.img} />
 
         <Text style={duration > 10 ? styles.explong : styles.expshort}>
@@ -140,6 +144,13 @@ const styles = StyleSheet.create({
   img: {
     width: 50,
     height: 50,
+    zIndex: 1,
+  },
+  underimg: {
+    width: 50,
+    height: 50,
+    position: 'absolute',
+    zIndex: 0,
   },
   explong: {
     textAlign: 'center',
