@@ -214,9 +214,9 @@ const GuestMainView = ({ navigation, route }) => {
         }}
       />
       <View style={styles.searchconfigcontainer}>
-        <View style={styles.searchconfigswitch}>
-          <Text style={styles.searchconfigtext}>Nearby Me</Text>
-          <Switch color="#eb6b34" value={isNear} onValueChange={onToggleNear} />
+        <View style={{ padding: 47 }}>
+          {/* <Text style={styles.searchconfigtext}>Nearby Me</Text>
+          <Switch color="#eb6b34" value={isNear} onValueChange={onToggleNear} /> */}
         </View>
         <View style={styles.searchconfigswitch}>
           <Text style={styles.searchconfigtext}>Expiring Soon</Text>
