@@ -220,9 +220,20 @@ app.post('/adduser', async (req, res) => {
 
   try {
     // const { id } = req.params;
-    const { username, password, name, email, phone, zip, usertype, joindate } =
-      req.body;
+    const {
+      user_text,
+      pass_text,
+      name_text,
+      email_text,
+      phone_text,
+      zip_text,
+      usertype_text,
+    } = req.body;
 
+    const joindate_text = new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
     // Check for duplicate user
     const [existingUsers] = await connection
       .promise()
@@ -243,13 +254,22 @@ app.post('/adduser', async (req, res) => {
 
     // Hashing the password
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    console.log({ username, password: hashedPassword });
+    // console.log({ username, password: hashedPassword });
 
     const [{ insertId }] = await connection.promise().query(
       `INSERT INTO users (username, password, name, email, phone, zip, usertype, joindate)
           VALUES  
           (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [username, hashedPassword, name, email, phone, zip, usertype, joindate],
+      [
+        user_text,
+        hashedPassword,
+        name_text,
+        email_text,
+        phone_text,
+        zip_text,
+        usertype_text,
+        joindate_text,
+      ],
     );
 
     res.status(200).json({

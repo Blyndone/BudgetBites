@@ -508,7 +508,6 @@ const ItemModal = ({
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
         setModalVisible(!modalVisible);
       }}
     >
@@ -595,7 +594,6 @@ const LocationModal = ({
       animationType="fade"
       visible={locationModalVisible}
       onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
         setModalVisible(!locationModalVisible);
       }}
     >
