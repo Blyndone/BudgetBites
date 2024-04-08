@@ -18,22 +18,22 @@ const mysql = require('mysql2');
 // connecting Database
 
 //===========================================
-// const connection = mysql.createPool({
-//   host: process.env.HOST,
-//   user: process.env.USER,
-//   password: process.env.PASSWORD,
-//   database: process.env.DATABASE,
-//   multipleStatements: true,
-// });
 const connection = mysql.createPool({
   host: process.env.HOST,
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
-  port: process.env.PORT,
   multipleStatements: true,
 });
-const saltRounds = 10;
+// const connection = mysql.createPool({
+//   host: process.env.HOST,
+//   user: process.env.USER,
+//   password: process.env.PASSWORD,
+//   database: process.env.DATABASE,
+//   port: process.env.PORT,
+//   multipleStatements: true,
+// });
+// const saltRounds = 10;
 
 //===========================================
 
@@ -441,6 +441,24 @@ app.get('/items', async (req, res) => {
       message: err,
     });
   }
+}); //==================
+// Get User Info
+//==================
+app.get('/users/:username', async (req, res) => {
+  console.log('get user info');
+  try {
+    const { username } = req.params;
+    const data = await connection
+      .promise()
+      .query(`SELECT *  from users WHERE username = ?;`, [username]);
+    res.status(200).json({
+      users: data[0],
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err,
+    });
+  }
 });
 
 //==================
@@ -590,51 +608,64 @@ app.get('/listing/:username', async (req, res) => {
 // email:
 //==================
 
-app.patch('/updateuser/:userID', async (req, res) => {
+app.patch('/users/:userID', async (req, res) => {
+  const saltRounds = 10; // Adjust the number based on the security requirements
   console.log('update user info');
+  try {
+    const userID = req.params.userID;
+    let { username, password, name, email, phone, zip } = req.body;
+    console.log(username, password, name, email, phone, zip);
+    // Hash the password if it's provided
 
-  // const saltRounds = 10; // Adjust the number based on the security requirements
-  app.patch('/updateuser/:userID', async (req, res) => {
-    console.log('update user info');
-    try {
-      const userID = req.params.userID;
-      let { username, password, name, email, phone, zip, usertype, joindate } =
-        req.body;
-
-      // Hash the password if it's provided
+    let query = '';
+    let params = [];
+    if (password) {
       let hashedPassword = password;
       if (password && password.trim() !== '') {
         hashedPassword = await bcrypt.hash(password, saltRounds);
       }
-
-      // Update the user details in the database
-      const [updateResult] = await connection
-        .promise()
-        .query(
-          'UPDATE users SET username = ?, password = ?, name = ?, email = ?, phone = ?, zip = ?, usertype = ?, joindate = ? WHERE userID = ?',
-          [
-            username,
-            hashedPassword,
-            name,
-            email,
-            phone,
-            zip,
-            usertype,
-            joindate,
-            userID,
-          ],
-        );
-
-      if (updateResult.affectedRows === 0) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-
-      res.status(200).json({ message: 'User updated successfully' });
-    } catch (error) {
-      console.error('Error on update:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
+      query = query + ', password = ?';
+      params.push(hashedPassword);
     }
-  });
+
+    if (typeof name != 'undefined') {
+      query = query + ', name = ?';
+      params.push(name);
+    }
+    if (email) {
+      query = query + ', email = ?';
+      params.push(email);
+    }
+    if (phone) {
+      query = query + ', phone = ?';
+      params.push(phone);
+    }
+    if (zip) {
+      query = query + ', zip = ?';
+      params.push(zip);
+    }
+
+    query = query.slice(1);
+    query = 'UPDATE users SET ' + query;
+    console.log('=====', query);
+    query = query + ' WHERE userID = ?';
+    params.push(userID);
+    // Update the user details in the database
+    const [updateResult] = await connection.promise().query(query, params);
+
+    //   'UPDATE users SET password = ?, name = ?, email = ?, phone = ?, zip = ? WHERE userID = ?',
+    //   [hashedPassword, name, email, phone, zip, userID],
+    // );
+
+    if (updateResult.affectedRows === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User updated successfully' });
+  } catch (error) {
+    console.error('Error on update:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
 
 //==================

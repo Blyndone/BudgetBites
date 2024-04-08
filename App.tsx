@@ -181,7 +181,6 @@ function App(): React.JSX.Element {
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },
-              headerRight: () => <BuyerProfileButton />,
             }}
           />
           <Stack.Screen
@@ -192,7 +191,6 @@ function App(): React.JSX.Element {
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },
-              headerRight: () => <SellerProfileButton />,
             }}
           />
         </Stack.Navigator>

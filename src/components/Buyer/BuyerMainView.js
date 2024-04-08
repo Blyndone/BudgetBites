@@ -27,8 +27,6 @@ import PageSelector from '../Components/PageSelector.js';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 const BuyerMainView = ({ navigation, route }) => {
-  console.log('GET');
-
   //=========================
   // USER AUTH AND PAGE TYPE
   const pagetype = 'buyer';
@@ -133,7 +131,6 @@ const BuyerMainView = ({ navigation, route }) => {
 
   const GetItems = async (refresh = false) => {
     try {
-      console.log('GET');
       let results;
       if (saveddata.length == 0 || refresh == true) {
         const response = await fetch(`${REACT_APP_ADDRESS}/items`);

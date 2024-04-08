@@ -13,14 +13,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '../Persist';
-import ProfileButton from '../Components/ProfleButton';
-
 const Separator = () => <View style={styles.separator} />;
 const BuyerProfile = ({ navigation, route }) => {
   //=========================
   // USER AUTH AND PAGE TYPE
   const pagetype = 'buyer';
   const [userdata, setUserData] = React.useState('');
+  const [profiledata, setProfileData] = React.useState({});
   useEffect(() => {
     Auth(route.params.data.user_name).then((resp) => {
       try {
@@ -30,28 +29,48 @@ const BuyerProfile = ({ navigation, route }) => {
         }
         // console.log(r.status);
         // console.log(resp);
+        GetProfileInfo();
       } catch (err) {
         console.log(err);
       }
     });
+
+    const GetProfileInfo = async () => {
+      try {
+        const response = await fetch(
+          `${REACT_APP_ADDRESS}/users/${route.params.data.user_name}`,
+        );
+        const json = await response.json();
+
+        results = Object.values(json.users);
+
+        setProfileData(results[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
     setUserData({
       user_name: route.params.data.user_name,
       user_type: route.params.data.user_type,
       user_id: route.params.data.user_id,
     });
-    navigation.setOptions({
-      headerRight: () => (
-        <ProfileButton
-          navigation={navigation}
-          data={{
-            user_name: route.params.data.user_name,
-            user_type: route.params.data.user_type,
-          }}
-        />
-      ),
-    });
   }, []);
+
+  useEffect(() => {
+    // if(profiledata.length >0)
+    if (Object.keys(profiledata).length === 0) {
+      return;
+    } else {
+      setTextName(profiledata.name);
+      setTextEmail(profiledata.email);
+      setTextPhone(String(profiledata.phone));
+      setTextZip(String(profiledata.zip));
+      setTextUser(profiledata.username);
+      setUserType(profiledata.user_type);
+      setUserID(profiledata.userID);
+    }
+  }, [profiledata]);
   //=========================
 
   const [name_text, setTextName] = React.useState('');
@@ -60,6 +79,7 @@ const BuyerProfile = ({ navigation, route }) => {
   const [zip_text, setTextZip] = React.useState('');
   const [user_text, setTextUser] = React.useState('');
   const [pass_text, setTextPass] = React.useState('');
+  const [userID, setUserID] = React.useState('');
   const [pass_text_verify, setTextPassVerify] = React.useState('');
   const [usertype_text, setUserType] = React.useState('customer');
   let errormessage = '';
@@ -75,12 +95,11 @@ const BuyerProfile = ({ navigation, route }) => {
     <SafeAreaView style={styles.form}>
       <ScrollView>
         <View style={styles.textinput}>
-          <Text style={styles.titleText}>BUYER PROFILE</Text>
-          <Separator />
+          <Text style={styles.titleText}>Hello {profiledata.name},</Text>
+          <View style={{ padding: 10 }}></View>
           <Text style={styles.bodytext}>
-            Get started with an account.
+            Update your account here!
             {'\n'}
-            {'\n'}* indicates a required field.
             {'\n'}
           </Text>
 
@@ -90,12 +109,11 @@ const BuyerProfile = ({ navigation, route }) => {
             }}
           >
             <TextInput
-              label="User Name"
-              value={user_text}
+              label="Name"
+              value={name_text}
+              onChangeText={(name_text) => setTextName(name_text)}
               style={styles.textinput}
-              onChangeText={(user_text) => setTextUser(user_text)}
             />
-
             <TextInput
               label="Password"
               value={pass_text}
@@ -114,13 +132,6 @@ const BuyerProfile = ({ navigation, route }) => {
               style={styles.textinput}
               textContentType="password"
               secureTextEntry={true}
-            />
-
-            <TextInput
-              label="Name"
-              value={name_text}
-              onChangeText={(name_text) => setTextName(name_text)}
-              style={styles.textinput}
             />
 
             <TextInput
@@ -149,29 +160,13 @@ const BuyerProfile = ({ navigation, route }) => {
               maxLength={5}
             />
           </View>
-
-          <View>
-            <RadioButton.Group
-              onValueChange={(usertype_text) => setUserType(usertype_text)}
-              value={usertype_text}
-            >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <RadioButton value="buyer" />
-                <Text style={styles.bodytext}>Customer</Text>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <RadioButton value="seller" />
-                <Text style={styles.bodytext}>Seller</Text>
-              </View>
-            </RadioButton.Group>
-          </View>
         </View>
 
         <View>
           <Separator />
           <Button
             mode="contained"
-            title="List"
+            title="Submit"
             buttonColor="#eb6b34"
             onPress={() => {
               //NEED INPUT CLEANING AND PASSWORD HASHING
@@ -183,33 +178,39 @@ const BuyerProfile = ({ navigation, route }) => {
               if (pass_text != pass_text_verify) {
                 errormessage += 'Password must match\n';
               }
-              if (errormessage.length != 0) {
-                ErrorAlert();
-                return;
+              if (pass_text)
+                if (errormessage.length != 0) {
+                  ErrorAlert();
+                  return;
+                }
+
+              let params = {};
+              if (name_text != profiledata.name) {
+                params = { ...params, name: name_text };
               }
 
-              const joindate_text = new Date()
-                .toISOString()
-                .substr(0, 19)
-                .replace('T', ' ');
-              fetch(`${REACT_APP_ADDRESS}/adduser`, {
-                method: 'POST',
+              if (email_text != profiledata.email) {
+                params = { ...params, email: email_text };
+              }
+              if (phone_text != profiledata.phone) {
+                params = { ...params, phone: phone_text };
+              }
+              if (zip_text != profiledata.zip) {
+                params = { ...params, zip: zip_text };
+              }
+              if (pass_text && pass_text.length > 0) {
+                params = { ...params, password: pass_text };
+              }
+
+              fetch(`${REACT_APP_ADDRESS}/users/${userID}`, {
+                method: 'PATCH',
                 headers: {
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                  name_text: name_text,
-                  email_text: email_text,
-                  phone_text: phone_text,
-                  zip_text: zip_text,
-                  user_text: user_text,
-                  pass_text: pass_text,
-                  usertype_text: usertype_text,
-                  joindate_text: joindate_text,
-                }),
+                body: JSON.stringify(params),
               });
 
-              navigation.navigate('Guest Main View');
+              navigation.navigate('Login');
             }}
           >
             {' '}
