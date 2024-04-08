@@ -42,6 +42,7 @@ import SellerCreateListing from './src/components/Seller/SellerCreateListing.js'
 import BuyerReservations from './src/components/Buyer/BuyerReservations.js';
 import BuyerProfile from './src/components/Buyer/BuyerProfile.js';
 import SellerProfile from './src/components/Seller/SellerProfile.js';
+import SellerLocationProfile from './src/components/Seller/SellerLocationProfile.js';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -188,6 +189,16 @@ function App(): React.JSX.Element {
             component={SellerProfile}
             options={{
               title: 'My Profile',
+              headerStyle: {
+                backgroundColor: '#eb6b34',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="Seller Location Profile"
+            component={SellerLocationProfile}
+            options={{
+              title: 'Location Profile',
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },

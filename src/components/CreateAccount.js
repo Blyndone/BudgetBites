@@ -250,7 +250,7 @@ const CreateAccount = ({ navigation, route }) => {
                   style={styles.textinput}
                   textContentType="telephoneNumber"
                   keyboardType="number-pad"
-                  maxLength={10}
+                  maxLength={12}
                 />
               </View>
               <View style={styles.textinput}>

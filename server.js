@@ -514,11 +514,6 @@ app.get('/location/:itemID', async (req, res) => {
   }
 });
 
-//==================
-// Get Location By Item userID
-// Input Form:
-// itemID: itemID
-//==================
 app.get('/userlocation/:userID', async (req, res) => {
   console.log('get location by User id');
   try {
@@ -537,6 +532,73 @@ app.get('/userlocation/:userID', async (req, res) => {
     res.status(500).json({
       message: err,
     });
+  }
+});
+
+//==================
+// Get Location By Item userID
+// Input Form:
+// itemID: itemID
+//==================
+app.patch('/userlocation/:userID', async (req, res) => {
+  console.log('update Location');
+  try {
+    const userID = req.params.userID;
+    let { name, address, city, state, zip, phone_number, email, website } =
+      req.body;
+
+    let query = '';
+    let params = [];
+
+    if (name) {
+      query = query + ', name = ?';
+      params.push(name);
+    }
+    if (address) {
+      query = query + ', address = ?';
+      params.push(address);
+    }
+    if (city) {
+      query = query + ', city = ?';
+      params.push(city);
+    }
+    if (state) {
+      query = query + ', state = ?';
+      params.push(state);
+    }
+    if (zip) {
+      query = query + ', zip = ?';
+      params.push(zip);
+    }
+    if (phone_number) {
+      query = query + ', phone_number = ?';
+      params.push(phone_number);
+    }
+    if (email) {
+      query = query + ', email = ?';
+      params.push(email);
+    }
+    if (website) {
+      query = query + ', website = ?';
+      params.push(website);
+    }
+
+    query = query.slice(1);
+    query = 'UPDATE locations SET ' + query;
+
+    query = query + ' WHERE sellerID = ?';
+    params.push(userID);
+    // Update the user details in the database
+    const [updateResult] = await connection.promise().query(query, params);
+
+    if (updateResult.affectedRows === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User updated successfully' });
+  } catch (error) {
+    console.error('Error on update:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
