@@ -247,15 +247,26 @@ app.post('/adduser', async (req, res) => {
     }
 
     // Check if password is provided and not empty
-    if (typeof password === 'undefined' || password === '') {
+    if (typeof pass_text === 'undefined' || pass_text === '') {
       console.error('Password is undefined or empty');
       return res.status(400).json({ message: 'Password is required' });
     }
 
     // Hashing the password
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcrypt.hash(pass_text, saltRounds);
     // console.log({ username, password: hashedPassword });
 
+    console.log(
+      'adding',
+      user_text,
+      hashedPassword,
+      name_text,
+      email_text,
+      phone_text,
+      zip_text,
+      usertype_text,
+      joindate_text,
+    );
     const [{ insertId }] = await connection.promise().query(
       `INSERT INTO users (username, password, name, email, phone, zip, usertype, joindate)
           VALUES  

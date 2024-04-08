@@ -33,7 +33,7 @@ const CreateAccount = ({ navigation, route }) => {
 
   const [locationData, setLocationData] = useState({
     locationName: '',
-    locationAddresss: '',
+    locationAddress: '',
     locationCity: '',
     locationState: '',
     locationZip: '',
