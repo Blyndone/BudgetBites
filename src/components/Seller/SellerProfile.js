@@ -13,13 +13,24 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '../Persist';
-
 const Separator = () => <View style={styles.separator} />;
 const SellerProfile = ({ navigation, route }) => {
   //=========================
   // USER AUTH AND PAGE TYPE
   const pagetype = 'seller';
   const [userdata, setUserData] = React.useState('');
+  const [profiledata, setProfileData] = React.useState({});
+  const [locationdata, setLocationData] = React.useState({
+    name: '',
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+    phone_number: '',
+    email: '',
+    website: '',
+  });
+
   useEffect(() => {
     Auth(route.params.data.user_name).then((resp) => {
       try {
@@ -27,12 +38,27 @@ const SellerProfile = ({ navigation, route }) => {
         if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
           navigation.navigate('Splash');
         }
-        // console.log(r.status);
-        // console.log(resp);
+
+        GetProfileInfo();
       } catch (err) {
         console.log(err);
       }
     });
+
+    const GetProfileInfo = async () => {
+      try {
+        const response = await fetch(
+          `${REACT_APP_ADDRESS}/users/${route.params.data.user_name}`,
+        );
+        const json = await response.json();
+
+        results = Object.values(json.users);
+
+        setProfileData(results[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
     setUserData({
       user_name: route.params.data.user_name,
@@ -40,6 +66,37 @@ const SellerProfile = ({ navigation, route }) => {
       user_id: route.params.data.user_id,
     });
   }, []);
+
+  const GetLocationInfo = async () => {
+    try {
+      const response = await fetch(
+        `${REACT_APP_ADDRESS}/userlocation/${profiledata.userID}`,
+      );
+      const json = await response.json();
+
+      results = Object.values(json.location);
+
+      setLocationData(results[0]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    // if(profiledata.length >0)
+    if (Object.keys(profiledata).length === 0) {
+      return;
+    } else {
+      setTextName(profiledata.name);
+      setTextEmail(profiledata.email);
+      setTextPhone(String(profiledata.phone));
+      setTextZip(String(profiledata.zip));
+      setTextUser(profiledata.username);
+      setUserType(profiledata.user_type);
+      setUserID(profiledata.userID);
+      GetLocationInfo();
+    }
+  }, [profiledata]);
   //=========================
 
   const [name_text, setTextName] = React.useState('');
@@ -48,6 +105,7 @@ const SellerProfile = ({ navigation, route }) => {
   const [zip_text, setTextZip] = React.useState('');
   const [user_text, setTextUser] = React.useState('');
   const [pass_text, setTextPass] = React.useState('');
+  const [userID, setUserID] = React.useState('');
   const [pass_text_verify, setTextPassVerify] = React.useState('');
   const [usertype_text, setUserType] = React.useState('customer');
   let errormessage = '';
@@ -62,148 +120,149 @@ const SellerProfile = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.form}>
       <ScrollView>
-        <View style={styles.textinput}>
-          <Text style={styles.titleText}>Seller Profile</Text>
-          <Separator />
-          <Text style={styles.bodytext}>
-            Get started with an account.
-            {'\n'}
-            {'\n'}* indicates a required field.
-            {'\n'}
-          </Text>
-
+        <View style={{ flexDirection: 'row' }}>
+          <View style={styles.textinput}>
+            <Text style={styles.titleText}>Hello {profiledata.name},</Text>
+            <Text style={styles.loctext}>{locationdata.name}</Text>
+            <View style={{ padding: 10 }}></View>
+            <Text style={styles.bodytext}>
+              Update your account here!
+              {'\n'}
+              {'\n'}
+            </Text>
+          </View>
           <View
             style={{
-              padding: 10,
+              flex: 0.2,
+              alignItems: 'flex-end',
             }}
           >
-            <TextInput
-              label="User Name"
-              value={user_text}
-              style={styles.textinput}
-              onChangeText={(user_text) => setTextUser(user_text)}
+            <Image
+              source={require('../../../assets/BB-logo.png')}
+              style={{
+                width: 140,
+                height: 140,
+              }}
             />
+          </View>
+        </View>
+        <View>
+          <View>
+            <View
+              style={{
+                padding: 10,
+              }}
+            >
+              <TextInput
+                label="Name"
+                value={name_text}
+                onChangeText={(name_text) => setTextName(name_text)}
+                style={styles.textinput}
+              />
+              <TextInput
+                label="Password"
+                value={pass_text}
+                onChangeText={(pass_text) => setTextPass(pass_text)}
+                style={styles.textinput}
+                textContentType="password"
+                secureTextEntry={true}
+              />
 
-            <TextInput
-              label="Password"
-              value={pass_text}
-              onChangeText={(pass_text) => setTextPass(pass_text)}
-              style={styles.textinput}
-              textContentType="password"
-              secureTextEntry={true}
-            />
+              <TextInput
+                label="Retype Password"
+                value={pass_text_verify}
+                onChangeText={(pass_text_verify) =>
+                  setTextPassVerify(pass_text_verify)
+                }
+                style={styles.textinput}
+                textContentType="password"
+                secureTextEntry={true}
+              />
 
-            <TextInput
-              label="Retype Password"
-              value={pass_text_verify}
-              onChangeText={(pass_text_verify) =>
-                setTextPassVerify(pass_text_verify)
-              }
-              style={styles.textinput}
-              textContentType="password"
-              secureTextEntry={true}
-            />
+              <TextInput
+                label="Email"
+                value={email_text}
+                onChangeText={(email_text) => setTextEmail(email_text)}
+                style={styles.textinput}
+              />
 
-            <TextInput
-              label="Name"
-              value={name_text}
-              onChangeText={(name_text) => setTextName(name_text)}
-              style={styles.textinput}
-            />
+              <TextInput
+                label="Phone Number"
+                value={phone_text}
+                onChangeText={(phone_text) => setTextPhone(phone_text)}
+                style={styles.textinput}
+                textContentType="telephoneNumber"
+                keyboardType="number-pad"
+                maxLength={10}
+              />
 
-            <TextInput
-              label="Email"
-              value={email_text}
-              onChangeText={(email_text) => setTextEmail(email_text)}
-              style={styles.textinput}
-            />
-
-            <TextInput
-              label="Phone Number"
-              value={phone_text}
-              onChangeText={(phone_text) => setTextPhone(phone_text)}
-              style={styles.textinput}
-              textContentType="telephoneNumber"
-              keyboardType="number-pad"
-              maxLength={10}
-            />
-
-            <TextInput
-              label="Zip Code"
-              value={zip_text}
-              onChangeText={(zip_text) => setTextZip(zip_text)}
-              style={styles.textinput}
-              keyboardType="number-pad"
-              maxLength={5}
-            />
+              <TextInput
+                label="Zip Code"
+                value={zip_text}
+                onChangeText={(zip_text) => setTextZip(zip_text)}
+                style={styles.textinput}
+                keyboardType="number-pad"
+                maxLength={5}
+              />
+            </View>
           </View>
 
           <View>
-            <RadioButton.Group
-              onValueChange={(usertype_text) => setUserType(usertype_text)}
-              value={usertype_text}
+            <Separator />
+            <Button
+              mode="contained"
+              title="Submit"
+              buttonColor="#eb6b34"
+              onPress={() => {
+                //NEED INPUT CLEANING AND PASSWORD HASHING
+                errormessage = '';
+
+                if (user_text.length <= 5) {
+                  errormessage +=
+                    'User name must be longer than 5 characters.\n';
+                }
+                if (pass_text != pass_text_verify) {
+                  errormessage += 'Password must match\n';
+                }
+                if (pass_text)
+                  if (errormessage.length != 0) {
+                    ErrorAlert();
+                    return;
+                  }
+
+                let params = {};
+                if (name_text != profiledata.name) {
+                  params = { ...params, name: name_text };
+                }
+
+                if (email_text != profiledata.email) {
+                  params = { ...params, email: email_text };
+                }
+                if (phone_text != profiledata.phone) {
+                  params = { ...params, phone: phone_text };
+                }
+                if (zip_text != profiledata.zip) {
+                  params = { ...params, zip: zip_text };
+                }
+                if (pass_text && pass_text.length > 0) {
+                  params = { ...params, password: pass_text };
+                }
+
+                fetch(`${REACT_APP_ADDRESS}/users/${userID}`, {
+                  method: 'PATCH',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(params),
+                });
+
+                navigation.navigate('Login');
+              }}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <RadioButton value="buyer" />
-                <Text style={styles.bodytext}>Customer</Text>
-              </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <RadioButton value="seller" />
-                <Text style={styles.bodytext}>Seller</Text>
-              </View>
-            </RadioButton.Group>
+              {' '}
+              Submit{' '}
+            </Button>
           </View>
-        </View>
-
-        <View>
-          <Separator />
-          <Button
-            mode="contained"
-            title="List"
-            buttonColor="#eb6b34"
-            onPress={() => {
-              //NEED INPUT CLEANING AND PASSWORD HASHING
-              errormessage = '';
-
-              if (user_text.length <= 5) {
-                errormessage += 'User name must be longer than 5 characters.\n';
-              }
-              if (pass_text != pass_text_verify) {
-                errormessage += 'Password must match\n';
-              }
-              if (errormessage.length != 0) {
-                ErrorAlert();
-                return;
-              }
-
-              const joindate_text = new Date()
-                .toISOString()
-                .substr(0, 19)
-                .replace('T', ' ');
-              fetch(`${REACT_APP_ADDRESS}/adduser`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  name_text: name_text,
-                  email_text: email_text,
-                  phone_text: phone_text,
-                  zip_text: zip_text,
-                  user_text: user_text,
-                  pass_text: pass_text,
-                  usertype_text: usertype_text,
-                  joindate_text: joindate_text,
-                }),
-              });
-
-              navigation.navigate('Guest Main View');
-            }}
-          >
-            {' '}
-            Submit{' '}
-          </Button>
-
           <Separator />
         </View>
       </ScrollView>
@@ -225,6 +284,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Helvetica',
   },
+  loctext: {
+    fontSize: 20,
+    textAlign: 'left',
+    color: 'black',
+    fontWeight: 'bold',
+    fontFamily: 'Helvetica',
+    paddingHorizontal: 20,
+    textDecorationLine: 'underline',
+  },
   button: {
     color: '#f194ff',
     backgroundColor: '#f194ff',
@@ -235,6 +303,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   textinput: {
+    flex: 1,
     margin: 5,
   },
   bodytext: {

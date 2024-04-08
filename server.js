@@ -515,6 +515,32 @@ app.get('/location/:itemID', async (req, res) => {
 });
 
 //==================
+// Get Location By Item userID
+// Input Form:
+// itemID: itemID
+//==================
+app.get('/userlocation/:userID', async (req, res) => {
+  console.log('get location by User id');
+  try {
+    const { userID } = req.params;
+    query = `SELECT 
+    Loc.name, Loc.address, Loc.city, Loc.state, Loc.zip, Loc.phone_number, Loc.email, Loc.website
+    FROM
+    locations Loc JOIN users U ON Loc.sellerID = U.userID
+    WHERE U.userID = ?`;
+
+    const data = await connection.promise().query(query, [userID]);
+    res.status(200).json({
+      location: data[0],
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err,
+    });
+  }
+});
+
+//==================
 // Retrieve Password
 //
 //==================

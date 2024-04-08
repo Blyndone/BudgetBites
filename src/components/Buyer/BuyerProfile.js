@@ -94,15 +94,32 @@ const BuyerProfile = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.form}>
       <ScrollView>
-        <View style={styles.textinput}>
-          <Text style={styles.titleText}>Hello {profiledata.name},</Text>
-          <View style={{ padding: 10 }}></View>
-          <Text style={styles.bodytext}>
-            Update your account here!
-            {'\n'}
-            {'\n'}
-          </Text>
-
+        <View>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={styles.textinput}>
+              <Text style={styles.titleText}>Hello {profiledata.name},</Text>
+              <View style={{ padding: 10 }}></View>
+              <Text style={styles.bodytext}>
+                Update your account here!
+                {'\n'}
+                {'\n'}
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 0.2,
+                alignItems: 'flex-end',
+              }}
+            >
+              <Image
+                source={require('../../../assets/BB-logo.png')}
+                style={{
+                  width: 140,
+                  height: 140,
+                }}
+              />
+            </View>
+          </View>
           <View
             style={{
               padding: 10,
@@ -160,64 +177,65 @@ const BuyerProfile = ({ navigation, route }) => {
               maxLength={5}
             />
           </View>
-        </View>
 
-        <View>
-          <Separator />
-          <Button
-            mode="contained"
-            title="Submit"
-            buttonColor="#eb6b34"
-            onPress={() => {
-              //NEED INPUT CLEANING AND PASSWORD HASHING
-              errormessage = '';
+          <View>
+            <Separator />
+            <Button
+              mode="contained"
+              title="Submit"
+              buttonColor="#eb6b34"
+              onPress={() => {
+                //NEED INPUT CLEANING AND PASSWORD HASHING
+                errormessage = '';
 
-              if (user_text.length <= 5) {
-                errormessage += 'User name must be longer than 5 characters.\n';
-              }
-              if (pass_text != pass_text_verify) {
-                errormessage += 'Password must match\n';
-              }
-              if (pass_text)
-                if (errormessage.length != 0) {
-                  ErrorAlert();
-                  return;
+                if (user_text.length <= 5) {
+                  errormessage +=
+                    'User name must be longer than 5 characters.\n';
+                }
+                if (pass_text != pass_text_verify) {
+                  errormessage += 'Password must match\n';
+                }
+                if (pass_text)
+                  if (errormessage.length != 0) {
+                    ErrorAlert();
+                    return;
+                  }
+
+                let params = {};
+                if (name_text != profiledata.name) {
+                  params = { ...params, name: name_text };
                 }
 
-              let params = {};
-              if (name_text != profiledata.name) {
-                params = { ...params, name: name_text };
-              }
+                if (email_text != profiledata.email) {
+                  params = { ...params, email: email_text };
+                }
+                if (phone_text != profiledata.phone) {
+                  params = { ...params, phone: phone_text };
+                }
+                if (zip_text != profiledata.zip) {
+                  params = { ...params, zip: zip_text };
+                }
+                if (pass_text && pass_text.length > 0) {
+                  params = { ...params, password: pass_text };
+                }
 
-              if (email_text != profiledata.email) {
-                params = { ...params, email: email_text };
-              }
-              if (phone_text != profiledata.phone) {
-                params = { ...params, phone: phone_text };
-              }
-              if (zip_text != profiledata.zip) {
-                params = { ...params, zip: zip_text };
-              }
-              if (pass_text && pass_text.length > 0) {
-                params = { ...params, password: pass_text };
-              }
+                fetch(`${REACT_APP_ADDRESS}/users/${userID}`, {
+                  method: 'PATCH',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(params),
+                });
 
-              fetch(`${REACT_APP_ADDRESS}/users/${userID}`, {
-                method: 'PATCH',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(params),
-              });
+                navigation.navigate('Login');
+              }}
+            >
+              {' '}
+              Submit{' '}
+            </Button>
 
-              navigation.navigate('Login');
-            }}
-          >
-            {' '}
-            Submit{' '}
-          </Button>
-
-          <Separator />
+            <Separator />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -248,6 +266,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   textinput: {
+    flex: 1,
     margin: 5,
   },
   bodytext: {

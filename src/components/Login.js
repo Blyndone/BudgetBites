@@ -21,8 +21,6 @@ const Login = ({ navigation }) => {
   //=================
   const [userdata, setUserData] = React.useState('');
   useEffect(() => {
-    console.log('GET');
-
     setUserData({
       user_name: 'NAME',
       role: 'Buyer',
@@ -131,17 +129,17 @@ const Login = ({ navigation }) => {
                       console.log(res.status);
                       if (res.status == 500) {
                         alert('USER NOT FOUND');
-                        console.log(res.status);
+                        // console.log(res.status);
                         return;
                       } else if (res.status == 401) {
                         alert('INVALID PASSWORD');
-                        console.log(res.status);
+                        // console.log(res.status);
                         return;
                       } else {
                         // console.log(response);
                         const token = JSON.parse(response).token;
                         const data = JSON.parse(response).data;
-                        console.log(data);
+                        // console.log(data);
                         // console.log(data);
                         // console.log(user_text, token);
                         save(user_text, token);
