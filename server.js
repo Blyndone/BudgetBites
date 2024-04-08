@@ -114,7 +114,7 @@ app.post('/additem', async (req, res) => {
       [{ insertId }] = await connection.promise().query(
         `INSERT INTO items (name, description, category, msrp, price, expiration, location, zip, itemstatus, img, listeddate)
         VALUES  
-        (?,?, ?, ?, ?, ?, (select L.name from locations L join users U ON U.userID = l.sellerID where U.userID = ?), (select L.zip from locations L join users U ON U.userID = l.sellerID where U.userID = ?), 'Available', ?, ?);
+        (?,?, ?, ?, ?, ?, (select L.name from locations L join users U ON U.userID = L.sellerID where U.userID = ?), (select L.zip from locations L join users U ON U.userID = L.sellerID where U.userID = ?), 'Available', ?, ?);
         
         INSERT INTO listing (itemID, sellerID, createDate)
         VALUES  

@@ -49,7 +49,7 @@ const Splash = ({ navigation }) => {
             Guest Login
           </Button>
         </View>
-        <View style={styles.buttoncontainer}>
+        {/* <View style={styles.buttoncontainer}>
           <Button
             mode="contained"
             title="Guest Login"
@@ -82,7 +82,7 @@ const Splash = ({ navigation }) => {
           >
             Seller
           </Button>
-        </View>
+        </View> */}
         {/* <Button
           mode="contained"
           title="Create Listing"

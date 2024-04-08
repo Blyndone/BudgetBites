@@ -78,7 +78,7 @@ const SellerCreateListing = ({ navigation, route }) => {
   const [expiration_text, setExpiration] = useState('');
   const [discount_text, setDiscount] = useState('');
   const [discount_calc, setDiscountCalc] = useState('');
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState('1');
   const [imageindexes, setImageIndex] = useState([
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
   ]);
@@ -483,6 +483,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#eb6b34',
     textDecorationLine: 'underline',
+    shadowColor: 'black',
+    textShadowOffset: {
+      height: 2,
+      width: 2,
+    },
+    textShadowRadius: 2,
   },
   modalView: {
     margin: 20,
