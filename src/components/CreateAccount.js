@@ -11,7 +11,13 @@ import {
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
+import {
+  Button,
+  Text,
+  TextInput,
+  RadioButton,
+  Surface,
+} from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import * as SecureStore from 'expo-secure-store';
 
@@ -159,222 +165,272 @@ const CreateAccount = ({ navigation, route }) => {
   };
   return (
     <SafeAreaView style={styles.form}>
-      <ScrollView automaticallyAdjustKeyboardInsets={true}>
+      <ScrollView automaticallyAdjustKeyboardInsets={true} style={{ flex: 1 }}>
         <View>
           <KeyboardAvoidingView>
-            <Text style={styles.titleText}>Account Creation</Text>
-
-            <Text style={styles.bodytext}>
-              Get started with an account.
-              {'\n'}
-              {'\n     '} * indicates a required field.
-              {'\n'}
-            </Text>
-            <View>
-              <RadioButton.Group
-                onValueChange={(usertype_text) => {
-                  setUserType(usertype_text);
-                }}
-                value={usertype_text}
-              >
-                <View style={styles.radiobutton}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <RadioButton value="buyer" />
-                    <Text style={styles.bodytext}>Customer</Text>
-                  </View>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <RadioButton value="seller" />
-                    <Text style={styles.bodytext}>Seller</Text>
-                  </View>
-                </View>
-              </RadioButton.Group>
-            </View>
             <View style={styles.textcontainer}>
-              <View style={styles.textinput}>
-                <TextInput
-                  label="User Name"
-                  dense="true"
-                  value={user_text}
-                  style={styles.textinput}
-                  onChangeText={(user_text) => setTextUser(user_text)}
-                />
-              </View>
-              <View style={styles.textinput}>
-                <TextInput
-                  label="Password"
-                  dense="true"
-                  value={pass_text}
-                  onChangeText={(pass_text) => setTextPass(pass_text)}
-                  style={styles.textinput}
-                  textContentType="password"
-                  secureTextEntry={true}
-                />
-              </View>
-              <View style={styles.textinput}>
-                <TextInput
-                  label="Retype Password"
-                  dense="true"
-                  value={pass_text_verify}
-                  onChangeText={(pass_text_verify) =>
-                    setTextPassVerify(pass_text_verify)
-                  }
-                  style={styles.textinput}
-                  textContentType="password"
-                  secureTextEntry={true}
-                />
-              </View>
-              <View style={styles.textinput}>
-                <TextInput
-                  label="Name"
-                  dense="true"
-                  value={name_text}
-                  onChangeText={(name_text) => setTextName(name_text)}
-                  style={styles.textinput}
-                />
-              </View>
-              <View style={styles.textinput}>
-                <TextInput
-                  label="Email"
-                  dense="true"
-                  value={email_text}
-                  onChangeText={(email_text) => setTextEmail(email_text)}
-                  style={styles.textinput}
-                />
-              </View>
-              <View style={styles.textinput}>
-                <TextInput
-                  label="Phone Number"
-                  dense="true"
-                  value={phone_text}
-                  onChangeText={(phone_text) => setTextPhone(phone_text)}
-                  style={styles.textinput}
-                  textContentType="telephoneNumber"
-                  keyboardType="number-pad"
-                  maxLength={12}
-                />
-              </View>
-              <View style={styles.textinput}>
-                <TextInput
-                  label="Zip Code"
-                  dense="true"
-                  value={zip_text}
-                  onChangeText={(zip_text) => setTextZip(zip_text)}
-                  style={styles.textinput}
-                  keyboardType="number-pad"
-                  maxLength={5}
-                />
-              </View>
+              <Text style={styles.titleText}>Account Creation</Text>
+
+              <Text style={styles.bodytext}>
+                Get started with an account.
+                {'\n'}
+                {'\n     '} * indicates a required field.
+                {'\n'}
+              </Text>
             </View>
+            <Surface style={styles.surface} elevation={4}>
+              <View style={styles.textcontainer}>
+                <Text style={styles.titleText}>User Information</Text>
+
+                <Text style={styles.bodytext}>
+                  Please input your information below.
+                </Text>
+              </View>
+              <View>
+                <RadioButton.Group
+                  onValueChange={(usertype_text) => {
+                    setUserType(usertype_text);
+                  }}
+                  value={usertype_text}
+                >
+                  <View style={styles.radiobutton}>
+                    <View
+                      style={{ flexDirection: 'row', alignItems: 'center' }}
+                    >
+                      <RadioButton value="buyer" color="black" />
+                      <Text style={styles.bodytext}>Customer</Text>
+                    </View>
+                    <View
+                      style={{ flexDirection: 'row', alignItems: 'center' }}
+                    >
+                      <RadioButton value="seller" color="black" />
+                      <Text style={styles.bodytext}>Seller</Text>
+                    </View>
+                  </View>
+                </RadioButton.Group>
+              </View>
+              <View>
+                <View style={styles.textcontainer}>
+                  <TextInput
+                    label="Name"
+                    dense="true"
+                    mode="outlined"
+                    value={name_text}
+                    onChangeText={(name_text) => setTextName(name_text)}
+                    style={styles.textinput}
+                  />
+                </View>
+                <View style={styles.textcontainer}>
+                  <TextInput
+                    label="User Name"
+                    dense="true"
+                    mode="outlined"
+                    value={user_text}
+                    style={styles.textinput}
+                    onChangeText={(user_text) => setTextUser(user_text)}
+                  />
+                </View>
+                <View style={styles.textcontainer}>
+                  <TextInput
+                    label="Password"
+                    dense="true"
+                    mode="outlined"
+                    value={pass_text}
+                    onChangeText={(pass_text) => setTextPass(pass_text)}
+                    style={styles.textinput}
+                    textContentType="password"
+                    secureTextEntry={true}
+                  />
+                </View>
+                <View style={styles.textcontainer}>
+                  <TextInput
+                    label="Retype Password"
+                    dense="true"
+                    mode="outlined"
+                    value={pass_text_verify}
+                    onChangeText={(pass_text_verify) =>
+                      setTextPassVerify(pass_text_verify)
+                    }
+                    style={styles.textinput}
+                    textContentType="password"
+                    secureTextEntry={true}
+                  />
+                </View>
+                <View style={styles.textcontainer}>
+                  <TextInput
+                    label="Email"
+                    dense="true"
+                    mode="outlined"
+                    value={email_text}
+                    onChangeText={(email_text) => setTextEmail(email_text)}
+                    style={styles.textinput}
+                  />
+                </View>
+                <View style={styles.textcontainer}>
+                  <TextInput
+                    label="Phone Number"
+                    dense="true"
+                    mode="outlined"
+                    value={phone_text}
+                    onChangeText={(phone_text) => setTextPhone(phone_text)}
+                    style={styles.textinput}
+                    textContentType="telephoneNumber"
+                    keyboardType="number-pad"
+                    maxLength={12}
+                  />
+                </View>
+                <View style={styles.textcontainer}>
+                  <TextInput
+                    label="Zip Code"
+                    dense="true"
+                    mode="outlined"
+                    value={zip_text}
+                    onChangeText={(zip_text) => setTextZip(zip_text)}
+                    style={styles.textinput}
+                    keyboardType="number-pad"
+                    maxLength={5}
+                  />
+                </View>
+              </View>
+            </Surface>
 
             <View>
               {usertype_text == 'seller' ? (
-                <View>
+                <Surface style={styles.surface} elevation={4}>
                   <View>
-                    <Text style={styles.titleText}>Business Information</Text>
+                    <View>
+                      <Text style={styles.titleText}>Business Information</Text>
 
-                    <Text style={styles.bodytext}>
-                      Please input your Business Location information below.
-                    </Text>
+                      <Text style={styles.bodytext}>
+                        Please input your Business Location information below.
+                      </Text>
+                    </View>
+                    <View style={styles.textcontainer}>
+                      <TextInput
+                        label="Business Name"
+                        dense="true"
+                        mode="outlined"
+                        value={locationData.locationName}
+                        onChangeText={(val) =>
+                          setLocationData({
+                            ...locationData,
+                            locationName: val,
+                          })
+                        }
+                        style={styles.textinput}
+                      />
+                    </View>
+                    <View style={styles.textcontainer}>
+                      <TextInput
+                        label="Business Address"
+                        dense="true"
+                        mode="outlined"
+                        value={locationData.locationAddress}
+                        onChangeText={(val) =>
+                          setLocationData({
+                            ...locationData,
+                            locationAddress: val,
+                          })
+                        }
+                        style={styles.textinput}
+                      />
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                      <View style={[styles.textcontainer, { flex: 0.7 }]}>
+                        <TextInput
+                          label="City"
+                          dense="true"
+                          mode="outlined"
+                          value={locationData.locationCity}
+                          onChangeText={(val) =>
+                            setLocationData({
+                              ...locationData,
+                              locationCity: val,
+                            })
+                          }
+                          style={styles.textinput}
+                        />
+                      </View>
+                      <View style={[styles.textcontainer, { flex: 0.4 }]}>
+                        <TextInput
+                          label="State"
+                          dense="true"
+                          mode="outlined"
+                          value={locationData.locationState}
+                          onChangeText={(val) =>
+                            setLocationData({
+                              ...locationData,
+                              locationState: val,
+                            })
+                          }
+                          style={styles.textinput}
+                        />
+                      </View>
+                    </View>
+                    <View style={styles.textcontainer}>
+                      <TextInput
+                        label="Zip Code"
+                        dense="true"
+                        mode="outlined"
+                        value={locationData.locationZip}
+                        onChangeText={(val) =>
+                          setLocationData({ ...locationData, locationZip: val })
+                        }
+                        style={styles.textinput}
+                        keyboardType="number-pad"
+                        maxLength={5}
+                      />
+                    </View>
+                    <View style={styles.textcontainer}>
+                      <TextInput
+                        label="Phone Number"
+                        dense="true"
+                        mode="outlined"
+                        value={locationData.locationPhone}
+                        onChangeText={(val) =>
+                          setLocationData({
+                            ...locationData,
+                            locationPhone: val,
+                          })
+                        }
+                        style={styles.textinput}
+                        textContentType="telephoneNumber"
+                        keyboardType="number-pad"
+                        maxLength={10}
+                      />
+                    </View>
+                    <View style={styles.textcontainer}>
+                      <TextInput
+                        label="Email"
+                        dense="true"
+                        mode="outlined"
+                        value={locationData.locationEmail}
+                        onChangeText={(val) =>
+                          setLocationData({
+                            ...locationData,
+                            locationEmail: val,
+                          })
+                        }
+                        style={styles.textinput}
+                      />
+                    </View>
+                    <View style={styles.textcontainer}>
+                      <TextInput
+                        label="Website"
+                        dense="true"
+                        mode="outlined"
+                        value={locationData.locationWebsite}
+                        onChangeText={(val) =>
+                          setLocationData({
+                            ...locationData,
+                            locationWebsite: val,
+                          })
+                        }
+                        style={styles.textinput}
+                      />
+                    </View>
                   </View>
-                  <View style={styles.textinput}>
-                    <TextInput
-                      label="Business Name"
-                      dense="true"
-                      value={locationData.locationName}
-                      onChangeText={(val) =>
-                        setLocationData({ ...locationData, locationName: val })
-                      }
-                      style={styles.textinput}
-                    />
-                  </View>
-                  <View style={styles.textinput}>
-                    <TextInput
-                      label="Address"
-                      dense="true"
-                      value={locationData.locationAddress}
-                      onChangeText={(val) =>
-                        setLocationData({
-                          ...locationData,
-                          locationAddress: val,
-                        })
-                      }
-                      style={styles.textinput}
-                    />
-                  </View>
-                  <View style={styles.textinput}>
-                    <TextInput
-                      label="City"
-                      dense="true"
-                      value={locationData.locationCity}
-                      onChangeText={(val) =>
-                        setLocationData({ ...locationData, locationCity: val })
-                      }
-                      style={styles.textinput}
-                    />
-                  </View>
-                  <View style={styles.textinput}>
-                    <TextInput
-                      label="Location State"
-                      dense="true"
-                      value={locationData.locationState}
-                      onChangeText={(val) =>
-                        setLocationData({ ...locationData, locationState: val })
-                      }
-                      style={styles.textinput}
-                    />
-                  </View>
-                  <View style={styles.textinput}>
-                    <TextInput
-                      label="Zip Code"
-                      dense="true"
-                      value={locationData.locationZip}
-                      onChangeText={(val) =>
-                        setLocationData({ ...locationData, locationZip: val })
-                      }
-                      style={styles.textinput}
-                      keyboardType="number-pad"
-                      maxLength={5}
-                    />
-                  </View>
-                  <View style={styles.textinput}>
-                    <TextInput
-                      label="Phone Number"
-                      dense="true"
-                      value={locationData.locationPhone}
-                      onChangeText={(val) =>
-                        setLocationData({ ...locationData, locationPhone: val })
-                      }
-                      style={styles.textinput}
-                      textContentType="telephoneNumber"
-                      keyboardType="number-pad"
-                      maxLength={10}
-                    />
-                  </View>
-                  <View style={styles.textinput}>
-                    <TextInput
-                      label="Email"
-                      dense="true"
-                      value={locationData.locationEmail}
-                      onChangeText={(val) =>
-                        setLocationData({ ...locationData, locationEmail: val })
-                      }
-                      style={styles.textinput}
-                    />
-                  </View>
-                  <View style={styles.textinput}>
-                    <TextInput
-                      label="Website"
-                      value={locationData.locationWebsite}
-                      onChangeText={(val) =>
-                        setLocationData({
-                          ...locationData,
-                          locationWebsite: val,
-                        })
-                      }
-                      style={styles.textinput}
-                    />
-                  </View>
-                </View>
+                </Surface>
               ) : (
                 <View></View>
               )}
@@ -440,7 +496,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 30,
-    textAlign: 'left',
+
     color: 'black',
     fontWeight: 'bold',
     fontFamily: 'Helvetica',
@@ -457,16 +513,30 @@ const styles = StyleSheet.create({
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  textcontainer: {
-    margin: 5,
+  surface: {
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: '#00b3b3',
+    marginVertical: 10,
   },
   buttoncontainer: {
     margin: 5,
   },
-  textinput: { margin: 2, height: 42 },
+  textcontainer: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  textinput: {
+    fontSize: 15,
+    backgroundColor: 'white',
+
+    width: '100%',
+    // margin: 2, padding: 3
+  },
   bodytext: {
     fontSize: 15,
     fontWeight: 'bold',
+    color: 'black',
   },
 });
 

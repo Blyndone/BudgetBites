@@ -11,7 +11,13 @@ import {
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
+import {
+  Button,
+  Text,
+  TextInput,
+  RadioButton,
+  Surface,
+} from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '../Persist';
 const Separator = () => <View style={styles.separator} />;
@@ -133,150 +139,169 @@ const SellerLocationProfile = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.form}>
       <ScrollView>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={styles.textinput}>
-            <Text style={styles.titleText}>{locationdata.name},</Text>
-            <Text style={styles.loctext}>{profiledata.name},</Text>
-            <View style={{ padding: 10 }}></View>
-            <Text style={styles.bodytext}>
-              Update your location information here!
-              {'\n'}
-              {'\n'}
-            </Text>
-          </View>
-          <View
-            style={{
-              flex: 0.2,
-              alignItems: 'flex-end',
-            }}
-          >
-            <Image
-              source={require('../../../assets/BB-logo.png')}
-              style={{
-                width: 140,
-                height: 140,
-              }}
-            />
-          </View>
-        </View>
-        <View>
-          <View>
+        <Surface style={styles.surface} elevation={4}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={styles.textinput}>
+              <Text style={styles.titleText}>{locationdata.name},</Text>
+              <Text style={styles.loctext}>{profiledata.name},</Text>
+              <View style={{ padding: 10 }}></View>
+              <Text style={styles.bodytext}>
+                Update your location information here!
+                {'\n'}
+                {'\n'}
+              </Text>
+            </View>
             <View
               style={{
-                padding: 10,
+                flex: 0.4,
+                alignItems: 'flex-end',
               }}
             >
-              <TextInput
-                label="Location Name"
-                value={name_text}
-                onChangeText={(name_text) => setTextName(name_text)}
-                style={styles.textinput}
-              />
-              <TextInput
-                label="Address"
-                value={address_text}
-                onChangeText={(address_text) => setTextAddress(address_text)}
-                style={styles.textinput}
-              />
-              <View style={{ flexDirection: 'row' }}>
-                <TextInput
-                  label="City"
-                  value={city_text}
-                  onChangeText={(city_text) => setTextCity(city_text)}
-                  style={[styles.textinput, { flex: 1 }]}
-                />
-
-                <TextInput
-                  label="State"
-                  value={state_text}
-                  onChangeText={(state_text) => setTextState(state_text)}
-                  style={[styles.textinput, { flex: 1 }]}
-                />
-              </View>
-              <TextInput
-                label="Zip Code"
-                value={zip_text}
-                onChangeText={(zip_text) => setTextZip(zip_text)}
-                style={styles.textinput}
-                keyboardType="number-pad"
-                maxLength={5}
-              />
-              <TextInput
-                label="Website"
-                value={website_text}
-                onChangeText={(website_text) => setTextWebsite(website_text)}
-                style={styles.textinput}
-              />
-              <TextInput
-                label="Phone Number"
-                value={phone_text}
-                onChangeText={(phone_text) => setTextPhone(phone_text)}
-                style={styles.textinput}
-                textContentType="telephoneNumber"
-                keyboardType="number-pad"
-                maxLength={12}
-              />
-              <TextInput
-                label="Email"
-                value={email_text}
-                onChangeText={(email_text) => setTextEmail(email_text)}
-                style={styles.textinput}
+              <Image
+                source={require('../../../assets/BB-logo.png')}
+                style={{
+                  width: 140,
+                  height: 140,
+                }}
               />
             </View>
           </View>
 
           <View>
-            <Button
-              mode="contained"
-              title="Submit"
-              buttonColor="#eb6b34"
-              onPress={() => {
-                //NEED INPUT CLEANING AND PASSWORD HASHING
-                errormessage = '';
+            <View>
+              <View
+                style={{
+                  padding: 10,
+                }}
+              >
+                <TextInput
+                  label="Location Name"
+                  dense="true"
+                  mode="outlined"
+                  value={name_text}
+                  onChangeText={(name_text) => setTextName(name_text)}
+                  style={styles.textinput}
+                />
+                <TextInput
+                  label="Address"
+                  dense="true"
+                  mode="outlined"
+                  value={address_text}
+                  onChangeText={(address_text) => setTextAddress(address_text)}
+                  style={styles.textinput}
+                />
+                <View style={{ flexDirection: 'row' }}>
+                  <TextInput
+                    label="City"
+                    dense="true"
+                    mode="outlined"
+                    value={city_text}
+                    onChangeText={(city_text) => setTextCity(city_text)}
+                    style={[styles.textinput, { flex: 1 }]}
+                  />
 
-                let params = {};
-                if (name_text != locationdata.name) {
-                  params = { ...params, name: name_text };
-                }
-                if (address_text != locationdata.address) {
-                  params = { ...params, address: address_text };
-                }
-                if (city_text != locationdata.city) {
-                  params = { ...params, city: city_text };
-                }
-                if (state_text != locationdata.state) {
-                  params = { ...params, state: state_text };
-                }
-                if (zip_text != locationdata.zip) {
-                  params = { ...params, zip: zip_text };
-                }
-                if (phone_text != locationdata.phone_number) {
-                  params = { ...params, phone_number: phone_text };
-                }
-                if (email_text != locationdata.email) {
-                  params = { ...params, email: email_text };
-                }
-                if (website_text != locationdata.website) {
-                  params = { ...params, website: website_text };
-                }
+                  <TextInput
+                    label="State"
+                    dense="true"
+                    mode="outlined"
+                    value={state_text}
+                    onChangeText={(state_text) => setTextState(state_text)}
+                    style={[styles.textinput, { flex: 1 }]}
+                  />
+                </View>
+                <TextInput
+                  label="Zip Code"
+                  dense="true"
+                  mode="outlined"
+                  value={zip_text}
+                  onChangeText={(zip_text) => setTextZip(zip_text)}
+                  style={styles.textinput}
+                  keyboardType="number-pad"
+                  maxLength={5}
+                />
+                <TextInput
+                  label="Website"
+                  dense="true"
+                  mode="outlined"
+                  value={website_text}
+                  onChangeText={(website_text) => setTextWebsite(website_text)}
+                  style={styles.textinput}
+                />
+                <TextInput
+                  label="Phone Number"
+                  dense="true"
+                  mode="outlined"
+                  value={phone_text}
+                  onChangeText={(phone_text) => setTextPhone(phone_text)}
+                  style={styles.textinput}
+                  textContentType="telephoneNumber"
+                  keyboardType="number-pad"
+                  maxLength={12}
+                />
+                <TextInput
+                  label="Email"
+                  dense="true"
+                  mode="outlined"
+                  value={email_text}
+                  onChangeText={(email_text) => setTextEmail(email_text)}
+                  style={styles.textinput}
+                />
+              </View>
+            </View>
 
-                fetch(
-                  `${REACT_APP_ADDRESS}/userlocation/${profiledata.userID}`,
-                  {
-                    method: 'PATCH',
-                    headers: {
-                      'Content-Type': 'application/json',
+            <View>
+              <Button
+                mode="contained"
+                title="Submit"
+                buttonColor="#eb6b34"
+                onPress={() => {
+                  //NEED INPUT CLEANING AND PASSWORD HASHING
+                  errormessage = '';
+
+                  let params = {};
+                  if (name_text != locationdata.name) {
+                    params = { ...params, name: name_text };
+                  }
+                  if (address_text != locationdata.address) {
+                    params = { ...params, address: address_text };
+                  }
+                  if (city_text != locationdata.city) {
+                    params = { ...params, city: city_text };
+                  }
+                  if (state_text != locationdata.state) {
+                    params = { ...params, state: state_text };
+                  }
+                  if (zip_text != locationdata.zip) {
+                    params = { ...params, zip: zip_text };
+                  }
+                  if (phone_text != locationdata.phone_number) {
+                    params = { ...params, phone_number: phone_text };
+                  }
+                  if (email_text != locationdata.email) {
+                    params = { ...params, email: email_text };
+                  }
+                  if (website_text != locationdata.website) {
+                    params = { ...params, website: website_text };
+                  }
+
+                  fetch(
+                    `${REACT_APP_ADDRESS}/userlocation/${profiledata.userID}`,
+                    {
+                      method: 'PATCH',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify(params),
                     },
-                    body: JSON.stringify(params),
-                  },
-                );
-                navigation.goBack();
-              }}
-            >
-              Submit
-            </Button>
+                  );
+                  navigation.goBack();
+                }}
+              >
+                Submit
+              </Button>
+            </View>
           </View>
-        </View>
+        </Surface>
       </ScrollView>
     </SafeAreaView>
   );
@@ -290,7 +315,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   titleText: {
-    fontSize: 30,
+    fontSize: 28,
     textAlign: 'left',
     color: 'black',
     fontWeight: 'bold',
@@ -317,7 +342,6 @@ const styles = StyleSheet.create({
   textinput: {
     flex: 1,
     margin: 5,
-    height: 48,
   },
   bodytext: {
     fontSize: 15,
@@ -334,6 +358,12 @@ const styles = StyleSheet.create({
       width: 2,
     },
     textShadowRadius: 2,
+  },
+  surface: {
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: '#00b3b3',
+    marginVertical: 10,
   },
 });
 

@@ -38,39 +38,47 @@ export const ListItem = memo(function ListItem({ item, overlay = false }) {
         ''
       )}
       <View style={styles.imgview}>
-        <Image
-          source={require('../../../assets/testimages/0.png')}
-          style={styles.underimg}
-        />
-        <Image source={images[item.img]} style={styles.img} />
+        <View>
+          <Image
+            source={require('../../../assets/testimages/0.png')}
+            style={styles.underimg}
+          />
+          <Image source={images[item.img]} style={styles.img} />
 
-        <Text style={duration > 10 ? styles.explong : styles.expshort}>
-          {duration + 1} Days!
-        </Text>
+          <Text style={duration > 10 ? styles.explong : styles.expshort}>
+            {duration + 1} Days!
+          </Text>
+        </View>
       </View>
-      <View style={styles.titleview}>
-        <Text style={styles.title}>{item.name}</Text>
+      <View style={styles.middlebox}>
+        <View>
+          <Text style={styles.title}>{item.name}</Text>
+        </View>
 
-        {/* <View style={{ padding: 10 }}></View> */}
-        <Text style={styles.location}>{item.location}</Text>
+        <View style={styles.descview}>
+          <Text style={styles.description}>
+            {item.description.length > 55
+              ? item.description.slice(0, 55) + '...'
+              : item.description}
+          </Text>
+          <Text style={styles.category}>
+            {item.location} --- {item.category}{' '}
+          </Text>
+        </View>
       </View>
-      <View style={styles.descview}>
-        <Text style={styles.description}>
-          {item.description.length > 45
-            ? item.description.slice(0, 45) + '...'
-            : item.description}
-        </Text>
-        <Text style={styles.category}>{item.category}</Text>
-      </View>
+
       <View style={styles.priceview}>
         <View>
-          <Text style={styles.msrp}>MSRP</Text>
-          <Text style={styles.msrp}>${item.msrp}</Text>
+          <Text style={styles.msrp}>
+            MSRP {'\n'}${item.msrp}
+          </Text>
         </View>
+
         <View>
-          <View style={{ padding: 8 }}></View>
-          <Text style={styles.price}> Price</Text>
-          <Text style={styles.price}>{item.price}</Text>
+          <Text style={styles.price}>
+            Price{'\n'}
+            {item.price}
+          </Text>
         </View>
       </View>
     </Surface>
@@ -120,8 +128,9 @@ const styles = StyleSheet.create({
     borderWidth: 2.5,
     borderRadius: 20,
   },
+  middlebox: { flex: 1 },
   imgview: {
-    flex: 0.5,
+    flex: 0.3,
     alignContent: 'center',
     alignSelf: 'center',
   },
@@ -136,10 +145,9 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   priceview: {
-    flex: 0.4,
-    height: '100%',
+    flex: 0.3,
     alignContent: 'center',
-    alignSelf: 'flex-end',
+
     paddingRight: 5,
   },
 
@@ -172,28 +180,35 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   title: {
-    textAlign: 'left',
+    textAlign: 'center',
     // flexBasis: 120,
     flexGrow: 1,
     fontWeight: 'bold',
+    fontSize: 20,
+    color: 'black',
   },
   location: {
-    textAlign: 'left',
+    textAlign: 'center',
     // flexBasis: 120,
     flexGrow: 0.7,
+    fontWeight: '400',
+    color: 'black',
   },
   description: {
     paddingLeft: 10,
     textAlign: 'left',
     // flexBasis: 120,
     flexGrow: 1,
+    color: 'black',
   },
   category: {
     paddingLeft: 10,
-    textAlign: 'left',
+    textAlign: 'center',
+    justifyContent: 'flex-end',
     // flexBasis: 120,
     flexGrow: 0.3,
     fontWeight: 'bold',
+    color: 'black',
   },
   // instance: {
   //   textAlign: 'auto',
@@ -203,20 +218,22 @@ const styles = StyleSheet.create({
   // },
   msrp: {
     textAlign: 'right',
-    // flexBasis: 120,
     fontWeight: '800',
     flexGrow: 1,
-
     textDecorationLine: 'line-through',
     textDecorationStyle: 'solid',
     color: 'red',
+    margin: 4,
+    marginRight: 0,
   },
   price: {
     textAlign: 'right',
-    // flexBasis: 120,
     flexGrow: 1,
     fontWeight: '800',
     fontSize: 17,
+    color: 'black',
+    margin: 4,
+    marginRight: 0,
   },
 });
 

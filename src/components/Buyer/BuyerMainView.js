@@ -284,6 +284,7 @@ const BuyerMainView = ({ navigation, route }) => {
               backgroundColor: '#fff6e6',
               borderColor: '#00000000',
               borderTopColor: 'black',
+              width: '73%',
             }}
             open={open}
             value={category_text}
@@ -293,7 +294,7 @@ const BuyerMainView = ({ navigation, route }) => {
             setItems={setItems}
             listMode="SCROLLVIEW"
             dropDownDirection="BOTTOM"
-            placeholder={'Category'}
+            placeholder={'Choose a Category'}
             onChangeValue={(value) => {
               GetItems();
             }}
@@ -433,8 +434,9 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   itemmodalView: {
+    width: 350,
     margin: 20,
-    backgroundColor: 'mediumturquoise',
+    backgroundColor: '#00b3b3',
     borderRadius: 20,
     padding: 20,
     alignItems: 'center',
@@ -448,6 +450,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   locationmodalView: {
+    width: 300,
     margin: 20,
     backgroundColor: '#fca503',
     borderRadius: 20,
@@ -468,6 +471,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
     fontFamily: 'Helvetica',
+    color: 'black',
   },
   modalText: {
     fontSize: 15,
@@ -475,6 +479,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'normal',
     fontFamily: 'Helvetica',
+    color: 'black',
   },
   modalPrice: {
     fontSize: 20,
@@ -482,6 +487,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
     fontFamily: 'Helvetica',
+    color: 'black',
   },
   button: {
     color: '#f194ff',
@@ -539,6 +545,8 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontWeight: '700',
     fontSize: 15,
+    fontFamily: 'Helvetica',
+    color: 'black',
   },
   locationphonetext: {
     textAlign: 'left',
@@ -546,6 +554,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textDecorationLine: 'underline',
     fontWeight: 'bold',
+    fontFamily: 'Helvetica',
+    color: 'black',
   },
 });
 
