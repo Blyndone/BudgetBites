@@ -1,5 +1,4 @@
 import {
-  Alert,
   Modal,
   View,
   Pressable,
@@ -8,23 +7,14 @@ import {
   SafeAreaView,
   Image,
   FlatList,
-  StatusBar,
-  Linking,
   TouchableOpacity,
   Platform,
 } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
-import {
-  Searchbar,
-  Icon,
-  Button,
-  Switch,
-  IconButton,
-} from 'react-native-paper';
+import { Searchbar, Button, Switch } from 'react-native-paper';
 import images from '../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
-import * as SecureStore from 'expo-secure-store';
 import ListItem from './Components/ListItem.js';
 import DropDownPicker from 'react-native-dropdown-picker';
 import PageSelector from './Components/PageSelector.js';
@@ -370,8 +360,9 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   itemmodalView: {
+    width: 350,
     margin: 20,
-    backgroundColor: 'mediumturquoise',
+    backgroundColor: '#00b3b3',
     borderRadius: 20,
     padding: 20,
     alignItems: 'center',
@@ -385,6 +376,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   locationmodalView: {
+    width: 300,
     margin: 20,
     backgroundColor: '#fca503',
     borderRadius: 20,
@@ -405,6 +397,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
     fontFamily: 'Helvetica',
+    color: 'black',
   },
   modalText: {
     fontSize: 15,
@@ -412,6 +405,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'normal',
     fontFamily: 'Helvetica',
+    color: 'black',
   },
   modalPrice: {
     fontSize: 20,
@@ -421,10 +415,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica',
   },
   button: {
-    color: '#f194ff',
-    backgroundColor: '#f194ff',
-  },
-  explong: {
     textAlign: 'center',
     // flexBasis: 120,
 
@@ -470,6 +460,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontWeight: '700',
     fontSize: 15,
+    color: 'black',
   },
   locationphonetext: {
     textAlign: 'left',
@@ -477,6 +468,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textDecorationLine: 'underline',
     fontWeight: 'bold',
+    color: 'black',
   },
   pagefooter: {
     flexDirection: 'row',

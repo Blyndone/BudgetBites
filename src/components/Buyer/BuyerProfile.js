@@ -10,7 +10,13 @@ import {
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, Text, TextInput, RadioButton } from 'react-native-paper';
+import {
+  Button,
+  Text,
+  TextInput,
+  RadioButton,
+  Surface,
+} from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '../Persist';
 const Separator = () => <View style={styles.separator} />;
@@ -94,149 +100,160 @@ const BuyerProfile = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.form}>
       <ScrollView>
-        <View>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={styles.textinput}>
-              <Text style={styles.titleText}>Hello {profiledata.name},</Text>
-              <View style={{ padding: 10 }}></View>
-              <Text style={styles.bodytext}>
-                Update your account here!
-                {'\n'}
-                {'\n'}
-              </Text>
+        <Surface style={styles.surface} elevation={4}>
+          <View>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={styles.textinput}>
+                <Text style={styles.titleText}>Hello {profiledata.name},</Text>
+                <View style={{ padding: 10 }}></View>
+                <Text style={styles.bodytext}>
+                  Update your account here!
+                  {'\n'}
+                  {'\n'}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flex: 0.4,
+                  alignItems: 'flex-end',
+                }}
+              >
+                <Image
+                  source={require('../../../assets/BB-logo.png')}
+                  style={{
+                    width: 140,
+                    height: 140,
+                  }}
+                />
+              </View>
             </View>
             <View
               style={{
-                flex: 0.2,
-                alignItems: 'flex-end',
+                padding: 10,
               }}
             >
-              <Image
-                source={require('../../../assets/BB-logo.png')}
-                style={{
-                  width: 140,
-                  height: 140,
-                }}
+              <TextInput
+                label="Name"
+                dense="true"
+                mode="outlined"
+                value={name_text}
+                onChangeText={(name_text) => setTextName(name_text)}
+                style={styles.textinput}
+              />
+              <TextInput
+                label="Password"
+                dense="true"
+                mode="outlined"
+                value={pass_text}
+                onChangeText={(pass_text) => setTextPass(pass_text)}
+                style={styles.textinput}
+                textContentType="password"
+                secureTextEntry={true}
+              />
+
+              <TextInput
+                label="Retype Password"
+                dense="true"
+                mode="outlined"
+                value={pass_text_verify}
+                onChangeText={(pass_text_verify) =>
+                  setTextPassVerify(pass_text_verify)
+                }
+                style={styles.textinput}
+                textContentType="password"
+                secureTextEntry={true}
+              />
+
+              <TextInput
+                label="Email"
+                dense="true"
+                mode="outlined"
+                value={email_text}
+                onChangeText={(email_text) => setTextEmail(email_text)}
+                style={styles.textinput}
+              />
+
+              <TextInput
+                label="Phone Number"
+                dense="true"
+                mode="outlined"
+                value={phone_text}
+                onChangeText={(phone_text) => setTextPhone(phone_text)}
+                style={styles.textinput}
+                textContentType="telephoneNumber"
+                keyboardType="number-pad"
+                maxLength={10}
+              />
+
+              <TextInput
+                label="Zip Code"
+                dense="true"
+                mode="outlined"
+                value={zip_text}
+                onChangeText={(zip_text) => setTextZip(zip_text)}
+                style={styles.textinput}
+                keyboardType="number-pad"
+                maxLength={5}
               />
             </View>
-          </View>
-          <View
-            style={{
-              padding: 10,
-            }}
-          >
-            <TextInput
-              label="Name"
-              value={name_text}
-              onChangeText={(name_text) => setTextName(name_text)}
-              style={styles.textinput}
-            />
-            <TextInput
-              label="Password"
-              value={pass_text}
-              onChangeText={(pass_text) => setTextPass(pass_text)}
-              style={styles.textinput}
-              textContentType="password"
-              secureTextEntry={true}
-            />
 
-            <TextInput
-              label="Retype Password"
-              value={pass_text_verify}
-              onChangeText={(pass_text_verify) =>
-                setTextPassVerify(pass_text_verify)
-              }
-              style={styles.textinput}
-              textContentType="password"
-              secureTextEntry={true}
-            />
+            <View style={styles.buttonview}>
+              <Button
+                mode="contained"
+                title="Submit"
+                buttonColor="#eb6b34"
+                onPress={() => {
+                  //NEED INPUT CLEANING AND PASSWORD HASHING
+                  errormessage = '';
 
-            <TextInput
-              label="Email"
-              value={email_text}
-              onChangeText={(email_text) => setTextEmail(email_text)}
-              style={styles.textinput}
-            />
+                  if (user_text.length <= 5) {
+                    errormessage +=
+                      'User name must be longer than 5 characters.\n';
+                  }
+                  if (pass_text != pass_text_verify) {
+                    errormessage += 'Password must match\n';
+                  }
+                  if (pass_text)
+                    if (errormessage.length != 0) {
+                      ErrorAlert();
+                      return;
+                    }
 
-            <TextInput
-              label="Phone Number"
-              value={phone_text}
-              onChangeText={(phone_text) => setTextPhone(phone_text)}
-              style={styles.textinput}
-              textContentType="telephoneNumber"
-              keyboardType="number-pad"
-              maxLength={10}
-            />
-
-            <TextInput
-              label="Zip Code"
-              value={zip_text}
-              onChangeText={(zip_text) => setTextZip(zip_text)}
-              style={styles.textinput}
-              keyboardType="number-pad"
-              maxLength={5}
-            />
-          </View>
-
-          <View>
-            <Separator />
-            <Button
-              mode="contained"
-              title="Submit"
-              buttonColor="#eb6b34"
-              onPress={() => {
-                //NEED INPUT CLEANING AND PASSWORD HASHING
-                errormessage = '';
-
-                if (user_text.length <= 5) {
-                  errormessage +=
-                    'User name must be longer than 5 characters.\n';
-                }
-                if (pass_text != pass_text_verify) {
-                  errormessage += 'Password must match\n';
-                }
-                if (pass_text)
-                  if (errormessage.length != 0) {
-                    ErrorAlert();
-                    return;
+                  let params = {};
+                  if (name_text != profiledata.name) {
+                    params = { ...params, name: name_text };
                   }
 
-                let params = {};
-                if (name_text != profiledata.name) {
-                  params = { ...params, name: name_text };
-                }
+                  if (email_text != profiledata.email) {
+                    params = { ...params, email: email_text };
+                  }
+                  if (phone_text != profiledata.phone) {
+                    params = { ...params, phone: phone_text };
+                  }
+                  if (zip_text != profiledata.zip) {
+                    params = { ...params, zip: zip_text };
+                  }
+                  if (pass_text && pass_text.length > 0) {
+                    params = { ...params, password: pass_text };
+                  }
 
-                if (email_text != profiledata.email) {
-                  params = { ...params, email: email_text };
-                }
-                if (phone_text != profiledata.phone) {
-                  params = { ...params, phone: phone_text };
-                }
-                if (zip_text != profiledata.zip) {
-                  params = { ...params, zip: zip_text };
-                }
-                if (pass_text && pass_text.length > 0) {
-                  params = { ...params, password: pass_text };
-                }
+                  fetch(`${REACT_APP_ADDRESS}/users/${userID}`, {
+                    method: 'PATCH',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(params),
+                  });
 
-                fetch(`${REACT_APP_ADDRESS}/users/${userID}`, {
-                  method: 'PATCH',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(params),
-                });
-
-                navigation.navigate('Login');
-              }}
-            >
-              {' '}
-              Submit{' '}
-            </Button>
-
-            <Separator />
+                  navigation.navigate('Login');
+                }}
+              >
+                {' '}
+                Submit{' '}
+              </Button>
+            </View>
           </View>
-        </View>
+        </Surface>
       </ScrollView>
     </SafeAreaView>
   );
@@ -260,11 +277,7 @@ const styles = StyleSheet.create({
     color: '#f194ff',
     backgroundColor: '#f194ff',
   },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
+
   textinput: {
     flex: 1,
     margin: 5,
@@ -272,6 +285,16 @@ const styles = StyleSheet.create({
   bodytext: {
     fontSize: 15,
     fontWeight: 'bold',
+  },
+  surface: {
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: '#00b3b3',
+    marginVertical: 10,
+  },
+  buttonview: {
+    padding: 10,
+    margin: 5,
   },
 });
 

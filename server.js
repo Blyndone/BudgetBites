@@ -1,5 +1,3 @@
-// import express from 'express';
-// import * as fs from 'fs';
 require('dotenv').config();
 const express = require('express');
 const fs = require('fs');
@@ -11,7 +9,6 @@ const app = express();
 
 app.use(express.json());
 
-// import mysql from 'mysql2';
 const mysql = require('mysql2');
 //===========================================
 
@@ -219,7 +216,6 @@ app.post('/adduser', async (req, res) => {
   console.log(req.body);
 
   try {
-    // const { id } = req.params;
     const {
       user_text,
       pass_text,
@@ -238,8 +234,8 @@ app.post('/adduser', async (req, res) => {
     const [existingUsers] = await connection
       .promise()
       .query('SELECT * FROM users WHERE username = ? OR email = ?', [
-        username,
-        email,
+        user_text,
+        email_text,
       ]);
 
     if (existingUsers.length > 0) {
@@ -317,7 +313,7 @@ app.post('/location', async (req, res) => {
       locationWebsite,
     } = req.body;
 
-    query = `INSERT INTO locations (sellerID, name, address, city, state, zip, phone_number, email, website)
+    let query = `INSERT INTO locations (sellerID, name, address, city, state, zip, phone_number, email, website)
 VALUES 
 (?,?,?,?,?,?,?,?,?)
 `;

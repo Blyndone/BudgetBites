@@ -1,5 +1,4 @@
 import {
-  Alert,
   Modal,
   View,
   Pressable,
@@ -8,11 +7,10 @@ import {
   SafeAreaView,
   Image,
   FlatList,
-  StatusBar,
 } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
-import { Searchbar, Icon, Button, Surface, Checkbox } from 'react-native-paper';
+import { Button, Surface, Checkbox } from 'react-native-paper';
 import images from '../../../assets/testimages/ImageIndex.js';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '.././Persist';
@@ -65,7 +63,7 @@ const SellerMainView = ({ navigation, route }) => {
   const [itemDuration, setDuration] = useState(0);
   const [itemstatus, setItemStatus] = useState(0);
 
-  const [isLoading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   const [checked, setChecked] = React.useState({});
@@ -226,12 +224,23 @@ const SellerMainView = ({ navigation, route }) => {
           return (
             <View>
               {showDeleteCheckbox ? (
-                <View style={styles.checkbox}>
-                  <Checkbox
-                    color="black"
-                    uncheckedColor="black"
-                    backgroundColor="#eb6b34"
-                    status={checked[ID] ? 'checked' : 'unchecked'}
+                <View>
+                  <View style={styles.checkbox}>
+                    <Checkbox
+                      color="black"
+                      uncheckedColor="black"
+                      backgroundColor="#eb6b34"
+                      status={checked[ID] ? 'checked' : 'unchecked'}
+                      onPress={() => {
+                        pending = true;
+                        setChecked({
+                          ...checked,
+                          [ID]: !checked[ID],
+                        });
+                      }}
+                    />
+                  </View>
+                  <Pressable
                     onPress={() => {
                       pending = true;
                       setChecked({
@@ -239,28 +248,29 @@ const SellerMainView = ({ navigation, route }) => {
                         [ID]: !checked[ID],
                       });
                     }}
-                  />
+                  >
+                    <ListItem item={item} overlay={checked[ID]} />
+                  </Pressable>
                 </View>
               ) : (
-                <View></View>
-              )}
-              <Pressable
-                onPress={() => {
-                  const exp = new Date(item.expiration);
-                  const cur = new Date();
-                  setItemName(item.name);
-                  setItemImage(item.img);
-                  setItemID(item.itemID);
-                  setItemDescription(item.description);
-                  setItemPrice(item.price);
-                  setDuration(parseInt((exp - cur) / 86400000));
-                  setItemStatus(item.itemstatus);
+                <Pressable
+                  onPress={() => {
+                    const exp = new Date(item.expiration);
+                    const cur = new Date();
+                    setItemName(item.name);
+                    setItemImage(item.img);
+                    setItemID(item.itemID);
+                    setItemDescription(item.description);
+                    setItemPrice(item.price);
+                    setDuration(parseInt((exp - cur) / 86400000));
+                    setItemStatus(item.itemstatus);
 
-                  setModalVisible(true);
-                }}
-              >
-                <ListItem item={item} overlay={checked[ID]} />
-              </Pressable>
+                    setModalVisible(true);
+                  }}
+                >
+                  <ListItem item={item} overlay={checked[ID]} />
+                </Pressable>
+              )}
             </View>
           );
         }}
@@ -375,8 +385,9 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
+    width: 350,
     margin: 20,
-    backgroundColor: 'mediumturquoise',
+    backgroundColor: '#00b3b3',
     borderRadius: 20,
     padding: 20,
     alignItems: 'center',
@@ -410,10 +421,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Helvetica',
   },
-  button: {
-    color: '#f194ff',
-    backgroundColor: '#f194ff',
-  },
+
   bottomContaier: {
     position: 'absolute',
     bottom: 10,
