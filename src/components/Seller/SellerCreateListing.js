@@ -7,21 +7,14 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-import { View, StyleSheet, SafeAreaView, Image, Alert } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {
-  Text,
-  TextInput,
-  Button,
-  RadioButton,
-  IconButton,
-} from 'react-native-paper';
+import { View, StyleSheet, SafeAreaView, Image } from 'react-native';
+import { Text, TextInput, Button, IconButton } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '../Persist';
 import ProfileButton from '../Components/ProfleButton';
 import images from '../../../assets/testimages/ImageIndex';
 import DropDownPicker from 'react-native-dropdown-picker';
+
 // import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 const SellerCreateListing = ({ navigation, route }) => {
@@ -115,9 +108,9 @@ const SellerCreateListing = ({ navigation, route }) => {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-      <SafeAreaView style={styles.form}>
-        <ScrollView style={styles.form2}>
+    <SafeAreaView style={styles.form}>
+      <ScrollView style={styles.form2}>
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
           <View style={styles.textcontainer}>
             <View>
               <Text style={styles.titleText}>Food Listing</Text>
@@ -169,7 +162,6 @@ const SellerCreateListing = ({ navigation, route }) => {
                         ).toFixed(2),
                       );
                     }
-                    2;
                   }}
                   style={styles.price}
                   keyboardType="number-pad"
@@ -241,10 +233,11 @@ const SellerCreateListing = ({ navigation, route }) => {
                   <View>
                     <DropDownPicker
                       style={{
-                        backgroundColor: '#E7E0EC',
+                        backgroundColor: 'white',
                         borderColor: '#00000000',
                         borderTopEndRadius: 5,
                         borderTopStartRadius: 5,
+                        minHeight: 35,
                         borderRadius: 0,
                         width: '70%',
                         alignItems: 'center',
@@ -252,10 +245,10 @@ const SellerCreateListing = ({ navigation, route }) => {
                         height: 45,
                       }}
                       dropDownContainerStyle={{
-                        backgroundColor: '#decceb',
+                        backgroundColor: 'white',
                         borderColor: '#00000000',
                         borderTopColor: 'black',
-                        width: '73%',
+                        width: '70%',
                       }}
                       open={open}
                       value={category_text}
@@ -298,6 +291,9 @@ const SellerCreateListing = ({ navigation, route }) => {
                 ) {
                   alert('Please Input an Item');
                   return;
+                } else if (count > 5) {
+                  alert('Maximum of 5 Listing at a time.');
+                  return;
                 } else {
                   try {
                     // price_text = parseFloat(price_text).toFixed(2);
@@ -326,88 +322,87 @@ const SellerCreateListing = ({ navigation, route }) => {
 
                 navigation.navigate({
                   name: 'Seller Main View',
-                  params: { userdata },
+                  params: { data: userdata },
                 });
               }}
             >
               Submit
             </Button>
           </View>
+        </KeyboardAvoidingView>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={[styles.modaltitlebar]}>
+                <IconButton
+                  icon="arrow-left-bold"
+                  iconColor={imageindexes[0] > 5 ? 'black' : '#00000000'}
+                  size={30}
+                  onPress={() => {
+                    if (imageindexes[0] > 5) {
+                      setImageIndex(imageindexes.map((index) => index - 16));
+                    }
+                  }}
+                />
+                <Text style={styles.modalTitle}>Select an Icon!</Text>
+                <IconButton
+                  icon="arrow-right-bold"
+                  iconColor={imageindexes[0] < 146 ? 'black' : '#00000000'}
+                  size={30}
+                  onPress={() => {
+                    console.log(imageindexes[0]);
+                    if (imageindexes[0] < 146) {
+                      setImageIndex(imageindexes.map((index) => index + 16));
+                    }
+                  }}
+                />
+              </View>
 
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <View style={[styles.modaltitlebar]}>
-                  <IconButton
-                    icon="arrow-left-bold"
-                    iconColor={imageindexes[0] > 5 ? 'black' : '#00000000'}
-                    size={30}
-                    onPress={() => {
-                      if (imageindexes[0] > 5) {
-                        setImageIndex(imageindexes.map((index) => index - 16));
-                      }
-                    }}
-                  />
-                  <Text style={styles.modalTitle}>Select an Icon!</Text>
-                  <IconButton
-                    icon="arrow-right-bold"
-                    iconColor={imageindexes[0] < 146 ? 'black' : '#00000000'}
-                    size={30}
-                    onPress={() => {
-                      console.log(imageindexes[0]);
-                      if (imageindexes[0] < 146) {
-                        setImageIndex(imageindexes.map((index) => index + 16));
-                      }
-                    }}
-                  />
-                </View>
-
-                <View style={{ flex: 1 }}>
-                  <FlatList
-                    data={imageindexes}
-                    // style={[styles.itemContainer]}
-                    numColumns={4}
-                    columnWrapperStyle={styles.row}
-                    // keyExtractor={({ imgID }) => imgID}
-                    renderItem={({ item }) => {
-                      return (
-                        <Pressable
-                          onPress={() => {
-                            setModalVisible(false);
-                            setImage(item, 60);
-                          }}
-                        >
-                          {/* <Text>img:{item}</Text> */}
-                          <SingleImage image={item} size={60}></SingleImage>
-                        </Pressable>
-                      );
-                    }}
-                  />
-                </View>
-                <View style={{ margin: 10 }}>
-                  <Button
-                    mode="contained"
-                    title="Close"
-                    buttonColor="#eb6b34"
-                    labelStyle={{ fontSize: 16, color: 'black' }}
-                    onPress={() => setModalVisible(!modalVisible)}
-                  >
-                    Close
-                  </Button>
-                </View>
+              <View style={{ flex: 1 }}>
+                <FlatList
+                  data={imageindexes}
+                  // style={[styles.itemContainer]}
+                  numColumns={4}
+                  columnWrapperStyle={styles.row}
+                  // keyExtractor={({ imgID }) => imgID}
+                  renderItem={({ item }) => {
+                    return (
+                      <Pressable
+                        onPress={() => {
+                          setModalVisible(false);
+                          setImage(item, 60);
+                        }}
+                      >
+                        {/* <Text>img:{item}</Text> */}
+                        <SingleImage image={item} size={60}></SingleImage>
+                      </Pressable>
+                    );
+                  }}
+                />
+              </View>
+              <View style={{ margin: 10 }}>
+                <Button
+                  mode="contained"
+                  title="Close"
+                  buttonColor="#eb6b34"
+                  labelStyle={{ fontSize: 16, color: 'black' }}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  Close
+                </Button>
               </View>
             </View>
-          </Modal>
-        </ScrollView>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+          </View>
+        </Modal>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -454,8 +449,8 @@ const styles = StyleSheet.create({
   },
   pricerow: {
     justifyContent: 'left',
-
     flexDirection: 'row',
+    flex: 1,
   },
   namerow: {
     justifyContent: 'left',
@@ -493,7 +488,7 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     maxHeight: 440,
-    backgroundColor: 'mediumturquoise',
+    backgroundColor: '#00b3b3',
     borderRadius: 20,
     padding: 20,
     alignItems: 'center',

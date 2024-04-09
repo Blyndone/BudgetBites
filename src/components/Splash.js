@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button, Text } from 'react-native-paper';
+import { Button, Text, Surface } from 'react-native-paper';
 
 const Splash = ({ navigation }) => {
   return (
@@ -14,84 +14,50 @@ const Splash = ({ navigation }) => {
           height: 300,
         }}
       />
-      <Text style={styles.titleText}>Welcome to Budget Bites!</Text>
-      <View>
-        <View style={styles.buttoncontainer}>
-          <Button
-            mode="contained"
-            title="Login"
-            buttonColor="#eb6b34"
-            labelStyle={{ fontSize: 16, color: 'black' }}
-            onPress={() => navigation.navigate('Login')}
-          >
-            Login
-          </Button>
+
+      <Surface style={styles.surface} elevation={4}>
+        <View>
+          <View>
+            <Text style={styles.titleText}>
+              Welcome to{'\n'} Budget Bites!{' '}
+            </Text>
+          </View>
+          <View style={styles.buttoncontainer}>
+            <Button
+              style={styles.button}
+              mode="contained"
+              title="Login"
+              buttonColor="#eb6b34"
+              labelStyle={{ fontSize: 16, color: 'black' }}
+              onPress={() => navigation.navigate('Login')}
+            >
+              Login
+            </Button>
+
+            <Button
+              style={styles.button}
+              mode="contained"
+              title="CreateAccount"
+              buttonColor="#eb6b34"
+              labelStyle={{ fontSize: 16, color: 'black' }}
+              onPress={() => navigation.navigate('Account Creation')}
+            >
+              Create Account
+            </Button>
+
+            <Button
+              style={styles.button}
+              mode="contained"
+              title="Guest Login"
+              buttonColor="#eb6b34"
+              labelStyle={{ fontSize: 16, color: 'black' }}
+              onPress={() => navigation.navigate('Guest Main View')}
+            >
+              Guest Login
+            </Button>
+          </View>
         </View>
-        <View style={styles.buttoncontainer}>
-          <Button
-            mode="contained"
-            title="CreateAccount"
-            buttonColor="#eb6b34"
-            labelStyle={{ fontSize: 16, color: 'black' }}
-            onPress={() => navigation.navigate('Account Creation')}
-          >
-            Create Account
-          </Button>
-        </View>
-        <View style={styles.buttoncontainer}>
-          <Button
-            mode="contained"
-            title="Guest Login"
-            buttonColor="#eb6b34"
-            labelStyle={{ fontSize: 16, color: 'black' }}
-            onPress={() => navigation.navigate('Guest Main View')}
-          >
-            Guest Login
-          </Button>
-        </View>
-        {/* <View style={styles.buttoncontainer}>
-          <Button
-            mode="contained"
-            title="Guest Login"
-            buttonColor="#eb6b34"
-            labelStyle={{ fontSize: 16, color: 'black' }}
-            onPress={() => {
-              data = { user_id: 1, user_name: 'customer', user_zip: 12345 };
-              navigation.navigate({
-                name: 'Buyer Main View',
-                params: { data },
-              });
-            }}
-          >
-            customer
-          </Button>
-        </View>
-        <View style={styles.buttoncontainer}>
-          <Button
-            mode="contained"
-            title="Guest Login"
-            buttonColor="#eb6b34"
-            labelStyle={{ fontSize: 16, color: 'black' }}
-            onPress={() => {
-              data = { user_id: 1, user_name: 'customer' };
-              navigation.navigate({
-                name: 'Seller Main View',
-                params: { data },
-              });
-            }}
-          >
-            Seller
-          </Button>
-        </View> */}
-        {/* <Button
-          mode="contained"
-          title="Create Listing"
-          buttonColor="#eb6b34"
-          onPress={() => navigation.navigate('Seller Create Listing')}
-        >
-          Create Listing
-        </Button> */}
-      </View>
+      </Surface>
     </SafeAreaView>
   );
 };
@@ -103,22 +69,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttoncontainer: { margin: 10 },
+  buttoncontainer: {
+    margin: 10,
+
+    alignItems: 'center',
+  },
   titleText: {
-    fontSize: 50,
+    fontSize: 55,
     textAlign: 'center',
     color: 'black',
     fontWeight: 'bold',
-    fontFamily: 'Helvetica',
+    fontFamily: 'sans-serif',
+    fontStyle: 'italic',
+    marginBottom: 30,
   },
-  button: {
-    color: '#f194ff',
-    backgroundColor: '#f194ff',
-  },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+  button: { width: '50%', margin: 5 },
+
+  surface: {
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: '#00b3b3',
+    marginVertical: 10,
+    width: '90%',
   },
 });
 
