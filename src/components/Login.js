@@ -4,25 +4,16 @@ import {
   StyleSheet,
   SafeAreaView,
   Image,
-  Alert,
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {
-  Button,
-  Text,
-  TextInput,
-  RadioButton,
-  Surface,
-} from 'react-native-paper';
+
+import { Button, Text, TextInput, Surface } from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import * as SecureStore from 'expo-secure-store';
-import Auth from './Persist';
+
 import { useEffect } from 'react';
 
-const Separator = () => <View style={styles.separator} />;
 const Login = ({ navigation }) => {
   //=================
   const [userdata, setUserData] = React.useState('');
@@ -246,4 +237,9 @@ const styles = StyleSheet.create({
   },
 });
 
+function blah(a, b) {
+  return a + b;
+}
+
 export default Login;
+export { blah, Login };

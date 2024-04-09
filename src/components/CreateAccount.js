@@ -443,25 +443,15 @@ const CreateAccount = ({ navigation, route }) => {
                   buttonColor="#eb6b34"
                   labelStyle={{ fontSize: 18, color: 'black' }}
                   onPress={() => {
-                    errormessage = '';
-
                     const trimmedUserText = user_text.trim();
                     const trimmedEmailText = email_text.trim();
 
-                    if (trimmedUserText.length <= 5) {
-                      errormessage +=
-                        'User name must be longer than 5 characters.\n';
-                    }
-                    if (pass_text !== pass_text_verify) {
-                      errormessage += 'Password must match\n';
-                    }
-
-                    // Add input cleaning checks here, using the trimmed values
-                    const emailRegex = /\S+@\S+\.\S+/;
-                    if (!emailRegex.test(trimmedEmailText)) {
-                      errormessage += 'Email format is invalid.\n';
-                    }
-
+                    errormessage = checkForm(
+                      trimmedUserText,
+                      trimmedEmailText,
+                      pass_text,
+                      pass_text_verify,
+                    );
                     // If there's an error, show it and stop the function
                     if (errormessage.length !== 0) {
                       ErrorAlert(errormessage);
@@ -540,4 +530,27 @@ const styles = StyleSheet.create({
   },
 });
 
+function checkForm(
+  trimmedUserText,
+  trimmedEmailText,
+  pass_text,
+  pass_text_verify,
+) {
+  let errormessage = '';
+  if (trimmedUserText.length <= 5) {
+    errormessage += 'User name must be longer than 5 characters.\n';
+  }
+  if (pass_text !== pass_text_verify) {
+    errormessage += 'Password must match\n';
+  }
+
+  // Add input cleaning checks here, using the trimmed values
+  const emailRegex = /\S+@\S+\.\S+/;
+  if (!emailRegex.test(trimmedEmailText)) {
+    errormessage += 'Email format is invalid.\n';
+  }
+  return errormessage;
+}
+
 export default CreateAccount;
+export { checkForm };
