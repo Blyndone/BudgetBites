@@ -8,7 +8,13 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { View, StyleSheet, SafeAreaView, Image } from 'react-native';
-import { Text, TextInput, Button, IconButton } from 'react-native-paper';
+import {
+  Text,
+  TextInput,
+  Button,
+  IconButton,
+  Surface,
+} from 'react-native-paper';
 import { REACT_APP_ADDRESS } from '@env';
 import Auth from '../Persist';
 import ProfileButton from '../Components/ProfleButton';
@@ -111,224 +117,226 @@ const SellerCreateListing = ({ navigation, route }) => {
     <SafeAreaView style={styles.form}>
       <ScrollView style={styles.form2}>
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-          <View style={styles.textcontainer}>
-            <View>
-              <Text style={styles.titleText}>Food Listing</Text>
+          <Surface style={styles.surface} elevation={4}>
+            <View style={styles.textcontainer}>
+              <View>
+                <Text style={styles.titleText}>Food Listing</Text>
+              </View>
+
+              <View>
+                <Text style={styles.bodytext}>
+                  Create a new food listing.
+                  {'\n'}
+                  {'\n'}
+                  Input the item name, a short description, and the price below!
+                </Text>
+              </View>
             </View>
 
-            <View>
-              <Text style={styles.bodytext}>
-                Create a new food listing.
-                {'\n'}
-                {'\n'}
-                Input the item name, a short description, and the price below!
-              </Text>
-            </View>
-          </View>
+            <View style={styles.textcontainer}>
+              <View>
+                <View style={[styles.pricerow]}>
+                  <TextInput
+                    label="Item Name"
+                    value={name_text}
+                    onChangeText={(name_text) => setName(name_text)}
+                    style={styles.textinput}
+                  />
+                </View>
+                <View style={[styles.pricerow]}>
+                  <TextInput
+                    label="Description"
+                    value={desc_text}
+                    onChangeText={(desc_text) => setDescription(desc_text)}
+                    style={styles.textinput}
+                  />
+                </View>
 
-          <View style={styles.textcontainer}>
-            <View>
-              <View style={[styles.pricerow]}>
-                <TextInput
-                  label="Item Name"
-                  value={name_text}
-                  onChangeText={(name_text) => setName(name_text)}
-                  style={styles.textinput}
-                />
-              </View>
-              <View style={[styles.pricerow]}>
-                <TextInput
-                  label="Description"
-                  value={desc_text}
-                  onChangeText={(desc_text) => setDescription(desc_text)}
-                  style={styles.textinput}
-                />
-              </View>
+                <View style={[styles.pricerow]}>
+                  <TextInput
+                    label="Price"
+                    value={price_text}
+                    onChangeText={(price_text) => {
+                      setPrice(price_text);
 
-              <View style={[styles.pricerow]}>
-                <TextInput
-                  label="Price"
-                  value={price_text}
-                  onChangeText={(price_text) => {
-                    setPrice(price_text);
-
-                    if (price_text == 0 || discount_text == 0) {
-                      setDiscountCalc('');
-                    } else {
-                      setDiscountCalc(
-                        (
-                          parseFloat(price_text) *
-                          (1 - parseFloat(discount_text) / 100)
-                        ).toFixed(2),
-                      );
+                      if (price_text == 0 || discount_text == 0) {
+                        setDiscountCalc('');
+                      } else {
+                        setDiscountCalc(
+                          (
+                            parseFloat(price_text) *
+                            (1 - parseFloat(discount_text) / 100)
+                          ).toFixed(2),
+                        );
+                      }
+                    }}
+                    style={styles.price}
+                    keyboardType="number-pad"
+                    maxLength={10}
+                  />
+                  <TextInput
+                    label="Discount %"
+                    value={discount_text}
+                    onChangeText={(discount_text) => {
+                      setDiscount(discount_text);
+                      if (price_text == 0 || discount_text == 0) {
+                        setDiscountCalc('');
+                      } else {
+                        setDiscountCalc(
+                          (
+                            parseFloat(price_text) *
+                            (1 - parseFloat(discount_text) / 100)
+                          ).toFixed(2),
+                        );
+                      }
+                    }}
+                    style={styles.discount}
+                    keyboardType="number-pad"
+                    maxLength={10}
+                  />
+                </View>
+                <View style={[styles.pricerow]}>
+                  <TextInput
+                    label="# of Days Until Expiration"
+                    value={expiration_text}
+                    style={styles.textinput}
+                    onChangeText={(expiration_text) =>
+                      setExpiration(expiration_text)
                     }
-                  }}
-                  style={styles.price}
-                  keyboardType="number-pad"
-                  maxLength={10}
-                />
-                <TextInput
-                  label="Discount %"
-                  value={discount_text}
-                  onChangeText={(discount_text) => {
-                    setDiscount(discount_text);
-                    if (price_text == 0 || discount_text == 0) {
-                      setDiscountCalc('');
-                    } else {
-                      setDiscountCalc(
-                        (
-                          parseFloat(price_text) *
-                          (1 - parseFloat(discount_text) / 100)
-                        ).toFixed(2),
-                      );
-                    }
-                  }}
-                  style={styles.discount}
-                  keyboardType="number-pad"
-                  maxLength={10}
-                />
-              </View>
-              <View style={[styles.pricerow]}>
-                <TextInput
-                  label="# of Days Until Expiration"
-                  value={expiration_text}
-                  style={styles.textinput}
-                  onChangeText={(expiration_text) =>
-                    setExpiration(expiration_text)
-                  }
-                  keyboardType="number-pad"
-                />
-                <TextInput
-                  label="Count"
-                  value={count}
-                  style={styles.textinput}
-                  onChangeText={(count) => setCount(count)}
-                  keyboardType="number-pad"
-                />
-              </View>
+                    keyboardType="number-pad"
+                  />
+                  <TextInput
+                    label="Count"
+                    value={count}
+                    style={styles.textinput}
+                    onChangeText={(count) => setCount(count)}
+                    keyboardType="number-pad"
+                  />
+                </View>
 
-              <View style={{ flexDirection: 'row' }}>
-                <View
-                  style={{ justifyContent: 'center', alignItems: 'center' }}
-                >
-                  <Pressable onPress={() => setModalVisible(!modalVisible)}>
-                    <SingleImage image={img_select} size={80}></SingleImage>
-                  </Pressable>
+                <View style={{ flexDirection: 'row' }}>
                   <View
                     style={{ justifyContent: 'center', alignItems: 'center' }}
                   >
-                    <Button
-                      mode="contained"
-                      title="Select an Image"
-                      buttonColor="#eb6b34"
-                      labelStyle={{ fontSize: 15 }}
-                      onPress={() => setModalVisible(!modalVisible)}
+                    <Pressable onPress={() => setModalVisible(!modalVisible)}>
+                      <SingleImage image={img_select} size={80}></SingleImage>
+                    </Pressable>
+                    <View
+                      style={{ justifyContent: 'center', alignItems: 'center' }}
                     >
-                      Select an Image
-                    </Button>
+                      <Button
+                        mode="contained"
+                        title="Select an Image"
+                        buttonColor="#eb6b34"
+                        labelStyle={{ fontSize: 15 }}
+                        onPress={() => setModalVisible(!modalVisible)}
+                      >
+                        Select an Image
+                      </Button>
+                    </View>
                   </View>
-                </View>
-                <View style={{ padding: 10 }}></View>
-                <View>
+                  <View style={{ padding: 10 }}></View>
                   <View>
-                    <DropDownPicker
-                      style={{
-                        backgroundColor: 'white',
-                        borderColor: '#00000000',
-                        borderTopEndRadius: 5,
-                        borderTopStartRadius: 5,
-                        minHeight: 35,
-                        borderRadius: 0,
-                        width: '70%',
-                        alignItems: 'center',
-                        margin: 5,
-                        height: 45,
-                      }}
-                      dropDownContainerStyle={{
-                        backgroundColor: 'white',
-                        borderColor: '#00000000',
-                        borderTopColor: 'black',
-                        width: '70%',
-                      }}
-                      open={open}
-                      value={category_text}
-                      items={items}
-                      setOpen={setOpen}
-                      setValue={setCategory}
-                      setItems={setItems}
-                      listMode="SCROLLVIEW"
-                      dropDownDirection="TOP"
-                      placeholder={'Choose a Category'}
-                    />
-                  </View>
-                  <View style={styles.discountrow}>
-                    <Text style={styles.discounttext}>Discount Price</Text>
-                    <Text style={styles.discounttext}>{discount_calc}</Text>
+                    <View>
+                      <DropDownPicker
+                        style={{
+                          backgroundColor: 'white',
+                          borderColor: '#00000000',
+                          borderTopEndRadius: 5,
+                          borderTopStartRadius: 5,
+                          minHeight: 35,
+                          borderRadius: 0,
+                          width: '70%',
+                          alignItems: 'center',
+                          margin: 5,
+                          height: 45,
+                        }}
+                        dropDownContainerStyle={{
+                          backgroundColor: 'white',
+                          borderColor: '#00000000',
+                          borderTopColor: 'black',
+                          width: '70%',
+                        }}
+                        open={open}
+                        value={category_text}
+                        items={items}
+                        setOpen={setOpen}
+                        setValue={setCategory}
+                        setItems={setItems}
+                        listMode="SCROLLVIEW"
+                        dropDownDirection="TOP"
+                        placeholder={'Choose a Category'}
+                      />
+                    </View>
+                    <View style={styles.discountrow}>
+                      <Text style={styles.discounttext}>Discount Price</Text>
+                      <Text style={styles.discounttext}>{discount_calc}</Text>
+                    </View>
                   </View>
                 </View>
               </View>
             </View>
-          </View>
 
-          <View style={{ flex: 1 }}>
-            <Button
-              mode="contained"
-              title="Submit"
-              buttonColor="#eb6b34"
-              labelStyle={{ fontSize: 20 }}
-              onPress={() => {
-                const price_discounted = (
-                  parseFloat(price_text) *
-                  (1 - parseFloat(discount_text) / 100)
-                ).toFixed(2);
+            <View style={{ flex: 1 }}>
+              <Button
+                mode="contained"
+                title="Submit"
+                buttonColor="#eb6b34"
+                labelStyle={{ fontSize: 20 }}
+                onPress={() => {
+                  const price_discounted = (
+                    parseFloat(price_text) *
+                    (1 - parseFloat(discount_text) / 100)
+                  ).toFixed(2);
 
-                console.log(price_discounted);
-                if (
-                  name_text.length == 0 ||
-                  desc_text.length == 0 ||
-                  price_text.length == 0 ||
-                  discount_text == 0
-                ) {
-                  alert('Please Input an Item');
-                  return;
-                } else if (count > 5) {
-                  alert('Maximum of 5 Listing at a time.');
-                  return;
-                } else {
-                  try {
-                    // price_text = parseFloat(price_text).toFixed(2);
-                  } catch (e) {
-                    price_text = '00.00';
+                  console.log(price_discounted);
+                  if (
+                    name_text.length == 0 ||
+                    desc_text.length == 0 ||
+                    price_text.length == 0 ||
+                    discount_text == 0
+                  ) {
+                    alert('Please Input an Item');
+                    return;
+                  } else if (count > 5) {
+                    alert('Maximum of 5 Listing at a time.');
+                    return;
+                  } else {
+                    try {
+                      // price_text = parseFloat(price_text).toFixed(2);
+                    } catch (e) {
+                      price_text = '00.00';
+                    }
                   }
-                }
 
-                fetch(`${REACT_APP_ADDRESS}/additem`, {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    name_text: name_text,
-                    desc_text: desc_text,
-                    price_text: price_discounted,
-                    msrp: price_text,
-                    user_id: userdata.user_id,
-                    img_select: img_select,
-                    category_text: category_text,
-                    expiration_text: expiration_text,
-                    count: count,
-                  }),
-                });
+                  fetch(`${REACT_APP_ADDRESS}/additem`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      name_text: name_text,
+                      desc_text: desc_text,
+                      price_text: price_discounted,
+                      msrp: price_text,
+                      user_id: userdata.user_id,
+                      img_select: img_select,
+                      category_text: category_text,
+                      expiration_text: expiration_text,
+                      count: count,
+                    }),
+                  });
 
-                navigation.navigate({
-                  name: 'Seller Main View',
-                  params: { data: userdata },
-                });
-              }}
-            >
-              Submit
-            </Button>
-          </View>
+                  navigation.navigate({
+                    name: 'Seller Main View',
+                    params: { data: userdata },
+                  });
+                }}
+              >
+                Submit
+              </Button>
+            </View>
+          </Surface>
         </KeyboardAvoidingView>
         <Modal
           animationType="slide"
@@ -535,6 +543,12 @@ const styles = StyleSheet.create({
   modaltitlebar: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  surface: {
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: '#00b3b3',
+    marginVertical: 10,
   },
 });
 
