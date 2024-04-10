@@ -45,24 +45,39 @@ const saltRounds = 10;
 
 //===========================================
 
-const droptables = fs.readFileSync('sqlScripts/droptables.sql').toString();
-const createtables = fs.readFileSync('sqlScripts/tablescreate.sql').toString();
-const adddata = fs.readFileSync('sqlScripts/adddata.sql').toString();
+const reloadTables = () => {
+  const droptables = fs.readFileSync('sqlScripts/droptables.sql').toString();
+  const createtables = fs
+    .readFileSync('sqlScripts/tablescreate.sql')
+    .toString();
+  const adddata = fs.readFileSync('sqlScripts/adddata.sql').toString();
 
-connection.query(
-  droptables + createtables + adddata,
-  (error, results, fields) => {
-    if (error) {
-      console.error('Error executing SQL command:', error.message);
-    } else {
-      console.log('SQL command executed successfully.');
-      // Process the results if needed
-      console.log(results);
-    }
-  },
-);
+  connection.query(
+    droptables + createtables + adddata,
+    (error, results, fields) => {
+      if (error) {
+        console.error('Error executing SQL command:', error.message);
+      } else {
+        console.log('SQL command executed successfully.');
+        // Process the results if needed
+        console.log(results);
+      }
+    },
+  );
+};
+
+reloadTables();
 
 //===========================================
+app.get('/reloadtables', async (req, res) => {
+  console.log('RELOADING TABLES');
+  try {
+    reloadTables();
+    res.status(200);
+  } catch (err) {
+    res.status(500);
+  }
+});
 
 //INSERT
 //Needed Functions

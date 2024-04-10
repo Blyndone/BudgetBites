@@ -1,49 +1,122 @@
--- Insert test data into the users table
-INSERT INTO `users` (`username`, `password`, `name`, `email`, `phone`, `zip`, `locationname`, `usertype`, `joindate`)
-VALUES
+-- pass hash for bbites   '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2'
 
-    ('seller', '$2a$10$DwegiHX1775HpYMk81ge.Ox6KWFbylqT2cV83tHUxLK79wS87eMn.', 'Seller Name', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'Fast Johnnys Pizza', 'seller', '2022-09-30');
+-- Insert test data into the users table
+-- INSERT INTO `users` (`username`, `password`, `name`, `email`, `phone`, `zip`, `locationname`, `usertype`, `joindate`)
+-- VALUES
+
+    -- ('seller', '$2a$10$DwegiHX1775HpYMk81ge.Ox6KWFbylqT2cV83tHUxLK79wS87eMn.', 'Seller Name', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'Fast Johnnys Pizza', 'seller', '2022-09-30');
 
 
 INSERT INTO `users` (`username`, `password`, `name`, `email`, `phone`, `zip`, `usertype`, `joindate`)
 VALUES
 
-    ('customer', '$2a$10$/dRwPs/RMUjIXeTLxwV4H.bq1EJK4lJ77xUAHg3i6j.NimnBpD7QO', 'Customer Name', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'buyer', '2022-09-30'),
-    ('Fashionista', 'stylepass', 'Fashionista', 'fashionista@example.com', 1234567897, 12342, 'seller', '2022-09-30'),
-    ('Foodie123', 'foodpass', 'Foodie', 'foodie@example.com', 1234567890, 12345, 'buyer', '2022-01-01'),
-    ('ChefMaster', 'masterchef', 'Chef Master', 'chef@example.com', 1234567891, 12346, 'seller', '2022-02-15'),
-    ('FitnessFanatic', 'fitpass', 'Fitness Fanatic', 'fitnessfan@example.com', 1234567892, 12347, 'buyer', '2022-04-05'),
-    ('TechGeek', 'techpass', 'Tech Geek', 'techgeek@example.com', 1234567893, 12348, 'buyer', '2022-05-20'),
-    ('GardeningGuru', 'greenpass', 'Gardening Guru', 'gardener@example.com', 1234567894, 12349, 'seller', '2022-06-12'),
-    ('TravelExplorer', 'travelpass', 'Travel Explorer', 'traveler@example.com', 1234567895, 12340, 'buyer', '2022-07-18'),
-    ('Bookworm', 'bookpass', 'Bookworm', 'reader@example.com', 1234567896, 12341, 'buyer', '2022-08-25'),
-    ('PetLover', 'petpass', 'Pet Lover', 'petlover@example.com', 1234567898, 12343, 'buyer', '2022-10-15');
+    -- ('customer', '$2a$10$/dRwPs/RMUjIXeTLxwV4H.bq1EJK4lJ77xUAHg3i6j.NimnBpD7QO', 'Customer Name', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'seller', '2022-09-30'),
+    
+    ('AdotHam', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'Alexander Hamilton', 'AdotHam@gmail.com,com', 0017761804, 30000, 'seller', '2022-09-30'),
+    ('AdotBurr', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'Aaron Burr', 'AdotBurr@gmail.com,com', 0017561836, 30000, 'seller', '2022-09-30'),
+    ('TheKing', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'King George III', 'YoullBeBack@gmail.com,com', 0017381820, 40000, 'seller', '2022-09-30'),
+    ('FightingFrenchman', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'Marquis de Lafayette', 'FFrenchman@gmail.com,com', 0017761804, 40000, 'seller', '2022-09-30'),
+    ('Helpless', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'Elizabeth Schuyler', 'Helpless@gmail.com,com', 0017571854, 30000, 'seller', '2022-09-30'),
+    ('Daveed', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'Thomas Jefferson', 'AdotHam@gmail.com,com', 0017431826, 30000, 'seller', '2022-09-30'),
+
+    ('CTurk', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'Chris Turkleton', 'CalTurk@gmail.com,com', 8679309, 30000, 'buyer', '2022-09-30'),
+    ('JDizzle', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'John JD Dorian', 'DrDorian@gmail.com,com', 8679309, 40000, 'buyer', '2022-09-30'),
+    ('Barbie', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'Elliot Ried', 'BangsMcCoy@gmail.com,com', 8679309, 30000, 'buyer', '2022-09-30'),
+    ('Perry', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'Perry Cox', 'Wolverine@gmail.com,com', 8679309, 40000, 'buyer', '2022-09-30');
+
+
 
 
 -- Insert test data into the items table (food items)
 INSERT INTO `items` (`name`, `description`, `category`, `msrp`, `price`, `expiration`, `location`, `zip`, `itemstatus`, `img`, `listeddate`)
 VALUES 
-('Pasta Carbonara', 'Classic Italian pasta with bacon and eggs', 'Pork', 12.99,12.99,  '2024-04-15', 'Italian Bistro', '12345', 'Available', '2', '2024-03-12'),
-('Vegetarian Salad', 'Fresh and healthy salad with mixed greens', 'Veggies', 12.99,8.99, '2024-04-20', 'Vegetarian Delight','54321', 'Available', '3', '2024-03-13'),
-('Sushi Platter', 'Assorted sushi rolls with wasabi and soy sauce', 'Fish', 12.99,24.99, '2024-04-25', 'Sushi Paradise','12345', 'Available', '4', '2024-03-14'),
-('Chocolate Cake', 'Rich and decadent chocolate cake with frosting', 'Dairy', 12.99,16.99, '2024-04-10', 'Sweet Delights Bakery','12345', 'Available', '5', '2024-03-15'),
-('Steak Fajitas', 'Sizzling beef fajitas with bell peppers and onions', 'Beef', 12.99,21.99, '2024-04-22', 'Tex-Mex Grill','54321', 'Available', '6', '2024-03-23'),
-('Greek Salad', 'Traditional Greek salad with olives and feta cheese', 'Veggies', 11.99,12.99, '2024-04-25', 'Olympian Eats','54321', 'Available', '7', '2024-03-24'),
-('Dragon Roll', 'Specialty sushi roll with eel and avocado', 'Fish', 26.99,12.99,  '2024-04-20', 'Dragon Sushi Bar','12345', 'Available', '8', '2024-03-25'),
-('Tiramisu', 'Classic Italian dessert with coffee-soaked ladyfingers', 'Dairy', 12.99,19.99,  '2024-04-15', 'Dolce Vita Patisserie', '54321','Available', '9', '2024-03-26'),
-('Chicken Alfredo Pizza', 'Creamy Alfredo sauce with chicken on a pizza crust', 'Poultry', 12.99,17.99,  '2024-04-18', 'Alfredos Pizza Palace','12345', 'Available', '10', '2024-03-27'),
-('Vegetarian Biryani', 'Spiced rice with mixed vegetables and aromatic spices', 'Veggies', 12.99,14.99,  '2024-04-28', 'Biryani Bliss','54321', 'Available', '11', '2024-03-28'),
-('Iced Matcha Latte', 'Cold matcha green tea latte with milk and ice', 'Veggies', 6.99,12.99,  '2024-04-30', 'Matcha Haven','12345', 'Available', '12', '2024-03-29'),
-('Caprese Panini', 'Grilled panini with mozzarella, tomatoes, and basil', 'Veggies', 9.99,12.99,  '2024-05-05', 'Panini Paradise','54321', 'Available', '13', '2024-03-30'),
-('Seafood Paella', 'Spanish rice dish with a variety of seafood', 'Fish', 23.99,12.99, '2024-05-10', 'Paella Passion', '12345','Available', '14', '2024-04-01'),
-('Mango Tango Smoothie', 'Sweet and tropical smoothie with fresh mango', 'Dairy', 8.99,12.99, '2024-05-15', 'Smoothie Delight','12345', 'Available', '15', '2024-04-02'),
-('Spaghetti Bolognese', 'Classic Italian pasta with meat sauce', 'Beef', 14.99,12.99, '2024-04-18', 'Mama Mia Trattoria','54321', 'Available', '16', '2024-03-16'),
-('Caesar Salad', 'Romaine lettuce with croutons and Caesar dressing', 'Veggies', 10.99,12.99, '2024-04-22', 'Fresh Greens Cafe','12345', 'Available', '17', '2024-03-17'),
-('Sashimi Platter', 'Fresh slices of raw fish with wasabi and soy sauce', 'Fish', 29.99,12.99, '2024-04-28', 'Tokyo Sushi House','54321', 'Available', '18', '2024-03-18'),
-('Cheesecake', 'Creamy and delightful cheesecake with fruit topping', 'Dairy', 18.99,12.99, '2024-04-12', 'Sweet Indulgence Bakery','12345', 'Available', '19', '2024-03-19'),
-('Margarita Pizza', 'Classic pizza with tomato sauce and mozzarella', 'Veggies', 16.99,12.99, '2024-04-14', 'Pizza Haven','12345', 'Available', '20', '2024-03-20'),
-('Vegetable Curry', 'Spicy and flavorful curry with mixed vegetables', 'Veggies', 13.99,12.99, '2024-04-26', 'Spice Kingdom', '12345','Available', '21', '2024-03-21'),
-('Fruit Smoothie', 'Refreshing smoothie with a mix of fresh fruits', 'Dairy', 7.99,12.99, '2024-04-30', 'Smoothie Oasis', '12345','Available', '22', '2024-03-22');
+('Honey Glazed Bacon', '15oz of Applewood Bacon Glazed with Honey and Apices', 'Pork', 15.99, 8.99,  '2024-04-14', 'Alexanders Ham Emporium', '30000', 'Available', '63', '2024-04-10'),
+('Pork Ribs', '30oz Pork Ribs Adorned with Cloves and Pineapple Rings for Extra Flavor.', 'Pork', 29.99, 10.99,  '2024-04-14', 'Alexanders Ham Emporium', '30000', 'Available', '140', '2024-04-10'),
+('The Alexander Special', '8oz Bratwurst Grilled to Perfection.', 'Pork', 9.99, 6.99,  '2024-04-12', 'Alexanders Ham Emporium', '30000', 'Available', '14', '2024-04-10'),
+
+('American Pepperoni Pizza', 'Classic American Dish Serves 1', 'Baked Goods', 35.00, 33.49,  '2024-04-17', 'The Kings Delight', '40000', 'Available', '16', '2024-04-10'),
+('Napolean Ice Cream', 'Strawberry, Vanilla, and Chocolate Icecream', 'Dairy', 25.49, 23.99,  '2024-04-16', 'The Kings Delight', '40000', 'Available', '30', '2024-04-10'),
+('Imported Shephards Pie', 'A Classic Treat from Across the Pond', 'Beef', 49.49, 47.99,  '2024-04-20', 'The Kings Delight', '40000', 'Available', '42', '2024-04-10'),
+('King Crab', 'King Crab Hand Caught by an Actual King, 1 Kilogram', 'Seafood', 89.49, 87.99,  '2024-04-19', 'The Kings Delight', '40000', 'Available', '171', '2024-04-10'),
+
+('Beef Tacos', 'Ground Beef Tacos with Lettuce and Sour Cream', 'Beef', 4.99, 3.99,  '2024-04-12', 'Burrs Burritos', '30000', 'Available', '34', '2024-04-10'),
+('Iceburg Letuce', '10 Inch Head of Iceburg Lettuce', 'Veggies', 6.49, 5.99,  '2024-04-13', 'Burrs Burritos', '30000', 'Available', '7', '2024-04-10'),
+('Pineapple Flan', '10 Inch Flan Dessert with Pineapple Rings on Top', 'Dairy', 17.99, 12.49,  '2024-04-14', 'Burrs Burritos', '30000', 'Available', '40', '2024-04-10'),
+
+
+('15in. Baguette', 'Authentic French Baguette, 15 inches', 'Baked Goods', 8.49, 5.49,  '2024-04-13', 'Le Marquis', '40000', 'Available', '1', '2024-04-10'),
+('Oven Roasted Chicken', 'Whole Chicken Oven Roasted for 10 Hours', 'Poultry', 15.99, 11.49,  '2024-04-12', 'Le Marquis', '40000', 'Available', '11', '2024-04-10'),
+('Strawberry Shortcake', 'Strawberry Shortcake with Homemade Whipped Cream, Single Serveing', 'Baked Goods', 5.00, 3.49,  '2024-04-13', 'Le Marquis', '40000', 'Available', '37', '2024-04-10'),
+
+('Bakers Dozen Glazed Donuts', 'Glazed Donuts with Sweet Icing', 'Baked Goods', 13.00, 6.49,  '2024-04-13', 'Schuylers Sourbough', '30000', 'Available', '17', '2024-04-10'),
+('Sourdough Loaf ', 'Hand Made Sourdough Bread Loaf', 'Baked Goods', 6.79, 4.49,  '2024-04-14', 'Schuylers Sourbough', '30000', 'Available', '25', '2024-04-10'),
+('Veggie Party Platter', 'Party Platter of Various Fruits and Vegatables, Serves 8', 'Veggies', 13.89, 8.99,  '2024-04-14', 'Schuylers Sourbough', '30000', 'Available', '58', '2024-04-10'),
+
+('Nigirizushi Sushi', 'Sliced Salmon on Rice', 'Seafood', 7.39, 3.99,  '2024-04-12', 'Diggs Diner', '30000', 'Available', '5', '2024-04-10'),
+('18ct Extra Large Eggs', '18ct Cageless Eggs', 'Poultry', 4.99, 3.99,  '2024-04-15', 'Diggs Diner', '30000', 'Available', '6', '2024-04-10'),
+('The Revolutionist', 'Sandwich with Ham, Bacon and Salami', 'Pork', 8.99, 6.49,  '2024-04-13', 'Diggs Diner', '30000', 'Available', '13', '2024-04-10'),
+
+('Honey Glazed Bacon', '15oz of Applewood Bacon Glazed with Honey and Apices', 'Pork', 15.99, 8.99,  '2024-04-14', 'Alexanders Ham Emporium', '30000', 'Available', '63', '2024-04-10'),
+('Pork Ribs', '30oz Pork Ribs Adorned with Cloves and Pineapple Rings for Extra Flavor.', 'Pork', 29.99, 10.99,  '2024-04-14', 'Alexanders Ham Emporium', '30000', 'Available', '140', '2024-04-10'),
+('The Alexander Special', '8oz Bratwurst Grilled to Perfection.', 'Pork', 9.99, 6.99,  '2024-04-12', 'Alexanders Ham Emporium', '30000', 'Available', '14', '2024-04-10'),
+('Beef Tacos', 'Ground Beef Tacos with Lettuce and Sour Cream', 'Beef', 4.99, 3.99,  '2024-04-12', 'Burrs Burritos', '30000', 'Available', '34', '2024-04-10'),
+('Iceburg Letuce', '10 Inch Head of Iceburg Lettuce', 'Veggies', 6.49, 5.99,  '2024-04-13', 'Burrs Burritos', '30000', 'Available', '7', '2024-04-10'),
+('Pineapple Flan', '10 Inch Flan Dessert with Pineapple Rings on Top', 'Dairy', 17.99, 12.49,  '2024-04-14', 'Burrs Burritos', '30000', 'Available', '40', '2024-04-10'),
+('15in. Baguette', 'Authentic French Baguette, 15 inches', 'Baked Goods', 8.49, 5.49,  '2024-04-13', 'Le Marquis', '40000', 'Available', '1', '2024-04-10'),
+('Oven Roasted Chicken', 'Whole Chicken Oven Roasted for 10 Hours', 'Poultry', 15.99, 11.49,  '2024-04-12', 'Le Marquis', '40000', 'Available', '11', '2024-04-10'),
+('Strawberry Shortcake', 'Strawberry Shortcake with Homemade Whipped Cream, Single Serveing', 'Baked Goods', 5.00, 3.49,  '2024-04-13', 'Le Marquis', '40000', 'Available', '37', '2024-04-10'),
+('American Pepperoni Pizza', 'Classic American Dish Serves 1', 'Baked Goods', 35.00, 33.49,  '2024-04-17', 'The Kings Delight', '40000', 'Available', '16', '2024-04-10'),
+('Napolean Ice Cream', 'Strawberry, Vanilla, and Chocolate Icecream', 'Dairy', 25.49, 23.99,  '2024-04-16', 'The Kings Delight', '40000', 'Available', '30', '2024-04-10'),
+('Imported Shephards Pie', 'A Classic Treat from Across the Pond', 'Beef', 49.49, 47.99,  '2024-04-20', 'The Kings Delight', '40000', 'Available', '42', '2024-04-10'),
+('King Crab', 'King Crab Hand Caught by an Actual King, 1 Kilogram', 'Seafood', 89.49, 87.99,  '2024-04-19', 'The Kings Delight', '40000', 'Available', '171', '2024-04-10'),
+('Bakers Dozen Glazed Donuts', 'Glazed Donuts with Sweet Icing', 'Baked Goods', 13.00, 6.49,  '2024-04-13', 'Schuylers Sourbough', '30000', 'Available', '17', '2024-04-10'),
+('Sourdough Loaf ', 'Hand Made Sourdough Bread Loaf', 'Baked Goods', 6.79, 4.49,  '2024-04-14', 'Schuylers Sourbough', '30000', 'Available', '25', '2024-04-10'),
+('Veggie Party Platter', 'Party Platter of Various Fruits and Vegatables, Serves 8', 'Veggies', 13.89, 8.99,  '2024-04-14', 'Schuylers Sourbough', '30000', 'Available', '58', '2024-04-10'),
+('Nigirizushi Sushi', 'Sliced Salmon on Rice', 'Seafood', 7.39, 3.99,  '2024-04-12', 'Diggs Diner', '30000', 'Available', '5', '2024-04-10'),
+('18ct Extra Large Eggs', '18ct Cageless Eggs', 'Poultry', 4.99, 3.99,  '2024-04-15', 'Diggs Diner', '30000', 'Available', '6', '2024-04-10'),
+('The Revolutionist', 'Sandwich with Ham, Bacon and Salami', 'Pork', 8.99, 6.49,  '2024-04-13', 'Diggs Diner', '30000', 'Available', '13', '2024-04-10'),
+
+('Honey Glazed Bacon', '15oz of Applewood Bacon Glazed with Honey and Apices', 'Pork', 15.99, 8.99,  '2024-04-14', 'Alexanders Ham Emporium', '30000', 'Available', '63', '2024-04-10'),
+('Pork Ribs', '30oz Pork Ribs Adorned with Cloves and Pineapple Rings for Extra Flavor.', 'Pork', 29.99, 10.99,  '2024-04-14', 'Alexanders Ham Emporium', '30000', 'Available', '140', '2024-04-10'),
+('The Alexander Special', '8oz Bratwurst Grilled to Perfection.', 'Pork', 9.99, 6.99,  '2024-04-12', 'Alexanders Ham Emporium', '30000', 'Available', '14', '2024-04-10'),
+('Beef Tacos', 'Ground Beef Tacos with Lettuce and Sour Cream', 'Beef', 4.99, 3.99,  '2024-04-12', 'Burrs Burritos', '30000', 'Available', '34', '2024-04-10'),
+('Iceburg Letuce', '10 Inch Head of Iceburg Lettuce', 'Veggies', 6.49, 5.99,  '2024-04-13', 'Burrs Burritos', '30000', 'Available', '7', '2024-04-10'),
+('Pineapple Flan', '10 Inch Flan Dessert with Pineapple Rings on Top', 'Dairy', 17.99, 12.49,  '2024-04-14', 'Burrs Burritos', '30000', 'Available', '40', '2024-04-10'),
+('15in. Baguette', 'Authentic French Baguette, 15 inches', 'Baked Goods', 8.49, 5.49,  '2024-04-13', 'Le Marquis', '40000', 'Available', '1', '2024-04-10'),
+('Oven Roasted Chicken', 'Whole Chicken Oven Roasted for 10 Hours', 'Poultry', 15.99, 11.49,  '2024-04-12', 'Le Marquis', '40000', 'Available', '11', '2024-04-10'),
+('Strawberry Shortcake', 'Strawberry Shortcake with Homemade Whipped Cream, Single Serveing', 'Baked Goods', 5.00, 3.49,  '2024-04-13', 'Le Marquis', '40000', 'Available', '37', '2024-04-10'),
+('American Pepperoni Pizza', 'Classic American Dish Serves 1', 'Baked Goods', 35.00, 33.49,  '2024-04-17', 'The Kings Delight', '40000', 'Available', '16', '2024-04-10'),
+('Napolean Ice Cream', 'Strawberry, Vanilla, and Chocolate Icecream', 'Dairy', 25.49, 23.99,  '2024-04-16', 'The Kings Delight', '40000', 'Available', '30', '2024-04-10'),
+('Imported Shephards Pie', 'A Classic Treat from Across the Pond', 'Beef', 49.49, 47.99,  '2024-04-20', 'The Kings Delight', '40000', 'Available', '42', '2024-04-10'),
+('King Crab', 'King Crab Hand Caught by an Actual King, 1 Kilogram', 'Seafood', 89.49, 87.99,  '2024-04-19', 'The Kings Delight', '40000', 'Available', '171', '2024-04-10'),
+('Bakers Dozen Glazed Donuts', 'Glazed Donuts with Sweet Icing', 'Baked Goods', 13.00, 6.49,  '2024-04-13', 'Schuylers Sourbough', '30000', 'Available', '17', '2024-04-10'),
+('Sourdough Loaf ', 'Hand Made Sourdough Bread Loaf', 'Baked Goods', 6.79, 4.49,  '2024-04-14', 'Schuylers Sourbough', '30000', 'Available', '25', '2024-04-10'),
+('Veggie Party Platter', 'Party Platter of Various Fruits and Vegatables, Serves 8', 'Veggies', 13.89, 8.99,  '2024-04-14', 'Schuylers Sourbough', '30000', 'Available', '58', '2024-04-10'),
+('Nigirizushi Sushi', 'Sliced Salmon on Rice', 'Seafood', 7.39, 3.99,  '2024-04-12', 'Diggs Diner', '30000', 'Available', '5', '2024-04-10'),
+('18ct Extra Large Eggs', '18ct Cageless Eggs', 'Poultry', 4.99, 3.99,  '2024-04-15', 'Diggs Diner', '30000', 'Available', '6', '2024-04-10'),
+('The Revolutionist', 'Sandwich with Ham, Bacon and Salami', 'Pork', 8.99, 6.49,  '2024-04-13', 'Diggs Diner', '30000', 'Available', '13', '2024-04-10'),
+
+('Honey Glazed Bacon', '15oz of Applewood Bacon Glazed with Honey and Apices', 'Pork', 15.99, 8.99,  '2024-04-14', 'Alexanders Ham Emporium', '30000', 'Available', '63', '2024-04-10'),
+('Pork Ribs', '30oz Pork Ribs Adorned with Cloves and Pineapple Rings for Extra Flavor.', 'Pork', 29.99, 10.99,  '2024-04-14', 'Alexanders Ham Emporium', '30000', 'Available', '140', '2024-04-10'),
+('The Alexander Special', '8oz Bratwurst Grilled to Perfection.', 'Pork', 9.99, 6.99,  '2024-04-12', 'Alexanders Ham Emporium', '30000', 'Available', '14', '2024-04-10'),
+('Beef Tacos', 'Ground Beef Tacos with Lettuce and Sour Cream', 'Beef', 4.99, 3.99,  '2024-04-12', 'Burrs Burritos', '30000', 'Available', '34', '2024-04-10'),
+('Iceburg Letuce', '10 Inch Head of Iceburg Lettuce', 'Veggies', 6.49, 5.99,  '2024-04-13', 'Burrs Burritos', '30000', 'Available', '7', '2024-04-10'),
+('Pineapple Flan', '10 Inch Flan Dessert with Pineapple Rings on Top', 'Dairy', 17.99, 12.49,  '2024-04-14', 'Burrs Burritos', '30000', 'Available', '40', '2024-04-10'),
+('15in. Baguette', 'Authentic French Baguette, 15 inches', 'Baked Goods', 8.49, 5.49,  '2024-04-13', 'Le Marquis', '40000', 'Available', '1', '2024-04-10'),
+('Oven Roasted Chicken', 'Whole Chicken Oven Roasted for 10 Hours', 'Poultry', 15.99, 11.49,  '2024-04-12', 'Le Marquis', '40000', 'Available', '11', '2024-04-10'),
+('Strawberry Shortcake', 'Strawberry Shortcake with Homemade Whipped Cream, Single Serveing', 'Baked Goods', 5.00, 3.49,  '2024-04-13', 'Le Marquis', '40000', 'Available', '37', '2024-04-10'),
+('American Pepperoni Pizza', 'Classic American Dish Serves 1', 'Baked Goods', 35.00, 33.49,  '2024-04-17', 'The Kings Delight', '40000', 'Available', '16', '2024-04-10'),
+('Napolean Ice Cream', 'Strawberry, Vanilla, and Chocolate Icecream', 'Dairy', 25.49, 23.99,  '2024-04-16', 'The Kings Delight', '40000', 'Available', '30', '2024-04-10'),
+('Imported Shephards Pie', 'A Classic Treat from Across the Pond', 'Beef', 49.49, 47.99,  '2024-04-20', 'The Kings Delight', '40000', 'Available', '42', '2024-04-10'),
+('King Crab', 'King Crab Hand Caught by an Actual King, 1 Kilogram', 'Seafood', 89.49, 87.99,  '2024-04-19', 'The Kings Delight', '40000', 'Available', '171', '2024-04-10'),
+('Bakers Dozen Glazed Donuts', 'Glazed Donuts with Sweet Icing', 'Baked Goods', 13.00, 6.49,  '2024-04-13', 'Schuylers Sourbough', '30000', 'Available', '17', '2024-04-10'),
+('Sourdough Loaf ', 'Hand Made Sourdough Bread Loaf', 'Baked Goods', 6.79, 4.49,  '2024-04-14', 'Schuylers Sourbough', '30000', 'Available', '25', '2024-04-10'),
+('Veggie Party Platter', 'Party Platter of Various Fruits and Vegatables, Serves 8', 'Veggies', 13.89, 8.99,  '2024-04-14', 'Schuylers Sourbough', '30000', 'Available', '58', '2024-04-10'),
+('Nigirizushi Sushi', 'Sliced Salmon on Rice', 'Seafood', 7.39, 3.99,  '2024-04-12', 'Diggs Diner', '30000', 'Available', '5', '2024-04-10'),
+('18ct Extra Large Eggs', '18ct Cageless Eggs', 'Poultry', 4.99, 3.99,  '2024-04-15', 'Diggs Diner', '30000', 'Available', '6', '2024-04-10'),
+('The Revolutionist', 'Sandwich with Ham, Bacon and Salami', 'Pork', 8.99, 6.49,  '2024-04-13', 'Diggs Diner', '30000', 'Available', '13', '2024-04-10');
+
+
 
 
 
@@ -57,28 +130,87 @@ VALUES
 -- Insert test data into the listing table
 INSERT INTO listing (itemID, sellerID, createDate)
 VALUES
-    (1, 1, '2022-01-10'),
-    (2, 2, '2022-02-25'),
-    (3, 3, '2022-02-25'),
-    (4, 2, '2022-02-25'),
-    (5, 4, '2022-02-25'),
-    (6, 3, '2022-02-25'),
-    (7, 1, '2022-02-25'),
-    (8, 1, '2022-02-25'),
-    (9, 2, '2022-02-25'),
-    (10, 3, '2022-02-25'),
-    (11, 1, '2022-02-25'),
-    (12, 2, '2022-02-25'),
-    (13, 3, '2022-02-25'),
-    (14, 1, '2022-02-25'),
-    (15, 1, '2022-02-25'),
-    (16, 1, '2022-02-25'), 
-    (17, 1, '2022-02-25'),    
-    (18, 1, '2022-02-25'),
-    (19, 1, '2022-02-25'),
-    (20, 1, '2022-02-25'),
-    (21, 1, '2022-02-25');
+    (1, 1, '2024-04-10'),
+    (2, 1, '2024-04-10'),
+    (3, 1, '2024-04-10'),
+    (4, 3, '2024-04-10'),
+    (5, 3, '2024-04-10'),
+    (6, 3, '2024-04-10'),
+    (7, 3, '2024-04-10'),
+    (8, 2, '2024-04-10'),
+    (9, 2, '2024-04-10'),
+    (10, 2, '2024-04-10'),
+    (11, 4, '2024-04-10'),
+    (12, 4, '2024-04-10'),
+    (13, 4, '2024-04-10'),
+    (14, 5, '2024-04-10'),
+    (15, 5, '2024-04-10'),
+    (16, 5, '2024-04-10'),
+    (17, 6, '2024-04-10'),
+    (18, 6, '2024-04-10'),
+    (19, 6, '2024-04-10'),
+
+
+    (20, 1, '2024-04-10'),
+    (21, 1, '2024-04-10'),
+    (22, 1, '2024-04-10'),
+    (23, 3, '2024-04-10'),
+    (24, 3, '2024-04-10'),
+    (25, 3, '2024-04-10'),
+    (26, 3, '2024-04-10'),
+    (27, 2, '2024-04-10'),
+    (28, 2, '2024-04-10'),
+    (29, 2, '2024-04-10'),
+    (30, 4, '2024-04-10'),
+    (31, 4, '2024-04-10'),
+    (32, 4, '2024-04-10'),
+    (33, 5, '2024-04-10'),
+    (34, 5, '2024-04-10'),
+    (35, 5, '2024-04-10'),
+    (36, 6, '2024-04-10'),
+    (37, 6, '2024-04-10'),
+    (38, 6, '2024-04-10'),
+
+    (39, 1, '2024-04-10'),
+    (40, 1, '2024-04-10'),
+    (41, 1, '2024-04-10'),
+    (42, 3, '2024-04-10'),
+    (43, 3, '2024-04-10'),
+    (44, 3, '2024-04-10'),
+    (45, 3, '2024-04-10'),
+    (46, 2, '2024-04-10'),
+    (47, 2, '2024-04-10'),
+    (48, 2, '2024-04-10'),
+    (19, 4, '2024-04-10'),
+    (50, 4, '2024-04-10'),
+    (51, 4, '2024-04-10'),
+    (52, 5, '2024-04-10'),
+    (53, 5, '2024-04-10'),
+    (54, 5, '2024-04-10'),
+    (55, 6, '2024-04-10'),
+    (56, 6, '2024-04-10'),
+    (57, 6, '2024-04-10'),
     
+    (58, 1, '2024-04-10'),
+    (59, 1, '2024-04-10'),
+    (60, 1, '2024-04-10'),
+    (61, 3, '2024-04-10'),
+    (62, 3, '2024-04-10'),
+    (63, 3, '2024-04-10'),
+    (64, 3, '2024-04-10'),
+    (65, 2, '2024-04-10'),
+    (66, 2, '2024-04-10'),
+    (67, 2, '2024-04-10'),
+    (68, 4, '2024-04-10'),
+    (69, 4, '2024-04-10'),
+    (70, 4, '2024-04-10'),
+    (71, 5, '2024-04-10'),
+    (72, 5, '2024-04-10'),
+    (73, 5, '2024-04-10'),
+    (74, 6, '2024-04-10'),
+    (75, 6, '2024-04-10'),
+    (76, 6, '2024-04-10');
+
 
 
 
@@ -100,12 +232,17 @@ VALUES
 INSERT INTO `locations` (`sellerID`, `name`, `address`, `city`, `state`, `zip`, `phone_number`, `email`, `website`)
 VALUES 
 
-    (1, 'Fresh Produce Market', '456 Elm St', 'Smallville', 'Anystate', '54321', '555-987-6543', 'freshproduce@example.com', 'http://www.freshproducemarket.com'),
-    (2, 'Healthy Bites Cafe', '789 Oak St', 'Metropolis', 'Anystate', '67890', '555-555-5555', 'healthybites@example.com', 'http://www.healthybitescafe.com'),
-    (3, 'Tasty Tacos', '321 Maple St', 'Big City', 'Anystate', '13579', '555-222-3333', 'tastytacos@example.com', 'http://www.tastytacos.com'),
-    (4, 'Pizza Paradise', '654 Pine St', 'Village', 'Anystate', '97531', '555-888-9999', 'pizzaparadise@example.com', 'http://www.pizzaparadise.com'),
-    (5, 'Bakery Delights', '987 Cedar St', 'Hometown', 'Anystate', '24680', '555-444-3333', 'bakerydelights@example.com', 'http://www.bakerydelights.com'),
-    (6, 'Sushi Haven', '741 Birch St', 'Townsville', 'Anystate', '36912', '555-111-2222', 'sushihaven@example.com', 'http://www.sushihaven.com'),
-    (7, 'Burger Joint', '852 Walnut St', 'Metroville', 'Anystate', '75319', '555-666-7777', 'burgerjoint@example.com', 'http://www.burgerjoint.com'),
-    (8, 'Ice Cream Parlor', '369 Oak St', 'Riverside', 'Anystate', '86420', '555-999-0000', 'icecreamparlor@example.com', 'http://www.icecreamparlor.com'),
-    (9, 'Vegetarian Delights', '147 Cherry St', 'Hilltop', 'Anystate', '25874', '555-123-9876', 'vegetariandelights@example.com', 'http://www.vegetariandelights.com');
+    (1, 'Alexanders Ham Emporium', '123 Federalist Avenue', ' New York City', 'New York', '30000', '555-987-6543', 'HamEmporium@gmail.com', 'http://www.HamEmporium.com'),
+    (2, 'Burrs Burritos', '456 Duelers Drive', ' New York City', 'New York', '30000', '555-555-5555', 'BurrsBurritos@gmail.com', 'http://www.BurrsBurritos.com'),
+    (3, 'Le Marquis ', '567 Liberty Lane', 'Paris', 'Georgia', '40000', '555-222-3333', 'Marquis@gmail.com', 'http://www.Marquis.com'),
+    (4, 'The Kings Delight', '345 Monarch Dr', 'London', 'Georgia', '40000', '555-444-3333', 'KingsDelight@gmail.com', 'http://www.KingsDelight.com'),
+    (5, 'Schuylers Sourbough', '789 Schuyler Street', ' New York City', 'New York', '30000', '555-111-2222', 'SchuylersSourbough@gmail.com', 'http://www.SchuylersSourbough.com'),
+    (6, 'Diggs Diner', '678 Republic Road', 'New York City', ' New York', '30000', '555-666-7777', 'DiggsDiner@gmail.com', 'http://www.Diggs Diner.com');
+
+    -- { label: 'Beef', value: 'Beef' },
+    -- { label: 'Poultry', value: 'Poultry' },
+    -- { label: 'Pork', value: 'Pork' },
+    -- { label: 'Seafood', value: 'Seafood' },
+    -- { label: 'Veggies', value: 'Veggies' },
+    -- { label: 'Dairy', value: 'Dairy' },
+-- Baked Goods

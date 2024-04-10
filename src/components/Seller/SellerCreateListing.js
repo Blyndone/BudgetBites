@@ -70,9 +70,10 @@ const SellerCreateListing = ({ navigation, route }) => {
     { label: 'Beef', value: 'Beef' },
     { label: 'Poultry', value: 'Poultry' },
     { label: 'Pork', value: 'Pork' },
-    { label: 'Fish', value: 'Fish' },
+    { label: 'Seafood', value: 'Seafood' },
     { label: 'Veggies', value: 'Veggies' },
     { label: 'Dairy', value: 'Dairy' },
+    { label: 'Baked Goods', value: 'Baked Goods' },
   ]);
   const [expiration_text, setExpiration] = useState('');
   const [discount_text, setDiscount] = useState('');

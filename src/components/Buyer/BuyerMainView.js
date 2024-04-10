@@ -35,12 +35,12 @@ const BuyerMainView = ({ navigation, route }) => {
     Auth(route.params.data.user_name).then((resp) => {
       try {
         r = JSON.parse(resp);
-        // REENABLE
-        // if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
-        //   navigation.navigate('Splash');
-        // }
-        // console.log(r.status);
-        // console.log(resp);
+        REENABLE;
+        if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
+          navigation.navigate('Splash');
+        }
+        console.log(r.status);
+        console.log(resp);
       } catch (err) {
         console.log(err);
       }
@@ -117,9 +117,10 @@ const BuyerMainView = ({ navigation, route }) => {
     { label: 'Beef', value: 'Beef' },
     { label: 'Poultry', value: 'Poultry' },
     { label: 'Pork', value: 'Pork' },
-    { label: 'Fish', value: 'Fish' },
+    { label: 'Seafood', value: 'Seafood' },
     { label: 'Veggies', value: 'Veggies' },
     { label: 'Dairy', value: 'Dairy' },
+    { label: 'Baked Goods', value: 'Baked Goods' },
   ]);
 
   // ============

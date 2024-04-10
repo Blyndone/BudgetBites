@@ -69,9 +69,10 @@ const GuestMainView = ({ navigation, route }) => {
     { label: 'Beef', value: 'Beef' },
     { label: 'Poultry', value: 'Poultry' },
     { label: 'Pork', value: 'Pork' },
-    { label: 'Fish', value: 'Fish' },
+    { label: 'Seafood', value: 'Seafood' },
     { label: 'Veggies', value: 'Veggies' },
     { label: 'Dairy', value: 'Dairy' },
+    { label: 'Baked Goods', value: 'Baked Goods' },
   ]);
 
   // ============
