@@ -45,7 +45,7 @@ export const ListItem = memo(function ListItem({ item, overlay = false }) {
           />
           <Image source={images[item.img]} style={styles.img} />
 
-          <Text style={duration > 10 ? styles.explong : styles.expshort}>
+          <Text style={duration > 5 ? styles.explong : styles.expshort}>
             {duration + 1} Days!
           </Text>
         </View>

@@ -181,8 +181,15 @@ const BuyerMainView = ({ navigation, route }) => {
     const cur = new Date();
     results = results.filter((item) => {
       const exp = new Date(item.expiration);
-      return parseInt((exp - cur) / 86400000) < 10;
+      return parseInt((exp - cur) / 86400000) < 5;
     });
+
+    sortedKeys = results.sort((a, b) => {
+      a = new Date(a.expiration);
+      b = new Date(b.expiration);
+      return a - b;
+    });
+
     return results;
   };
 
@@ -653,7 +660,6 @@ const ItemModal = ({
                       itemID: itemData.itemID,
                     }),
                   }).then(() => {
-                    console.log(itemData.itemID, userdata.user_id);
                     GetItems((refresh = true));
                   });
                   setItemModalVisible(!itemModalVisible);
@@ -675,8 +681,12 @@ const ItemModal = ({
                     },
                     body: JSON.stringify({
                       itemID: itemData.itemID,
+                      userdata: userdata,
                     }),
-                  }).then(() => {
+                  }).then((res) => {
+                    if (res.status == 404) {
+                      alert('Please Select Your Reservation');
+                    }
                     GetItems((refresh = true));
                   });
                   setItemModalVisible(!itemModalVisible);
@@ -709,7 +719,7 @@ const LocationModal = ({
       animationType="fade"
       visible={locationModalVisible}
       onRequestClose={() => {
-        setModalVisible(!locationModalVisible);
+        setLocationModalVisible(!locationModalVisible);
       }}
     >
       <View style={styles.centeredView}>
@@ -760,7 +770,9 @@ const LocationModal = ({
               <Text style={styles.locationdetailstext}>Website:</Text>
               <TouchableOpacity
                 onPress={() => {
-                  Linking.openURL(locationData.website);
+                  Linking.openURL(
+                    'https://www.google.com/search?q=' + locationData.website,
+                  );
                 }}
               >
                 <Text style={styles.locationphonetext}>

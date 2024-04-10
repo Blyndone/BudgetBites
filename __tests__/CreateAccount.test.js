@@ -1,6 +1,6 @@
 import { checkForm } from '../src/components/CreateAccount';
 
-describe('check form data', () => {
+describe('Valid Username / Password', () => {
   test('check vaild inputs ', () => {
     expect(
       checkForm('username', 'email@gmail.com', 'password', 'password'),
@@ -11,14 +11,19 @@ describe('check form data', () => {
         checkForm('user', 'email@gmail.com', 'password', 'password'),
       ).not.toBe('');
     });
-  test('Check Wrong Email ', () => {
+  test('Check Wrong Email Form ', () => {
     expect(
       checkForm('username', 'emailgmailcom', 'password', 'password'),
     ).not.toBe('');
   }),
-    test('Check Different Passwords ', () => {
+    test('Check Passwords Match ', () => {
       expect(
         checkForm('username', 'email@gmail.com', 'password', 'pa$$word'),
       ).not.toBe('');
+    }),
+    test('Check Password Length ', () => {
+      expect(checkForm('username', 'email@gmail.com', 'pass', 'pass')).not.toBe(
+        '',
+      );
     });
 });

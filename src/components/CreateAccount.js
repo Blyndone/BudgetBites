@@ -540,7 +540,8 @@ function checkForm(
   if (trimmedUserText.length <= 5) {
     errormessage += 'User name must be longer than 5 characters.\n';
   }
-  if (pass_text !== pass_text_verify) {
+  console.log(pass_text, pass_text_verify);
+  if (pass_text !== pass_text_verify || pass_text.length < 5) {
     errormessage += 'Password must match\n';
   }
 

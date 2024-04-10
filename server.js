@@ -1024,16 +1024,22 @@ app.delete('/reservation/:itemID', async (req, res) => {
 
   try {
     const itemID = req.params.itemID;
+    const userdata = req.body.userdata;
+
     console.log('Attempting to delete reservation with itemID:', itemID);
 
     // Check if the reservation exists before deleting
     const [reservation] = await connection
       .promise()
-      .query('SELECT * FROM reserved WHERE itemID = ?', [itemID]);
+      .query('SELECT * FROM reserved WHERE itemID = ? AND buyerID = ?', [
+        itemID,
+        userdata.user_id,
+      ]);
     if (reservation.length === 0) {
-      console.log('No reservation found with ID:', itemID);
+      console.log('You Do Not Have A Reservation for this Item:', itemID);
       return res.status(404).json({ message: 'Reservation not found' });
     }
+
     query =
       "DELETE FROM reserved WHERE itemID = ?;   UPDATE items SET itemstatus = 'Available' WHERE itemID = ? ";
     await connection.promise().query(query, [itemID, itemID]);
@@ -1091,4 +1097,17 @@ app.delete('/listing/:listingID', async (req, res) => {
 //==================
 app.listen(process.env.PORT, () => {
   console.log('Server listening in http://localhost:5000');
+});
+
+//==============
+app.get('/testusers', (req, res) => {
+  const users = [
+    { id: 1, name: 'Alice' },
+    { id: 2, name: 'Bob' },
+    { id: 3, name: 'Charlie' },
+  ];
+  res.json(users);
+});
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
 });

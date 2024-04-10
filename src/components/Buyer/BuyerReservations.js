@@ -185,17 +185,18 @@ const BuyerReservations = ({ navigation, route }) => {
           </View>
         </View>
       </Modal>
-
-      <Text
-        style={{
-          fontWeight: 'bold',
-          fontSize: 20,
-          color: 'black',
-        }}
-      >
-        {' '}
-        BUYER Reservations
-      </Text>
+      {/* <View>
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 30,
+            color: 'black',
+            margin: 2,
+          }}
+        >
+          My Reservations
+        </Text>
+      </View> */}
 
       <FlatList
         data={data}

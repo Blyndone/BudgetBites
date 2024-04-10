@@ -30,7 +30,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import { PaperProvider } from 'react-native-paper';
+import { PaperProvider, DefaultTheme } from 'react-native-paper';
 //Import Pages
 import Splash from './src/components/Splash.js';
 import GuestMainView from './src/components/GuestMainView.js';
@@ -49,14 +49,14 @@ type SectionProps = PropsWithChildren<{
 }>;
 
 function Section({ children, title }: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === 'light';
   return (
     <View style={styles.sectionContainer}>
       <Text
         style={[
           styles.sectionTitle,
           {
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode ? Colors.white : Colors.white,
           },
         ]}
       >
@@ -66,7 +66,7 @@ function Section({ children, title }: SectionProps): React.JSX.Element {
         style={[
           styles.sectionDescription,
           {
-            color: isDarkMode ? Colors.light : Colors.dark,
+            color: isDarkMode ? Colors.light : Colors.light,
           },
         ]}
       >
@@ -79,14 +79,20 @@ function Section({ children, title }: SectionProps): React.JSX.Element {
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === 'light';
+
+  const lightTheme = {
+    ...DefaultTheme,
+    dark: false,
+  };
+  const theme = lightTheme;
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: isDarkMode ? Colors.lighter : Colors.lighter,
   };
 
   return (
-    <PaperProvider>
+    <PaperProvider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Splash">
           <Stack.Screen
@@ -167,7 +173,7 @@ function App(): React.JSX.Element {
             name="Buyer Reservations"
             component={BuyerReservations}
             options={{
-              title: 'Manage Reservations',
+              title: 'My Reservations',
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },

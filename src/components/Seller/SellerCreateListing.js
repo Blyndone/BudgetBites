@@ -158,17 +158,7 @@ const SellerCreateListing = ({ navigation, route }) => {
                     value={price_text}
                     onChangeText={(price_text) => {
                       setPrice(price_text);
-
-                      if (price_text == 0 || discount_text == 0) {
-                        setDiscountCalc('');
-                      } else {
-                        setDiscountCalc(
-                          (
-                            parseFloat(price_text) *
-                            (1 - parseFloat(discount_text) / 100)
-                          ).toFixed(2),
-                        );
-                      }
+                      setDiscountCalc(checkDiscount(price_text, discount_text));
                     }}
                     style={styles.price}
                     keyboardType="number-pad"
@@ -179,16 +169,7 @@ const SellerCreateListing = ({ navigation, route }) => {
                     value={discount_text}
                     onChangeText={(discount_text) => {
                       setDiscount(discount_text);
-                      if (price_text == 0 || discount_text == 0) {
-                        setDiscountCalc('');
-                      } else {
-                        setDiscountCalc(
-                          (
-                            parseFloat(price_text) *
-                            (1 - parseFloat(discount_text) / 100)
-                          ).toFixed(2),
-                        );
-                      }
+                      setDiscountCalc(checkDiscount(price_text, discount_text));
                     }}
                     style={styles.discount}
                     keyboardType="number-pad"
@@ -284,29 +265,21 @@ const SellerCreateListing = ({ navigation, route }) => {
                 buttonColor="#eb6b34"
                 labelStyle={{ fontSize: 20 }}
                 onPress={() => {
-                  const price_discounted = (
-                    parseFloat(price_text) *
-                    (1 - parseFloat(discount_text) / 100)
-                  ).toFixed(2);
-
-                  console.log(price_discounted);
-                  if (
-                    name_text.length == 0 ||
-                    desc_text.length == 0 ||
-                    price_text.length == 0 ||
-                    discount_text == 0
-                  ) {
-                    alert('Please Input an Item');
+                  const listingData = checkListingData(
+                    {
+                      name_text: name_text,
+                      desc_text: desc_text,
+                      msrp: price_text,
+                      user_id: userdata.user_id,
+                      img_select: img_select,
+                      category_text: category_text,
+                      expiration_text: expiration_text,
+                      count: count,
+                    },
+                    discount_text,
+                  );
+                  if (typeof listingData == undefined) {
                     return;
-                  } else if (count > 5) {
-                    alert('Maximum of 5 Listing at a time.');
-                    return;
-                  } else {
-                    try {
-                      // price_text = parseFloat(price_text).toFixed(2);
-                    } catch (e) {
-                      price_text = '00.00';
-                    }
                   }
 
                   fetch(`${REACT_APP_ADDRESS}/additem`, {
@@ -314,17 +287,7 @@ const SellerCreateListing = ({ navigation, route }) => {
                     headers: {
                       'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                      name_text: name_text,
-                      desc_text: desc_text,
-                      price_text: price_discounted,
-                      msrp: price_text,
-                      user_id: userdata.user_id,
-                      img_select: img_select,
-                      category_text: category_text,
-                      expiration_text: expiration_text,
-                      count: count,
-                    }),
+                    body: JSON.stringify(listingData),
                   });
 
                   navigation.navigate({
@@ -551,5 +514,51 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 });
+
+export function checkListingData(listingData, discount_text) {
+  if (
+    listingData.name_text.length <= 0 ||
+    listingData.desc_text.length <= 0 ||
+    listingData.name_text.length > 100 ||
+    listingData.desc_text.length > 100 ||
+    listingData.msrp <= 0 ||
+    discount_text <= 0 ||
+    listingData.count < 1
+  ) {
+    alert('Please Input an Item');
+    return;
+  }
+  const price_discounted = (
+    parseFloat(listingData.msrp) *
+    (1 - parseFloat(discount_text) / 100)
+  ).toFixed(2);
+  listingData = { ...listingData, price_text: price_discounted };
+
+  if (listingData.count > 5) {
+    alert('Maximum of 5 Listing at a time.');
+    return;
+  } else {
+    try {
+      // price_text = parseFloat(price_text).toFixed(2);
+    } catch (e) {
+      listingData.price_text = '00.00';
+    }
+  }
+
+  return listingData;
+}
+
+export function checkDiscount(price_text, discount_text) {
+  if (price_text == 0 || discount_text == 0) {
+    return '';
+  } else if (price_text < 0 || discount_text < 0 || discount_text > 99) {
+    return '';
+  } else {
+    return (
+      parseFloat(price_text) *
+      (1 - parseFloat(discount_text) / 100)
+    ).toFixed(2);
+  }
+}
 
 export default SellerCreateListing;

@@ -586,7 +586,7 @@ const LocationModal = ({
       animationType="fade"
       visible={locationModalVisible}
       onRequestClose={() => {
-        setModalVisible(!locationModalVisible);
+        setLocationModalVisible(!locationModalVisible);
       }}
     >
       <View style={styles.centeredView}>
