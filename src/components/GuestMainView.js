@@ -135,8 +135,15 @@ const GuestMainView = ({ navigation, route }) => {
     const cur = new Date();
     results = results.filter((item) => {
       const exp = new Date(item.expiration);
-      return parseInt((exp - cur) / 86400000) < 10;
+      return parseInt((exp - cur) / 86400000) < 5;
     });
+
+    sortedKeys = results.sort((a, b) => {
+      a = new Date(a.expiration);
+      b = new Date(b.expiration);
+      return a - b;
+    });
+
     return results;
   };
 

@@ -131,7 +131,7 @@ function App(): React.JSX.Element {
             name="Seller Main View"
             component={SellerMainView}
             options={{
-              title: 'Manage Listings',
+              title: 'My Item Listings',
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },
@@ -204,7 +204,7 @@ function App(): React.JSX.Element {
             name="Seller Location Profile"
             component={SellerLocationProfile}
             options={{
-              title: 'Location Profile',
+              title: 'My Location Profile',
               headerStyle: {
                 backgroundColor: '#eb6b34',
               },

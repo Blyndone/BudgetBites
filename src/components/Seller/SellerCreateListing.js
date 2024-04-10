@@ -154,7 +154,7 @@ const SellerCreateListing = ({ navigation, route }) => {
 
                 <View style={[styles.pricerow]}>
                   <TextInput
-                    label="Price"
+                    label="MSRP Price"
                     value={price_text}
                     onChangeText={(price_text) => {
                       setPrice(price_text);
@@ -178,7 +178,7 @@ const SellerCreateListing = ({ navigation, route }) => {
                 </View>
                 <View style={[styles.pricerow]}>
                   <TextInput
-                    label="# of Days Until Expiration"
+                    label="Days Before Exp."
                     value={expiration_text}
                     style={styles.textinput}
                     onChangeText={(expiration_text) =>
@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
   },
 
   textinput: {
-    margin: 10,
+    margin: 5,
     height: 45,
     flex: 1,
   },

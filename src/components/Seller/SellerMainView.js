@@ -206,15 +206,7 @@ const SellerMainView = ({ navigation, route }) => {
           </View>
         </View>
       </Modal>
-      <Text
-        style={{
-          fontWeight: 'bold',
-          fontSize: 20,
-          color: 'black',
-        }}
-      >
-        SELLER List of Items
-      </Text>
+
       <FlatList
         data={data}
         // keyExtractor={(item) => item.itemID}
