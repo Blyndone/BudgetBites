@@ -12,7 +12,7 @@ VALUES
 
     -- ('customer', '$2a$10$/dRwPs/RMUjIXeTLxwV4H.bq1EJK4lJ77xUAHg3i6j.NimnBpD7QO', 'Customer Name', 'TESTEMAIL@GMAIL,com', 8679309, 12342, 'seller', '2022-09-30'),
     
-    ('aaaaaaaaaa', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'Alexander Hamilton', 'AdotHam@gmail.com', 0017761804, 30000, 'seller', '2022-09-30'),
+    ('AdotHam', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'Alexander Hamilton', 'AdotHam@gmail.com', 0017761804, 30000, 'seller', '2022-09-30'),
     ('AdotBurr', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'Aaron Burr', 'AdotBurr@gmail.com', 0017561836, 30000, 'seller', '2022-09-30'),
     ('TheKing', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'King George III', 'YoullBeBack@gmail.com', 0017381820, 40000, 'seller', '2022-09-30'),
     ('FightingFrenchman', '$2a$10$q0ZYodeFvdX3nnCRnOGxgewQlB5mu5EQ50zqFuSQPQqjMegh71Si2', 'Marquis de Lafayette', 'FFrenchman@gmail.com', 0017761804, 40000, 'seller', '2022-09-30'),
@@ -30,11 +30,11 @@ VALUES
 -- Insert test data into the items table (food items)
 INSERT INTO `items` (`name`, `description`, `category`, `msrp`, `price`, `expiration`, `location`, `zip`, `itemstatus`, `img`, `listeddate`)
 VALUES 
+('Honey Glazed Bacon', '15oz of Applewood Bacon Glazed with Honey and Apices', 'Pork', 15.99, 8.99,  '2024-04-14', 'Alexanders Ham Emporium', '30000', 'Available', '63', '2024-04-10'),
+('Pork Ribs', '30oz Pork Ribs Adorned with Cloves and Pineapple Rings for Extra Flavor.', 'Pork', 29.99, 10.99,  '2024-04-14', 'Alexanders Ham Emporium', '30000', 'Available', '140', '2024-04-10'),
 ('The Alexander Special', '8oz Bratwurst Grilled to Perfection.', 'Pork', 9.99, 6.99,  '2024-04-12', 'Alexanders Ham Emporium', '30000', 'Available', '14', '2024-04-10'),
 ('American Pepperoni Pizza', 'Classic American Dish Serves 1', 'Baked Goods', 35.00, 33.49,  '2024-04-17', 'The Kings Delight', '40000', 'Available', '16', '2024-04-10'),
 ('Napolean Ice Cream', 'Strawberry, Vanilla, and Chocolate Icecream', 'Dairy', 25.49, 23.99,  '2024-04-16', 'The Kings Delight', '40000', 'Available', '30', '2024-04-10'),
-('Honey Glazed Bacon', '15oz of Applewood Bacon Glazed with Honey and Apices', 'Pork', 15.99, 8.99,  '2024-04-14', 'Alexanders Ham Emporium', '30000', 'Available', '63', '2024-04-10'),
-('Pork Ribs', '30oz Pork Ribs Adorned with Cloves and Pineapple Rings for Extra Flavor.', 'Pork', 29.99, 10.99,  '2024-04-14', 'Alexanders Ham Emporium', '30000', 'Available', '140', '2024-04-10'),
 ('Imported Shephards Pie', 'A Classic Treat from Across the Pond', 'Beef', 49.49, 47.99,  '2024-04-20', 'The Kings Delight', '40000', 'Available', '42', '2024-04-10'),
 ('King Crab', 'King Crab Hand Caught by an Actual King, 1 Kilogram', 'Seafood', 89.49, 87.99,  '2024-04-19', 'The Kings Delight', '40000', 'Available', '171', '2024-04-10'),
 ('Beef Tacos', 'Ground Beef Tacos with Lettuce and Sour Cream', 'Beef', 4.99, 3.99,  '2024-04-12', 'Burrs Burritos', '30000', 'Available', '34', '2024-04-10'),
