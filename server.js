@@ -65,7 +65,7 @@ const reloadTables = () => {
     },
   );
 };
-console.log('Reload Tables');
+
 reloadTables();
 
 //===========================================
@@ -1044,7 +1044,7 @@ app.delete('/reservation/:itemID', async (req, res) => {
     console.log(userdata);
 
     console.log('Attempting to delete reservation with itemID:', itemID);
-    if (!userdata.user_type == 'seller') {
+    if (userdata.user_type != 'seller') {
       // Check if the reservation exists before deleting
       const [reservation] = await connection
         .promise()
