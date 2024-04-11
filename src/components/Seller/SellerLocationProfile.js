@@ -43,10 +43,10 @@ const SellerLocationProfile = ({ navigation, route }) => {
   useEffect(() => {
     Auth(route.params.data.user_name).then((resp) => {
       try {
-        r = JSON.parse(resp);
-        if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
-          navigation.navigate('Splash');
-        }
+        // r = JSON.parse(resp);
+        // if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
+        //   navigation.navigate('Splash');
+        // }
 
         GetProfileInfo();
       } catch (err) {

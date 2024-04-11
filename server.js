@@ -385,7 +385,7 @@ app.post('/authenticate', async (req, res) => {
         };
 
         const token = jwt.sign(username, process.env.jwtSecretKey);
-
+        console.log(token, username);
         res.status(200).json({
           token: token,
           message: 'Correct Password',
@@ -414,25 +414,26 @@ app.post('/authenticate', async (req, res) => {
 app.post('/auth', async (req, res) => {
   try {
     const { user_text, token } = req.body;
+    const user_lower = String(user_text).toLowerCase();
     if (token != null) {
       console.log('Auth');
-      console.log(user_text, token);
-      console.log(jwt.verify(token, process.env.jwtSecretKey));
-      if (jwt.verify(token, process.env.jwtSecretKey) == user_text) {
+
+      // console.log(jwt.verify(token, process.env.jwtSecretKey));
+      if (jwt.verify(token, process.env.jwtSecretKey) == user_lower) {
         console.log('Correct Token');
         try {
           const data = await connection
             .promise()
             .query(
               `SELECT usertype  from users where username = ?;`,
-              user_text,
+              user_lower,
             );
 
           res.status(200).json({
             message: 'Correct Token',
             status: 'Accepted',
             data: {
-              user_name: user_text,
+              user_name: user_lower,
               user_type: data[0][0].usertype,
             },
           });
@@ -1040,19 +1041,21 @@ app.delete('/reservation/:itemID', async (req, res) => {
   try {
     const itemID = req.params.itemID;
     const userdata = req.body.userdata;
+    console.log(userdata);
 
     console.log('Attempting to delete reservation with itemID:', itemID);
-
-    // Check if the reservation exists before deleting
-    const [reservation] = await connection
-      .promise()
-      .query('SELECT * FROM reserved WHERE itemID = ? AND buyerID = ?', [
-        itemID,
-        userdata.user_id,
-      ]);
-    if (reservation.length === 0) {
-      console.log('You Do Not Have A Reservation for this Item:', itemID);
-      return res.status(404).json({ message: 'Reservation not found' });
+    if (!userdata.user_type == 'seller') {
+      // Check if the reservation exists before deleting
+      const [reservation] = await connection
+        .promise()
+        .query('SELECT * FROM reserved WHERE itemID = ? AND buyerID = ?', [
+          itemID,
+          userdata.user_id,
+        ]);
+      if (reservation.length === 0) {
+        console.log('You Do Not Have A Reservation for this Item:', itemID);
+        return res.status(404).json({ message: 'Reservation not found' });
+      }
     }
 
     query =

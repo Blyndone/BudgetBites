@@ -33,16 +33,17 @@ const BuyerMainView = ({ navigation, route }) => {
   const [userdata, setUserData] = React.useState('');
   useEffect(() => {
     Auth(route.params.data.user_name).then((resp) => {
+      // console.log(resp);
       try {
-        r = JSON.parse(resp);
-        REENABLE;
-        if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
-          navigation.navigate('Splash');
-        }
-        console.log(r.status);
-        console.log(resp);
+        // r = JSON.parse(resp);
+        // console.log(r);
+        // if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
+        //   navigation.navigate('Splash');
+        // }
+        // console.log(r.status);
+        // console.log(r);
       } catch (err) {
-        console.log(err);
+        // console.log('eeee', err);
       }
     });
     setUserData({
@@ -182,7 +183,7 @@ const BuyerMainView = ({ navigation, route }) => {
     const cur = new Date();
     results = results.filter((item) => {
       const exp = new Date(item.expiration);
-      return parseInt((exp - cur) / 86400000) < 5;
+      return parseInt((exp - cur) / 86400000) < 3;
     });
 
     sortedKeys = results.sort((a, b) => {
@@ -590,7 +591,7 @@ const ItemModal = ({
         <View style={styles.itemmodalView}>
           <Text style={styles.modalTitle}>{itemData.itemName}</Text>
           <Text
-            style={itemData.duration > 10 ? styles.explong : styles.expshort}
+            style={itemData.duration > 3 ? styles.explong : styles.expshort}
           >
             {itemData.itemDuration} Days Remaining!
           </Text>

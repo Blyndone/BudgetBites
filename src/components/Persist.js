@@ -1,6 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 import { REACT_APP_ADDRESS } from '@env';
 export async function Auth(user_text) {
+  user_text = user_text.toLowerCase();
   try {
     return await SecureStore.getItemAsync(user_text)
       .then((response) => {
@@ -18,11 +19,15 @@ export async function Auth(user_text) {
           body: raw,
           redirect: 'follow',
         };
+
         return requestOptions;
       })
       .then((requestOptions) => {
         return fetch(`${REACT_APP_ADDRESS}/auth`, requestOptions)
-          .then((response) => response.text())
+          .then((response) => {
+            return response.text();
+            // console.log('a', user_text, response);
+          })
           .catch((error) => console.error(error));
       });
   } catch (err) {

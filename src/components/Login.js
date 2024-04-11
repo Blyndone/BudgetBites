@@ -129,27 +129,23 @@ const Login = ({ navigation }) => {
                         return response.text();
                       })
                       .then((response) => {
-                        console.log(res.status);
                         if (res.status == 500) {
                           alert(
                             'User not found.  Please check username and try again.',
                           );
-                          // console.log(res.status);
+
                           return;
                         } else if (res.status == 401) {
                           alert(
                             'Password does not match.  Please check password and try again.',
                           );
-                          // console.log(res.status);
+
                           return;
                         } else {
-                          // console.log(response);
                           const token = JSON.parse(response).token;
                           const data = JSON.parse(response).data;
-                          // console.log(data);
-                          // console.log(data);
-                          // console.log(user_text, token);
-                          save(user_text, token);
+
+                          save(user_text.toLowerCase(), token);
                           if (data.user_type == 'seller') {
                             navigation.navigate({
                               name: 'Seller Main View',

@@ -25,7 +25,6 @@ const SellerMainView = ({ navigation, route }) => {
   useEffect(() => {
     Auth(route.params.data.user_name).then((resp) => {
       try {
-        r = JSON.parse(resp);
         // if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
         //   navigation.navigate('Splash');
         // }
@@ -145,7 +144,7 @@ const SellerMainView = ({ navigation, route }) => {
                           'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                          buyerID: userdata.user_id,
+                          userdata: userdata,
                           itemID: itemID,
                         }),
                       }).then(() => {

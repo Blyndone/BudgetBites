@@ -45,7 +45,7 @@ export const ListItem = memo(function ListItem({ item, overlay = false }) {
           />
           <Image source={images[item.img]} style={styles.img} />
 
-          <Text style={duration > 5 ? styles.explong : styles.expshort}>
+          <Text style={duration > 3 ? styles.explong : styles.expshort}>
             {duration + 1} Days!
           </Text>
         </View>
@@ -56,14 +56,17 @@ export const ListItem = memo(function ListItem({ item, overlay = false }) {
         </View>
 
         <View style={styles.descview}>
-          <Text style={styles.description}>
-            {item.description.length > 55
-              ? item.description.slice(0, 55) + '...'
-              : item.description}
-          </Text>
-          <Text style={styles.category}>
-            {item.location} --- {item.category}{' '}
-          </Text>
+          <View>
+            <Text style={styles.description}>
+              {item.description.length > 55
+                ? item.description.slice(0, 55) + '...'
+                : item.description}
+            </Text>
+          </View>
+          <View style={styles.loccatrow}>
+            <Text style={styles.location}>{item.location}</Text>
+            <Text style={styles.category}>{item.category} </Text>
+          </View>
         </View>
       </View>
 
@@ -187,13 +190,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'black',
   },
-  location: {
-    textAlign: 'center',
-    // flexBasis: 120,
-    flexGrow: 0.7,
-    fontWeight: '400',
-    color: 'black',
-  },
   description: {
     paddingLeft: 10,
     textAlign: 'left',
@@ -201,9 +197,16 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     color: 'black',
   },
+  location: {
+    textAlign: 'left',
+    justifyContent: 'flex-end',
+    // flexBasis: 120,
+    flexGrow: 0.3,
+    fontWeight: 'bold',
+    color: 'black',
+  },
   category: {
-    paddingLeft: 10,
-    textAlign: 'center',
+    textAlign: 'right',
     justifyContent: 'flex-end',
     // flexBasis: 120,
     flexGrow: 0.3,
@@ -234,6 +237,13 @@ const styles = StyleSheet.create({
     color: 'black',
     margin: 4,
     marginRight: 0,
+  },
+  loccatrow: {
+    flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'space-around',
+
+    flexDirection: 'row',
   },
 });
 

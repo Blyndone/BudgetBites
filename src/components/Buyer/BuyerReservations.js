@@ -25,14 +25,12 @@ const BuyerReservations = ({ navigation, route }) => {
   const pagetype = 'buyer';
   const [userdata, setUserData] = React.useState('');
   useEffect(() => {
-    console.log('GET');
-
     Auth(route.params.data.user_name).then((resp) => {
       try {
-        r = JSON.parse(resp);
-        if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
-          navigation.navigate('Splash');
-        }
+        // r = JSON.parse(resp);
+        // if (r.status != 'Accepted' || route.params.data.user_type != pagetype) {
+        //   navigation.navigate('Splash');
+        // }
         // console.log(r.status);
         // console.log(resp);
       } catch (err) {
@@ -172,6 +170,7 @@ const BuyerReservations = ({ navigation, route }) => {
                     },
                     body: JSON.stringify({
                       itemID: itemID,
+                      userdata: userdata,
                     }),
                   }).then(() => {
                     GetItems();
