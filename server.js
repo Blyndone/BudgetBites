@@ -65,7 +65,7 @@ const reloadTables = () => {
     },
   );
 };
-
+console.log('Reload Tables');
 reloadTables();
 
 //===========================================
